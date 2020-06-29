@@ -1,14 +1,9 @@
-include ../../.make_config
-htarg := ../../$(htmldir)/book
+htarg := docs
 
 .PHONY : book
-book :
+book : clean 
 	Rscript -e 'bookdown::render_book("index.Rmd", output_dir = "$(htarg)")'
-	Rscript -e 'bookdown::clean_book(TRUE)'
-
-print :
-	@echo $(SRCS)
-	@echo $(DTARGS)
+	zip -r docs/offline-textbook.zip docs/
 
 clean :
-	rm -rf $(htarg)
+	Rscript -e 'bookdown::clean_book(TRUE)'
