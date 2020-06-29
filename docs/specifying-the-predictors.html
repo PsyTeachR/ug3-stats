@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Specifying the predictors | Learning Statistical Models Through Simulation in R</title>
+  <meta name="description" content="Textbook on statistical models for social scientists." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Specifying the predictors | Learning Statistical Models Through Simulation in R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Textbook on statistical models for social scientists." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Specifying the predictors | Learning Statistical Models Through Simulation in R" />
+  
+  <meta name="twitter:description" content="Textbook on statistical models for social scientists." />
+  
+
+<meta name="author" content="Dale J. Barr" />
+
+
+<meta name="date" content="2020-06-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introducing-linear-mixed-effects-models.html"/>
+<link rel="next" href="specifying-random-effects-in-linear-mixed-effects-models.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="include/psyteachr.css" type="text/css" />
+<link rel="stylesheet" href="include/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Models</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#how-to-cite-this-book"><i class="fa fa-check"></i><b>0.1</b> How to cite this book</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#information-for-educators"><i class="fa fa-check"></i><b>0.2</b> Information for educators</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html"><i class="fa fa-check"></i><b>2</b> Understanding correlation and regression through bivariate simulation</a><ul>
+<li class="chapter" data-level="2.1" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#correlation-matrices"><i class="fa fa-check"></i><b>2.1</b> Correlation matrices</a></li>
+<li class="chapter" data-level="2.2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#simulating-bivariate-data"><i class="fa fa-check"></i><b>2.2</b> Simulating bivariate data</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#bivariate-app"><i class="fa fa-check"></i><b>2.2.1</b> Bivariate app</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#relationship-between-correlation-and-regression"><i class="fa fa-check"></i><b>2.3</b> Relationship between correlation and regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>3</b> Multiple regression</a><ul>
+<li class="chapter" data-level="3.1" data-path="multiple-regression.html"><a href="multiple-regression.html#an-example-how-to-get-a-good-grade-in-statistics"><i class="fa fa-check"></i><b>3.1</b> An example: How to get a good grade in statistics</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#data-import-and-visualization"><i class="fa fa-check"></i><b>3.1.1</b> Data import and visualization</a></li>
+<li class="chapter" data-level="3.1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#estimation-and-interpretation"><i class="fa fa-check"></i><b>3.1.2</b> Estimation and interpretation</a></li>
+<li class="chapter" data-level="3.1.3" data-path="multiple-regression.html"><a href="multiple-regression.html#predictions-from-the-linear-model-using-predict"><i class="fa fa-check"></i><b>3.1.3</b> Predictions from the linear model using <code>predict()</code></a></li>
+<li class="chapter" data-level="3.1.4" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-partial-effects"><i class="fa fa-check"></i><b>3.1.4</b> Visualizing partial effects</a></li>
+<li class="chapter" data-level="3.1.5" data-path="multiple-regression.html"><a href="multiple-regression.html#standardizing-coefficients"><i class="fa fa-check"></i><b>3.1.5</b> Standardizing coefficients</a></li>
+<li class="chapter" data-level="3.1.6" data-path="multiple-regression.html"><a href="multiple-regression.html#model-comparison"><i class="fa fa-check"></i><b>3.1.6</b> Model comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="multiple-regression.html"><a href="multiple-regression.html#dealing-with-categorical-predictors"><i class="fa fa-check"></i><b>3.2</b> Dealing with categorical predictors</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#dummy-coding"><i class="fa fa-check"></i><b>3.2.1</b> Dummy coding</a></li>
+<li class="chapter" data-level="3.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#dummy-coding-when-k-2"><i class="fa fa-check"></i><b>3.2.2</b> Dummy coding when <span class="math inline">\(k &gt; 2\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="multiple-regression.html"><a href="multiple-regression.html#equivalence-between-multiple-regression-and-one-way-anova"><i class="fa fa-check"></i><b>3.3</b> Equivalence between multiple regression and one-way ANOVA</a></li>
+<li class="chapter" data-level="3.4" data-path="multiple-regression.html"><a href="multiple-regression.html#solution-to-partial-effect-plot"><i class="fa fa-check"></i><b>3.4</b> Solution to partial effect plot</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>4</b> Interactions</a><ul>
+<li class="chapter" data-level="4.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>4.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="4.2" data-path="interactions.html"><a href="interactions.html#interactions-1"><i class="fa fa-check"></i><b>4.2</b> Interactions</a></li>
+<li class="chapter" data-level="4.3" data-path="interactions.html"><a href="interactions.html#cont-by-cat"><i class="fa fa-check"></i><b>4.3</b> Continuous-by-Categorical Interactions</a></li>
+<li class="chapter" data-level="4.4" data-path="interactions.html"><a href="interactions.html#categorical-by-categorical-interactions"><i class="fa fa-check"></i><b>4.4</b> Categorical-by-Categorical Interactions</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="interactions.html"><a href="interactions.html#effects-of-cognitive-therapy-and-drug-therapy-on-mood"><i class="fa fa-check"></i><b>4.4.1</b> Effects of cognitive therapy and drug therapy on mood</a></li>
+<li class="chapter" data-level="4.4.2" data-path="interactions.html"><a href="interactions.html#effects-in-a-factorial-design"><i class="fa fa-check"></i><b>4.4.2</b> Effects in a factorial design</a></li>
+<li class="chapter" data-level="4.4.3" data-path="interactions.html"><a href="interactions.html#higher-order-designs"><i class="fa fa-check"></i><b>4.4.3</b> Higher-order designs</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="interactions.html"><a href="interactions.html#the-glm-for-a-factorial-design"><i class="fa fa-check"></i><b>4.5</b> The GLM for a factorial design</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="interactions.html"><a href="interactions.html#estimation-equations"><i class="fa fa-check"></i><b>4.5.1</b> Estimation equations</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="interactions.html"><a href="interactions.html#factorial-app"><i class="fa fa-check"></i><b>4.6</b> Factorial App</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>5</b> Introducing Linear Mixed-Effects Models</a><ul>
+<li class="chapter" data-level="5.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.2" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#modeling-multi-level-data"><i class="fa fa-check"></i><b>5.2</b> Modeling multi-level data</a></li>
+<li class="chapter" data-level="5.3" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#how-to-model-this-data"><i class="fa fa-check"></i><b>5.3</b> How to model this data?</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#complete-pooling-one-size-fits-all"><i class="fa fa-check"></i><b>5.3.1</b> Complete pooling: One size fits all</a></li>
+<li class="chapter" data-level="5.3.2" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#no-pooling"><i class="fa fa-check"></i><b>5.3.2</b> No pooling</a></li>
+<li class="chapter" data-level="5.3.3" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#partial-pooling-using-mixed-effects-models"><i class="fa fa-check"></i><b>5.3.3</b> Partial pooling using mixed-effects models</a></li>
+<li class="chapter" data-level="5.3.4" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#the-variance-covariance-matrix"><i class="fa fa-check"></i><b>5.3.4</b> The variance-covariance matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#estimating-the-model-parameters"><i class="fa fa-check"></i><b>5.4</b> Estimating the model parameters</a></li>
+<li class="chapter" data-level="5.5" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#interpreting-lmer-output-and-extracting-estimates"><i class="fa fa-check"></i><b>5.5</b> Interpreting <code>lmer()</code> output and extracting estimates</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#fixed-effects"><i class="fa fa-check"></i><b>5.5.1</b> Fixed effects</a></li>
+<li class="chapter" data-level="5.5.2" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#random-effects"><i class="fa fa-check"></i><b>5.5.2</b> Random effects</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#multi-level-app"><i class="fa fa-check"></i><b>5.6</b> Multi-level app</a></li>
+<li class="chapter" data-level="5.7" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html"><i class="fa fa-check"></i><b>6</b> Specifying the predictors</a><ul>
+<li class="chapter" data-level="6.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="6.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#code-your-own-categorical-predictors"><i class="fa fa-check"></i><b>6.2</b> Code your own categorical predictors</a></li>
+<li class="chapter" data-level="6.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#coding-schemes-for-categorical-variables"><i class="fa fa-check"></i><b>6.3</b> Coding schemes for categorical variables</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#simple-versus-main-effects"><i class="fa fa-check"></i><b>6.3.1</b> Simple versus main effects</a></li>
+<li class="chapter" data-level="6.3.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#the-key-coding-schemes"><i class="fa fa-check"></i><b>6.3.2</b> The key coding schemes</a></li>
+<li class="chapter" data-level="6.3.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#what-about-factors-with-more-than-two-levels"><i class="fa fa-check"></i><b>6.3.3</b> What about factors with more than two levels?</a></li>
+<li class="chapter" data-level="6.3.4" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#example-three-level-factor"><i class="fa fa-check"></i><b>6.3.4</b> Example: Three-level factor</a></li>
+<li class="chapter" data-level="6.3.5" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#how-to-create-your-own-numeric-predictors"><i class="fa fa-check"></i><b>6.3.5</b> How to create your own numeric predictors</a></li>
+<li class="chapter" data-level="6.3.6" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#conclusion"><i class="fa fa-check"></i><b>6.3.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#replacing-t-test-and-anova-with-linear-mixed-effects-regression"><i class="fa fa-check"></i><b>6.4</b> Replacing t-test and ANOVA with linear mixed-effects regression</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#example-independent-samples-t-test-on-multi-level-data"><i class="fa fa-check"></i><b>6.4.1</b> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</a></li>
+<li class="chapter" data-level="6.4.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#when-is-a-random-intercepts-model-appropriate"><i class="fa fa-check"></i><b>6.4.2</b> When is a random-intercepts model appropriate?</a></li>
+<li class="chapter" data-level="6.4.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#rules-for-choosing-random-effects"><i class="fa fa-check"></i><b>6.4.3</b> Rules for choosing random effects</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>7</b> Specifying random effects in linear mixed-effects models</a><ul>
+<li class="chapter" data-level="7.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#web-app"><i class="fa fa-check"></i><b>7.2</b> Web app</a></li>
+<li class="chapter" data-level="7.3" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#specifying-random-effects"><i class="fa fa-check"></i><b>7.3</b> Specifying random effects</a></li>
+<li class="chapter" data-level="7.4" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#simulating-data-with-crossed-random-factors"><i class="fa fa-check"></i><b>7.4</b> Simulating data with crossed random factors</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#set-up-the-environment-and-define-the-parameters-for-the-dgp"><i class="fa fa-check"></i><b>7.4.1</b> Set up the environment and define the parameters for the DGP</a></li>
+<li class="chapter" data-level="7.4.2" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#generate-a-sample-of-subjects"><i class="fa fa-check"></i><b>7.4.2</b> Generate a sample of subjects</a></li>
+<li class="chapter" data-level="7.4.3" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#generate-a-sample-of-encounters-trials"><i class="fa fa-check"></i><b>7.4.3</b> Generate a sample of encounters (trials)</a></li>
+<li class="chapter" data-level="7.4.4" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#join-subjects-items-and-trials"><i class="fa fa-check"></i><b>7.4.4</b> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></a></li>
+<li class="chapter" data-level="7.4.5" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#create-the-response-variable"><i class="fa fa-check"></i><b>7.4.5</b> Create the response variable</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#fitting-the-model"><i class="fa fa-check"></i><b>7.5</b> Fitting the model</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed-effects models</a><ul>
+<li class="chapter" data-level="8.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#discrete-versus-continuous-data"><i class="fa fa-check"></i><b>8.2</b> Discrete versus continuous data</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#why-not-model-discrete-data-as-continuous"><i class="fa fa-check"></i><b>8.2.1</b> Why not model discrete data as continuous?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#generalized-linear-models"><i class="fa fa-check"></i><b>8.3</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="8.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Logistic regression</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#terminology"><i class="fa fa-check"></i><b>8.4.1</b> Terminology</a></li>
+<li class="chapter" data-level="8.4.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#properties-of-log-odds"><i class="fa fa-check"></i><b>8.4.2</b> Properties of log odds</a></li>
+<li class="chapter" data-level="8.4.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#link-and-variance-functions"><i class="fa fa-check"></i><b>8.4.3</b> Link and variance functions</a></li>
+<li class="chapter" data-level="8.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>8.4.4</b> Estimating logistic regression models in R</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/" 
+    target="blank"><img alt="Creative Commons License" 
+    style="border-width:0" 
+    src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a></li>
+<li><a href="https://psyteachr.github.io/books" target="blank">PsyTeachR Books</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Learning Statistical Models Through Simulation in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="specifying-the-predictors" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Specifying the predictors</h1>
+<div id="learning-objectives" class="section level2">
+<h2><span class="header-section-number">6.1</span> Learning objectives</h2>
+<ul>
+<li>express multi-level designs in model format</li>
+<li>categorical predictors</li>
+<li>understand the basic rules for specifying random effects</li>
+</ul>
+</div>
+<div id="code-your-own-categorical-predictors" class="section level2">
+<h2><span class="header-section-number">6.2</span> Code your own categorical predictors</h2>
+<p>Many studies in psychology—especially experimental psychology—involve categorical independent variables. Analyzing data from these studies requires care in specifying the predictors, because the defaults in R are not ideal for experimental situations.</p>
+<p>Let’s say you have 2x2 designed experiment with factors priming condition (priming vs. no priming) and linguistic structure (noun vs verb). These columns can be represented as type <code>character</code> or <code>factor</code>; in the latter case, they are implicitly converted to type <code>factor</code> before fitting the model, and then R will apply the default numerical coding for factors, which is ‘treatment’ (0, 1) coding.</p>
+<p>If you’re used to running ANOVAs, the results that you get from fitting a linear model will <em>not</em> match ANOVA output, as we’ll see below. That is because you need to use a different coding scheme to get ANOVA-like output.</p>
+<p>First, let’s define our little data set, <code>dat</code>.</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" title="1">  <span class="co">## demo for why you should avoid factors</span></a>
+<a class="sourceLine" id="cb157-2" title="2">  dat &lt;-<span class="st"> </span><span class="kw">tibble</span>(</a>
+<a class="sourceLine" id="cb157-3" title="3">    <span class="dt">subject =</span> <span class="kw">factor</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">16</span>),</a>
+<a class="sourceLine" id="cb157-4" title="4">    <span class="dt">priming =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>), <span class="dt">each =</span> <span class="dv">8</span>),</a>
+<a class="sourceLine" id="cb157-5" title="5">    <span class="dt">structure =</span> <span class="kw">rep</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;noun&quot;</span>, <span class="st">&quot;verb&quot;</span>), <span class="dt">each =</span> <span class="dv">4</span>), <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb157-6" title="6">    <span class="dt">RT =</span> <span class="kw">rnorm</span>(<span class="dv">16</span>, <span class="dv">800</span>, <span class="dv">20</span>))</a>
+<a class="sourceLine" id="cb157-7" title="7"></a>
+<a class="sourceLine" id="cb157-8" title="8">  dat</a></code></pre></div>
+<pre><code>## # A tibble: 16 x 4
+##    subject priming structure    RT
+##    &lt;fct&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
+##  1 1       yes     noun       768.
+##  2 2       yes     noun       795.
+##  3 3       yes     noun       774.
+##  4 4       yes     noun       841.
+##  5 5       yes     verb       819.
+##  6 6       yes     verb       802.
+##  7 7       yes     verb       790.
+##  8 8       yes     verb       816.
+##  9 9       no      noun       776.
+## 10 10      no      noun       810.
+## 11 11      no      noun       779.
+## 12 12      no      noun       815.
+## 13 13      no      verb       777.
+## 14 14      no      verb       798.
+## 15 15      no      verb       814.
+## 16 16      no      verb       802.</code></pre>
+<p>This is between subjects data, so we can fit a model using <code>lm()</code>. In the model, we include effects of <code>priming</code> and <code>structure</code> as well as their interaction. Instead of typing <code>priming + structure + priming:structure</code> we can simply type the shortcut <code>priming * structure</code>.</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" title="1">  ps_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(RT <span class="op">~</span><span class="st"> </span>priming <span class="op">*</span><span class="st"> </span>structure, dat)</a>
+<a class="sourceLine" id="cb159-2" title="2"></a>
+<a class="sourceLine" id="cb159-3" title="3">  <span class="kw">summary</span>(ps_mod)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = RT ~ priming * structure, data = dat)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -26.26 -17.20   0.32  12.98  46.37 
+## 
+## Coefficients:
+##                          Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)              794.9003    10.9193  72.798   &lt;2e-16 ***
+## primingyes                -0.3251    15.4422  -0.021    0.984    
+## structureverb              2.9245    15.4422   0.189    0.853    
+## primingyes:structureverb   9.0764    21.8385   0.416    0.685    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 21.84 on 12 degrees of freedom
+## Multiple R-squared:  0.06167,	Adjusted R-squared:  -0.1729 
+## F-statistic: 0.2629 on 3 and 12 DF,  p-value: 0.8508</code></pre>
+<p>Note that in the output the predictors are shown as <code>primingyes</code> and <code>structureverb</code>. The value <code>yes</code> is a level of <code>priming</code>; the level <strong>not shown</strong> is the one chosen as baseline, and in the default treatment coding scheme, the not-shown level (<code>no</code>) is coded as 0, and the shown level (<code>yes</code>) is coded as 1. Likewise, for <code>structure</code>, <code>noun</code> is coded as 0 and <code>verb</code> is coded as 1.</p>
+<p>This is not ideal, for reasons we will discuss further below. But I want to show you a further quirk of using factor variables as predictors.</p>
+<p>Let’s say we wanted to test the effect of <code>priming</code> by itself using model comparison. To do this, we would fit another model where we exclude this effect while keeping the interaction. Despite what you may have heard to the contrary, in a fully randomized, balanced experiment, all factors are orthogonal, and so it is completely legitimate to drop a main effect while leaving an interaction term in the model.</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" title="1">  ps_mod_nopriming &lt;-<span class="st"> </span><span class="kw">lm</span>(RT <span class="op">~</span><span class="st"> </span>structure <span class="op">+</span><span class="st"> </span>priming<span class="op">:</span>structure, dat)</a></code></pre></div>
+<p>OK, now that we’ve dropped <code>priming</code>, we should have 3 parameter estimates instead of 4. Let’s check.</p>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb162-1" title="1">  <span class="co">## not right!</span></a>
+<a class="sourceLine" id="cb162-2" title="2">  <span class="kw">coef</span>(ps_mod_nopriming)</a></code></pre></div>
+<pre><code>##              (Intercept)            structureverb structurenoun:primingyes 
+##              794.9003396                2.9245317               -0.3251155 
+## structureverb:primingyes 
+##                8.7513108</code></pre>
+<p>There are still 4 of them, and we’re suddenly getting <code>primingyes:structureverb</code>. This is weird and <em>not at all</em> what we intended. If we try to do the model comparison:</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" title="1">  <span class="co">## nonsense result</span></a>
+<a class="sourceLine" id="cb164-2" title="2">  <span class="kw">anova</span>(ps_mod_nopriming, ps_mod)</a></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: RT ~ structure + priming:structure
+## Model 2: RT ~ priming * structure
+##   Res.Df    RSS Df   Sum of Sq F Pr(&gt;F)
+## 1     12 5723.1                        
+## 2     12 5723.1  0 -2.7285e-12</code></pre>
+<p>we’d get nonsensical results.</p>
+<p>Is this a bug? No. It was a (in my view, heavy handed) design choice by the R creators to try to prevent everyone from doing something that at least some of us should be able to do at least some of the time.</p>
+<p>But we can do whatever we please if instead of using factors we define our own numerical predictors. This adds a bit of work but avoids other headaches and mistakes that we might make by using factors. Also, being very explicit about how predictors are defined is probably a good thing.</p>
+<p>You’ll sometimes need <code>factor</code> variables. I often use them to get things to plot in the right way using <code>ggplot2</code>, or when I need to tabulating observations and there are some combinations with zero counts. But I recommend against using <code>factors</code> in statistical models, especially if your model includes interactions. Use numerical predictors instead.</p>
+</div>
+<div id="coding-schemes-for-categorical-variables" class="section level2">
+<h2><span class="header-section-number">6.3</span> Coding schemes for categorical variables</h2>
+<p>Many experimentalists who are trying to make the leap from ANOVA to linear mixed-effects models (LMEMs) in R struggle with the coding of categorical predictors. It is unexpectedly complicated, and the defaults provided in R turn out to be wholly inappropriate for factorial experiments. Indeed, using those defaults with factorial experiments can lead researchers to draw erroneous conclusions from their data.</p>
+<p>To keep things simple, we’ll start with situations where design factors have no more than two levels before moving on to designs with more than three levels.</p>
+<div id="simple-versus-main-effects" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> Simple versus main effects</h3>
+<p>It is important that you understand the difference between a <strong>simple effect</strong> and a <strong>main effect</strong>, and between a <strong>simple interaction</strong> and a <strong>main interaction</strong> in a three-way design.</p>
+<p>In an <span class="math inline">\(A{\times}B\)</span> design, the simple effect of <span class="math inline">\(A\)</span> is the effect of <span class="math inline">\(A\)</span> <strong>controlling</strong> for <span class="math inline">\(B\)</span>, while the main effect of <span class="math inline">\(A\)</span> is the effect of <span class="math inline">\(A\)</span> <strong>ignoring</strong> <span class="math inline">\(B\)</span>. Another way of looking at this is to consider the cell means (<span class="math inline">\(\bar{Y}_{11}\)</span>, <span class="math inline">\(\bar{Y}_{12}\)</span>, <span class="math inline">\(\bar{Y}_{21}\)</span>, and <span class="math inline">\(\bar{Y}_{22}\)</span>) and marginal means (<span class="math inline">\(\bar{Y}_{1.}\)</span>, <span class="math inline">\(\bar{Y}_{2.}\)</span>, <span class="math inline">\(\bar{Y}_{.1}\)</span>, and <span class="math inline">\(\bar{Y}_{.2}\)</span>) in a factorial design. (The dot subscript tells you to “ignore” the dimension containing the dot; e.g., <span class="math inline">\(\bar{Y}_{.1}\)</span> tells you to take the mean of the first column ignoring the row variable.) To test the main effect of A is to test the null hypothesis that <span class="math inline">\(\bar{Y}_{1.}=\bar{Y}_{2.}\)</span>. To test a simple effect of <span class="math inline">\(A\)</span>—the effect of <span class="math inline">\(A\)</span> at a particular level of <span class="math inline">\(B\)</span>—would be, for instance, to test the null hypothesis that <span class="math inline">\(\bar{Y}_{11}=\bar{Y}_{21}\)</span>.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+</th>
+<th style="text-align:center;">
+<span class="math inline">\(B_1\)</span>
+</th>
+<th style="text-align:center;">
+<span class="math inline">\(B_2\)</span>
+</th>
+<th style="text-align:center;">
+</th>
+<th style="text-align:center;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(A_1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{11}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{12}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{1.}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(A_2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{21}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{22}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{2.}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{.1}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{.2}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+</tbody>
+</table>
+<p>The distinction between <strong>simple interactions</strong> and <strong>main interactions</strong> has the same logic: the simple interaction of <span class="math inline">\(AB\)</span> in an <span class="math inline">\(ABC\)</span> design is the interaction of <span class="math inline">\(AB\)</span> at a particular level of <span class="math inline">\(C\)</span>; the main interaction of <span class="math inline">\(AB\)</span> is the interaction <strong>ignoring</strong> C. The latter is what we are usually talking about when we talk about lower-order interactions in a three-way design. It is also what we are given in the output from standard ANOVA procedures, e.g., the <code>aov()</code> function in R, SPSS, SAS, etc.</p>
+</div>
+<div id="the-key-coding-schemes" class="section level3">
+<h3><span class="header-section-number">6.3.2</span> The key coding schemes</h3>
+<p>Generally, the choice of a coding scheme impacts the interpretation of:</p>
+<ol style="list-style-type: decimal">
+<li>the intercept term; and</li>
+<li>the interpretation of the tests for all but the highest-order effects and interactions in a factorial design.</li>
+</ol>
+<p>It also can influence the interpretation/estimation of random effects in a mixed-effects model (see <a href="http://talklab.psy.gla.ac.uk/simgen/rsonly.html">this blog post</a> for further discussion). If you have a design with only a single two-level factor, and are using a <a href="https://www.sciencedirect.com/science/article/pii/S0749596X12001180">maximal random-effects structure</a>, the choice of coding scheme doesn’t really matter.</p>
+<p>There are many possible coding schemes (see <code>?contr.treatment</code> for more information). The most relevant ones are <strong>treatment</strong>, <strong>sum</strong>, and <strong>deviation</strong>. Sum and deviation coding can be seen as special cases of <strong>effect</strong> coding; by effect coding, people generally mean codes that sum to zero.</p>
+<p>For a two-level factor, you would use the following codes:</p>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Scheme
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(A_1\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(A_2\)</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Treatment (dummy)
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(0\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(1\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sum
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-1\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(1\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Deviation
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{2}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(\frac{1}{2}\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<dl>
+<dt>The default in R is to use treatment coding for any variable defined as a =factor= in the model (see <code>?factor</code> and <code>?contrasts</code> for information). To see why this is not ideal for factorial designs, consider a 2x2x2 factorial design with factors <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>. We will just consider a fully between-subjects design with only one observation per subject as this allows us to use the simplest possible error structure. We would fit such a model using <code>lm()</code>:</dt>
+<dd><p>lm(Y ~ A * B * C)</p>
+</dd>
+</dl>
+<p>The figure below spells out the notation for the various cell and marginal means for a 2x2x2 design.</p>
+<div class="column" style="float:left; width: 50%">
+
+<p><span class="math display">\[C_1\]</span></p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+</th>
+<th style="text-align:center;">
+<span class="math inline">\(B_1\)</span>
+</th>
+<th style="text-align:center;">
+<span class="math inline">\(B_2\)</span>
+</th>
+<th style="text-align:center;">
+</th>
+<th style="text-align:center;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(A_1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{111}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{121}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{1.1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(A_2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{211}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{221}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{2.1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{.11}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{.21}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="column" style="float:right; width: 50%">
+
+<p><span class="math display">\[C_2\]</span></p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+</th>
+<th style="text-align:center;">
+<span class="math inline">\(B_1\)</span>
+</th>
+<th style="text-align:center;">
+<span class="math inline">\(B_2\)</span>
+</th>
+<th style="text-align:center;">
+</th>
+<th style="text-align:center;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(A_1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{112}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{122}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{1.2}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(A_2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{212}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{222}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{2.2}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{.12}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{.22}\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The table below provides the interpretation for various effects in the model under the three different coding schemes. Note that <span class="math inline">\(Y\)</span> is the dependent variable, and the dots in the subscript mean to “ignore” the corresponding dimension. Thus, <span class="math inline">\(\bar{Y}_{.1.}\)</span> is the mean of B_1 (ignoring factors <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>) and <span class="math inline">\(\bar{Y}_{...}\)</span> is the “grand mean” (ignoring all factors).</p>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+term
+</th>
+<th style="text-align:center;">
+treatment
+</th>
+<th style="text-align:center;">
+sum
+</th>
+<th style="text-align:center;">
+deviation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(\mu\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{111}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{...}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{...}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(A\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{211} - \bar{Y}_{111}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\frac{(\bar{Y}_{2..} - \bar{Y}_{1..})}{2}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{2..} - \bar{Y}_{1..}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(B\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{121} - \bar{Y}_{111}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\frac{(\bar{Y}_{.2.} - \bar{Y}_{.1.})}{2}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{.2.} - \bar{Y}_{.1.}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(C\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{112} - \bar{Y}_{111}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\frac{(\bar{Y}_{..2} - \bar{Y}_{..1})}{2}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{Y}_{..2} - \bar{Y}_{..1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(AB\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\((\bar{Y}_{221} - \bar{Y}_{121}) - (\bar{Y}_{211} - \bar{Y}_{111})\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\frac{(\bar{Y}_{22.} - \bar{Y}_{12.}) - (\bar{Y}_{21.} - \bar{Y}_{11.})}{4}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\((\bar{Y}_{22.} - \bar{Y}_{12.}) - (\bar{Y}_{21.} - \bar{Y}_{11.})\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(AC\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\((\bar{Y}_{212} - \bar{Y}_{211}) - (\bar{Y}_{112} - \bar{Y}_{111})\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\frac{(\bar{Y}_{2.2} - \bar{Y}_{1.2}) - (\bar{Y}_{2.1} - \bar{Y}_{1.1})}{4}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\((\bar{Y}_{2.2} - \bar{Y}_{1.2}) - (\bar{Y}_{2.1} - \bar{Y}_{1.1})\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(BC\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\((\bar{Y}_{122} - \bar{Y}_{112}) - (\bar{Y}_{121} - \bar{Y}_{111})\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\frac{(\bar{Y}_{.22} - \bar{Y}_{.12}) - (\bar{Y}_{.21} - \bar{Y}_{.11})}{4}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\((\bar{Y}_{.22} - \bar{Y}_{.12}) - (\bar{Y}_{.21} - \bar{Y}_{.11})\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For the three way <span class="math inline">\(A \times B \times C\)</span> interaction:</p>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+scheme
+</th>
+<th style="text-align:center;">
+interpretation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+treatment
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\displaystyle\left[\displaystyle\left(\bar{Y}_{221} - \bar{Y}_{121}\right) - \displaystyle\left(\bar{Y}_{211} - \bar{Y}_{111}\right)\right] - \displaystyle\left[\displaystyle\left(\bar{Y}_{222} - \bar{Y}_{122}\right) - \displaystyle\left(\bar{Y}_{212} - \bar{Y}_{112}\right)\right]\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+sum
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\frac{\displaystyle\left[\displaystyle\left(\bar{Y}_{221} - \bar{Y}_{121}\right) - \displaystyle\left(\bar{Y}_{211} - \bar{Y}_{111}\right)\right] - \displaystyle\left[\displaystyle\left(\bar{Y}_{222} - \bar{Y}_{122}\right) - \displaystyle\left(\bar{Y}_{212} - \bar{Y}_{112}\right)\right]}{8}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+deviation
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\displaystyle\left[\displaystyle\left(\bar{Y}_{221} - \bar{Y}_{121}\right) - \displaystyle\left(\bar{Y}_{211} - \bar{Y}_{111}\right)\right] - \displaystyle\left[\displaystyle\left(\bar{Y}_{222} - \bar{Y}_{122}\right) - \displaystyle\left(\bar{Y}_{212} - \bar{Y}_{112}\right)\right]\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the inferential tests of <span class="math inline">\(A \times B \times C\)</span> will all have the same outcome, despite the parameter estimate for sum coding being one-eighth of that for the other schemes. For all lower-order effects, sum and deviation coding will give different parameter estimates but identical inferential outcomes. Both of these schemes provide identical tests of the canonical main effects and main interactions for a three-way ANOVA. In contrast, treatment (dummy) coding will provide inferential tests of simple effects and simple interactions. So, if what you are interested in getting are the “canonical” tests from ANOVA, use sum or deviation coding.</p>
+</div>
+<div id="what-about-factors-with-more-than-two-levels" class="section level3">
+<h3><span class="header-section-number">6.3.3</span> What about factors with more than two levels?</h3>
+<p>A factor with <span class="math inline">\(k\)</span> levels requires <span class="math inline">\(k-1\)</span> variables. Each predictor contrasts a particular “target” level of the factor with a level that you (arbitrarily) choose as the “baseline” level. For instance, for a three-level factor <span class="math inline">\(A\)</span> with <span class="math inline">\(A1\)</span> chosen as the baseline, you’d have two predictor variables, one of which compares <span class="math inline">\(A2\)</span> to <span class="math inline">\(A1\)</span> and the other of which compares <span class="math inline">\(A3\)</span> to <span class="math inline">\(A1\)</span>.</p>
+<p>For treatment (dummy) coding, the target level is set to 1, otherwise 0.</p>
+<p>For sum coding, the levels must sum to zero, so for a given predictor, the target level is given the value 1, the baseline level is given the value -1, and any other level is given the value 0.</p>
+<p>For deviation coding, the values must also sum to 0. Deviation coding is recommended whenever you are trying to draw ANOVA-style inferences. Under this scheme, the target level gets the value <span class="math inline">\(\frac{k-1}{k}\)</span> while any non-target level gets the value <span class="math inline">\(-\frac{1}{k}\)</span>.</p>
+<p><strong>Fun fact</strong>: Mean-centering treatment codes (on balanced data) will give you deviation codes.</p>
+</div>
+<div id="example-three-level-factor" class="section level3">
+<h3><span class="header-section-number">6.3.4</span> Example: Three-level factor</h3>
+<div id="treatment-dummy" class="section level4">
+<h4><span class="header-section-number">6.3.4.1</span> Treatment (Dummy)</h4>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+level
+</th>
+<th style="text-align:right;">
+A2v1
+</th>
+<th style="text-align:right;">
+A3v1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sum" class="section level4">
+<h4><span class="header-section-number">6.3.4.2</span> Sum</h4>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+level
+</th>
+<th style="text-align:right;">
+A2v1
+</th>
+<th style="text-align:right;">
+A3v1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A1
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="deviation" class="section level4">
+<h4><span class="header-section-number">6.3.4.3</span> Deviation</h4>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+level
+</th>
+<th style="text-align:right;">
+A2v1
+</th>
+<th style="text-align:right;">
+A3v1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A1
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{3}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{3}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A2
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(\frac{2}{3}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{3}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A3
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{3}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(\frac{2}{3}\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="example-five-level-factor" class="section level4">
+<h4><span class="header-section-number">6.3.4.4</span> Example: Five-level factor</h4>
+</div>
+<div id="treatment-dummy-1" class="section level4">
+<h4><span class="header-section-number">6.3.4.5</span> Treatment (Dummy)</h4>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+level
+</th>
+<th style="text-align:right;">
+A2v1
+</th>
+<th style="text-align:right;">
+A3v1
+</th>
+<th style="text-align:right;">
+A4v1
+</th>
+<th style="text-align:right;">
+A5v1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sum-1" class="section level4">
+<h4><span class="header-section-number">6.3.4.6</span> Sum</h4>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+level
+</th>
+<th style="text-align:right;">
+A2v1
+</th>
+<th style="text-align:right;">
+A3v1
+</th>
+<th style="text-align:right;">
+A4v1
+</th>
+<th style="text-align:right;">
+A5v1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A1
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="deviation-1" class="section level4">
+<h4><span class="header-section-number">6.3.4.7</span> Deviation</h4>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+level
+</th>
+<th style="text-align:right;">
+A2v1
+</th>
+<th style="text-align:right;">
+A3v1
+</th>
+<th style="text-align:right;">
+A4v1
+</th>
+<th style="text-align:right;">
+A5v1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A1
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A2
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(\frac{4}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A3
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(\frac{4}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A4
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(\frac{4}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A5
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(-\frac{1}{5}\)</span>
+</td>
+<td style="text-align:right;">
+<span class="math inline">\(\frac{4}{5}\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="how-to-create-your-own-numeric-predictors" class="section level3">
+<h3><span class="header-section-number">6.3.5</span> How to create your own numeric predictors</h3>
+<p>Let’s assume that your data is contained in a table <code>dat</code> like the one below.</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" title="1"> <span class="co">## create your own numeric predictors</span></a>
+<a class="sourceLine" id="cb166-2" title="2"> <span class="co">## make an example table</span></a>
+<a class="sourceLine" id="cb166-3" title="3"> dat &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb166-4" title="4">               <span class="dt">A =</span> <span class="kw">rep</span>(<span class="kw">paste0</span>(<span class="st">&quot;A&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>), <span class="dt">each =</span> <span class="dv">4</span>))</a></code></pre></div>
+<div class='solution'>
+<button>
+Click to view example data
+</button>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Y
+</th>
+<th style="text-align:left;">
+A
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+-0.41
+</td>
+<td style="text-align:left;">
+A1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.26
+</td>
+<td style="text-align:left;">
+A1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.75
+</td>
+<td style="text-align:left;">
+A1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.41
+</td>
+<td style="text-align:left;">
+A1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-0.78
+</td>
+<td style="text-align:left;">
+A2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-0.02
+</td>
+<td style="text-align:left;">
+A2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-0.27
+</td>
+<td style="text-align:left;">
+A2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-0.19
+</td>
+<td style="text-align:left;">
+A2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.82
+</td>
+<td style="text-align:left;">
+A3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-1.14
+</td>
+<td style="text-align:left;">
+A3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.29
+</td>
+<td style="text-align:left;">
+A3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-1.86
+</td>
+<td style="text-align:left;">
+A3
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="the-mutate-if_else-case_when-approach-for-a-three-level-factor" class="section level4">
+<h4><span class="header-section-number">6.3.5.1</span> The <code>mutate()</code> / <code>if_else()</code> / <code>case_when()</code> approach for a three-level factor</h4>
+</div>
+<div id="treatment" class="section level4">
+<h4><span class="header-section-number">6.3.5.2</span> Treatment</h4>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" title="1">  <span class="co">## examples of three level factors</span></a>
+<a class="sourceLine" id="cb167-2" title="2">  <span class="co">## treatment coding</span></a>
+<a class="sourceLine" id="cb167-3" title="3">  dat_treat &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb167-4" title="4"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">A2v1 =</span> <span class="kw">if_else</span>(A <span class="op">==</span><span class="st"> &quot;A2&quot;</span>, 1L, 0L),</a>
+<a class="sourceLine" id="cb167-5" title="5">	   <span class="dt">A3v1 =</span> <span class="kw">if_else</span>(A <span class="op">==</span><span class="st"> &quot;A3&quot;</span>, 1L, 0L))</a></code></pre></div>
+<div class="solution">
+<button>
+Click to view resulting table
+</button>
+<pre><code>## # A tibble: 12 x 4
+##          Y A      A2v1  A3v1
+##      &lt;dbl&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt;
+##  1 -0.407  A1        0     0
+##  2  1.26   A1        0     0
+##  3  1.75   A1        0     0
+##  4  0.406  A1        0     0
+##  5 -0.777  A2        1     0
+##  6 -0.0162 A2        1     0
+##  7 -0.274  A2        1     0
+##  8 -0.189  A2        1     0
+##  9  0.819  A3        0     1
+## 10 -1.14   A3        0     1
+## 11  1.29   A3        0     1
+## 12 -1.86   A3        0     1</code></pre>
+</div>
+</div>
+<div id="sum-2" class="section level4">
+<h4><span class="header-section-number">6.3.5.3</span> Sum</h4>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" title="1"><span class="co">## sum coding</span></a>
+<a class="sourceLine" id="cb169-2" title="2">dat_sum &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb169-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">A2v1 =</span> <span class="kw">case_when</span>(A <span class="op">==</span><span class="st"> &quot;A1&quot;</span> <span class="op">~</span><span class="st"> </span><span class="op">-</span>1L, <span class="co"># baseline</span></a>
+<a class="sourceLine" id="cb169-4" title="4">                          A <span class="op">==</span><span class="st"> &quot;A2&quot;</span> <span class="op">~</span><span class="st"> </span>1L,  <span class="co"># target</span></a>
+<a class="sourceLine" id="cb169-5" title="5">                          <span class="ot">TRUE</span>      <span class="op">~</span><span class="st"> </span>0L), <span class="co"># anything else</span></a>
+<a class="sourceLine" id="cb169-6" title="6">         <span class="dt">A3v1 =</span> <span class="kw">case_when</span>(A <span class="op">==</span><span class="st"> &quot;A1&quot;</span> <span class="op">~</span><span class="st"> </span><span class="op">-</span>1L, <span class="co"># baseline</span></a>
+<a class="sourceLine" id="cb169-7" title="7">                          A <span class="op">==</span><span class="st"> &quot;A3&quot;</span> <span class="op">~</span><span class="st">  </span>1L, <span class="co"># target</span></a>
+<a class="sourceLine" id="cb169-8" title="8">                          <span class="ot">TRUE</span>      <span class="op">~</span><span class="st"> </span>0L)) <span class="co"># anything else</span></a></code></pre></div>
+<div class="solution">
+<button>
+Click to view resulting table
+</button>
+<pre><code>## # A tibble: 12 x 4
+##          Y A      A2v1  A3v1
+##      &lt;dbl&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt;
+##  1 -0.407  A1       -1    -1
+##  2  1.26   A1       -1    -1
+##  3  1.75   A1       -1    -1
+##  4  0.406  A1       -1    -1
+##  5 -0.777  A2        1     0
+##  6 -0.0162 A2        1     0
+##  7 -0.274  A2        1     0
+##  8 -0.189  A2        1     0
+##  9  0.819  A3        0     1
+## 10 -1.14   A3        0     1
+## 11  1.29   A3        0     1
+## 12 -1.86   A3        0     1</code></pre>
+</div>
+</div>
+<div id="deviation-2" class="section level4">
+<h4><span class="header-section-number">6.3.5.4</span> Deviation</h4>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" title="1"><span class="co">## deviation coding</span></a>
+<a class="sourceLine" id="cb171-2" title="2"><span class="co">## baseline A1</span></a>
+<a class="sourceLine" id="cb171-3" title="3">dat_dev &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb171-4" title="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">A2v1 =</span> <span class="kw">if_else</span>(A <span class="op">==</span><span class="st"> &quot;A2&quot;</span>, <span class="dv">2</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">-1</span><span class="op">/</span><span class="dv">3</span>), <span class="co"># target A2</span></a>
+<a class="sourceLine" id="cb171-5" title="5">         <span class="dt">A3v1 =</span> <span class="kw">if_else</span>(A <span class="op">==</span><span class="st"> &quot;A3&quot;</span>, <span class="dv">2</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">-1</span><span class="op">/</span><span class="dv">3</span>)) <span class="co"># target A3</span></a></code></pre></div>
+<div class="solution">
+<button>
+Click to view resulting table
+</button>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" title="1">dat_dev</a></code></pre></div>
+<pre><code>## # A tibble: 12 x 4
+##          Y A       A2v1   A3v1
+##      &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 -0.407  A1    -0.333 -0.333
+##  2  1.26   A1    -0.333 -0.333
+##  3  1.75   A1    -0.333 -0.333
+##  4  0.406  A1    -0.333 -0.333
+##  5 -0.777  A2     0.667 -0.333
+##  6 -0.0162 A2     0.667 -0.333
+##  7 -0.274  A2     0.667 -0.333
+##  8 -0.189  A2     0.667 -0.333
+##  9  0.819  A3    -0.333  0.667
+## 10 -1.14   A3    -0.333  0.667
+## 11  1.29   A3    -0.333  0.667
+## 12 -1.86   A3    -0.333  0.667</code></pre>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level3">
+<h3><span class="header-section-number">6.3.6</span> Conclusion</h3>
+<p><strong>The interpretation of all but the highest order effect depends on the coding scheme.</strong></p>
+<p>With treatment coding, you are looking at <strong>simple</strong> effects and <strong>simple</strong> interactions, not <strong>main</strong> effects and <strong>main</strong> interactions.</p>
+<p><strong>The parameter estimates for sum coding differs from deviation coding only in the magnitude of the parameter estimates, but have identical interpretations.</strong></p>
+<p>Because it is not subject to the scaling effects seen under sum coding, deviation should be used by default for ANOVA-style designs.</p>
+<p><strong>The default coding scheme for factors is R is “treatment” coding.</strong></p>
+<p>So, anytime you declare a variable as type <code>factor</code> and use this variable as a predictor in your regression model, R will automatically create treatment-coded variables.</p>
+<div class="warning">
+<p><strong>Take-home message: when analyzing factorial designs in R using regression, to obtain the canonical ANOVA-style interpretations of main effects and interactions use deviation coding and NOT the default treatment coding.</strong></p>
+</div>
+</div>
+</div>
+<div id="replacing-t-test-and-anova-with-linear-mixed-effects-regression" class="section level2">
+<h2><span class="header-section-number">6.4</span> Replacing t-test and ANOVA with linear mixed-effects regression</h2>
+<p>As we have been emphasizing throughout this course, most data in psychology is multi-level—there are multiple observations on the DV for each subject.</p>
+<p>In the last chapter, we saw how to perform multilevel linear regression with a continuous predictor. In this section, we’ll see how a mixed-effects model can be used to replace a wide variety of standard techniques used in psychology for multi-level data with categorical predictors. Indeed, a very simple model with random intercepts can replace the following techniques, if they are used on <strong>multi-level data</strong>:</p>
+<ul>
+<li>one sample t-test</li>
+<li>between-subjects designs
+<ul>
+<li>independent samples t-test</li>
+<li>one factor or factorial ANOVA</li>
+</ul></li>
+<li>within-subjects designs
+<ul>
+<li>paired samples t-tests</li>
+<li>one factor repeated measures ANOVA</li>
+<li>mixed-design ANOVA</li>
+<li>within-subjects factorial ANOVA</li>
+</ul></li>
+</ul>
+<div id="example-independent-samples-t-test-on-multi-level-data" class="section level3">
+<h3><span class="header-section-number">6.4.1</span> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</h3>
+<p>Let’s consider a situation where you are testing the effect of alcohol consumption on simple reaction time (e.g., press a button as fast as you can after a light appears). To keep it simple, let’s assume that you have collected data from 14 participants randomly assigned to perform a set of 10 simple RT trials after one of two interventions: drinking a pint of alcohol (treatment condition) or a placebo drink (placebo condition). You have 7 participants in each of the two groups. Note that you would need more than this for a real study.</p>
+<p>The web app below presents simulated data from such a study. Subjects P01-P07 are from the placebo condition, while subjects T01-T07 are from the treatment condition.</p>
+<div class="figure" style="text-align: center"><span id="fig:icc-app"></span>
+<iframe src="http://shiny.psy.gla.ac.uk/Dale/icc?showcase=0" width="100%" height="620px">
+</iframe>
+<p class="caption">
+Figure 6.1: Multi-level data from an independent samples design.
+</p>
+</div>
+<p>If we were going to run a t-test on these data, we would first need to calculate subject means, because otherwise the observations are not independent. You could do this as follows. (If you want to run the code below, you can download sample data from the web app above and save it as <code>independent_samples.csv</code>).</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb174-1" title="1"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
+<a class="sourceLine" id="cb174-2" title="2"></a>
+<a class="sourceLine" id="cb174-3" title="3">dat &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/independent_samples.csv&quot;</span>, <span class="dt">col_types =</span> <span class="st">&quot;cci&quot;</span>)</a>
+<a class="sourceLine" id="cb174-4" title="4"></a>
+<a class="sourceLine" id="cb174-5" title="5">subj_means &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb174-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(subject, cond) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb174-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_rt =</span> <span class="kw">mean</span>(RT)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb174-8" title="8"><span class="st">  </span><span class="kw">ungroup</span>()</a>
+<a class="sourceLine" id="cb174-9" title="9"></a>
+<a class="sourceLine" id="cb174-10" title="10">subj_means</a></code></pre></div>
+<pre><code>## # A tibble: 14 x 3
+##    subject cond  mean_rt
+##    &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
+##  1 P01     P        354 
+##  2 P02     P        384.
+##  3 P03     P        391.
+##  4 P04     P        404.
+##  5 P05     P        421.
+##  6 P06     P        392 
+##  7 P07     P        400.
+##  8 T08     T        430.
+##  9 T09     T        432.
+## 10 T10     T        410.
+## 11 T11     T        455.
+## 12 T12     T        450.
+## 13 T13     T        418.
+## 14 T14     T        489.</code></pre>
+<p>Then, the <span class="math inline">\(t\)</span>-test can be run using the “formula” version of <code>t.test()</code>.</p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb176-1" title="1"><span class="kw">t.test</span>(mean_rt <span class="op">~</span><span class="st"> </span>cond, subj_means)</a></code></pre></div>
+<pre><code>## 
+## 	Welch Two Sample t-test
+## 
+## data:  mean_rt by cond
+## t = -3.7985, df = 11.32, p-value = 0.002807
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -76.32580 -20.44563
+## sample estimates:
+## mean in group P mean in group T 
+##        392.3143        440.7000</code></pre>
+<p>While there is nothing wrong with this analysis, aggregating the data throws away information. we can see in the above web app that there are actually two different sources of variability: trial-by-trial variability in simple RT (represented by <span class="math inline">\(\sigma\)</span>) and variability across subjects in terms of their how slow or fast they are relative to the population mean (<span class="math inline">\(\gamma_{00}\)</span>). The Data Generating Process for response time (<span class="math inline">\(Y_{st}\)</span>) for subject <span class="math inline">\(s\)</span> on trial <span class="math inline">\(t\)</span> is shown below.</p>
+<p><em>Level 1:</em></p>
+<p><span class="math display">\[\begin{equation}
+Y_{st} = \beta_{0s} + \beta_{1} X_{s} + e_{st}
+\end{equation}\]</span></p>
+<p><em>Level 2:</em></p>
+<p><span class="math display">\[\begin{equation}
+\beta_{0s} = \gamma_{00} + S_{0s}
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\beta_{1} = \gamma_{10}
+\end{equation}\]</span></p>
+<p><em>Variance Components:</em></p>
+<p><span class="math display">\[\begin{equation}
+S_{0s} \sim N\left(0, {\tau_{00}}^2\right) 
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+e_{st} \sim N\left(0, \sigma^2\right)
+\end{equation}\]</span></p>
+<p>In the above equation, <span class="math inline">\(X_s\)</span> is a numerical predictor coding which condition the subject <span class="math inline">\(s\)</span> is in; e.g., 0 for placebo, 1 for treatment.</p>
+<p>The multi-level equations are somewhat cumbersome for such a simple model; we could just reduce levels 1 and 2 to</p>
+<p><span class="math display">\[\begin{equation}
+Y_{st} = \gamma_{00} + S_{0s} + \gamma_{10} X_s + e_{st},
+\end{equation}\]</span></p>
+<p>but it is worth becoming familiar with the multi-level format for when we encounter more complex designs.</p>
+<p>Unlike the <code>sleepstudy</code> data seen in the last chapter, we only have one random effect for each subject, <span class="math inline">\(S_{0s}\)</span>. There is no random slope. Each subject appears in only one of the two treatment conditions, so it would not be possible to estimate how the effect of placebo versus alcohol varies over subjects. The mixed-effects model that we would fit to these data, with random intercepts but no random slopes, is known as a <strong>random intercepts model</strong>.</p>
+<p>A random-intercepts model would adequately capture the two sources of variability mentioned above: the inter-subject variability in overall mean RT in the parameter <span class="math inline">\({\tau_{00}}^2\)</span>, and the trial-by-trial variability in the parameter <span class="math inline">\(\sigma^2\)</span>. We can calculate the proportion of the total variability attributable to individual differences among subjects using the formula below.</p>
+<p><span class="math display">\[ICC = \frac{{\tau_{00}}^2}{{\tau_{00}}^2 + \sigma^2}\]</span></p>
+<p>This quantity, known as the <strong>intra-class correlation coefficient</strong>, and tells you how much clustering there is in your data. It ranges from 0 to 1, with 0 indicating that all the variability is due to residual variance, and 1 indicating that all the variability is due to individual differences among subjects.</p>
+<p>The lmer syntax for fitting a random intercepts model to the data is <code>lmer(RT ~ cond + (1 | subject), dat, REML=FALSE)</code>. Let’s create our own numerical predictor first, to make it explicit that we are using dummy coding.</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" title="1">dat2 &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb178-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cond_d =</span> <span class="kw">if_else</span>(cond <span class="op">==</span><span class="st"> &quot;T&quot;</span>, 1L, 0L))</a>
+<a class="sourceLine" id="cb178-3" title="3"></a>
+<a class="sourceLine" id="cb178-4" title="4"><span class="kw">distinct</span>(dat2, cond, cond_d)  <span class="co">## double check</span></a></code></pre></div>
+<pre><code>## # A tibble: 2 x 2
+##   cond  cond_d
+##   &lt;chr&gt;  &lt;int&gt;
+## 1 P          0
+## 2 T          1</code></pre>
+<p>And now, estimate the model.</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb180-1" title="1"><span class="kw">library</span>(<span class="st">&quot;lme4&quot;</span>)</a>
+<a class="sourceLine" id="cb180-2" title="2"></a>
+<a class="sourceLine" id="cb180-3" title="3">mod &lt;-<span class="st"> </span><span class="kw">lmer</span>(RT <span class="op">~</span><span class="st"> </span>cond_d <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>subject), dat2, <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb180-4" title="4"></a>
+<a class="sourceLine" id="cb180-5" title="5"><span class="kw">summary</span>(mod)</a></code></pre></div>
+<pre><code>## Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]
+## Formula: RT ~ cond_d + (1 | subject)
+##    Data: dat2
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1451.8   1463.5   -721.9   1443.8      136 
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.67117 -0.66677  0.01656  0.75361  2.58447 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  subject  (Intercept)  329.3   18.15   
+##  Residual             1574.7   39.68   
+## Number of obs: 140, groups:  subject, 14
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  392.314      8.339  47.045
+## cond_d        48.386     11.793   4.103
+## 
+## Correlation of Fixed Effects:
+##        (Intr)
+## cond_d -0.707</code></pre>
+<p>Play around with the sliders in the app above and check the lmer output panel until you understand how the output maps onto the model parameters.</p>
+</div>
+<div id="when-is-a-random-intercepts-model-appropriate" class="section level3">
+<h3><span class="header-section-number">6.4.2</span> When is a random-intercepts model appropriate?</h3>
+<p>The random-intercepts model is appropriate for any one-sample or between-subjects data where you have multiple observations per participant. The data <strong>must</strong> be multi-level, because in single-level designs the subject variability is perfectly confounded with residual variability, making it impossible for the estimation algorithm to distinguish the two sources.</p>
+<p>A random-intercepts model is <strong>sometimes</strong> appropriate for within-subjects or mixed-design data. For designs where there is at least one within-subjects factor, and where you are performing analyses on subject means, it is generally the case that a random-intercepts model is appropriate.</p>
+<p>In a design with a single within-subjects factor, it is <strong>only</strong> appropriate when you have a single observation per subject per level of the within-subject factor. If you have more than one observation per subject per level, you need to enrich your random effects structure with random slopes, as described in the next section. If the reason you have multiple observations per subject per level is because you have each subject reacting to the same set of stimuli, then you might want to consider a mixed-effects model with crossed random effects for subjects and stimuli, as described in the next chapter. If you have sets of individual subject means on which you would normally perform a paired-samples t-test or repeated measures ANOVA, that would be data for which the random-intercepts model would be appropriate.</p>
+<p>The same logic goes for factorial designs in which there is more than one within-subjects factor. In factorial designs, the random-intercepts model is appropriate if you have one observation per subject per <strong>cell</strong> formed by each combination of the within-subjects factors. For instance, if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are two two-level within-subject factors, you need to check that you have only one observation for each subject in <span class="math inline">\(A_1B_1\)</span>, <span class="math inline">\(A_1B_2\)</span>, <span class="math inline">\(A_2B_1\)</span>, and <span class="math inline">\(A_2B_2\)</span>. If you have more than one observation, you will need to consider including a random slope in your model.</p>
+</div>
+<div id="rules-for-choosing-random-effects" class="section level3">
+<h3><span class="header-section-number">6.4.3</span> Rules for choosing random effects</h3>
+<p>For designs having at least one within-subject factor, it is typically the case that you need to also consider including random slopes for certain factors. We will go into this in more detail in the next chapter, where we will consider more complex designs, but here are the basic guidelines.</p>
+<p>For categorical factor <span class="math inline">\(A\)</span>, you need to consider a random slope for <span class="math inline">\(A\)</span> in the model if <strong>both</strong> of the following criteria are met:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(A\)</span> is a within-subjects factor;</li>
+<li>Each subject has multiple observations on the dependent variable for each level of <span class="math inline">\(A\)</span>.</li>
+</ol>
+<p>You would specify a random slope for <span class="math inline">\(A\)</span> using the following model syntax:</p>
+<p><code>DV ~ A + (A | subject)</code></p>
+<p>where <code>DV</code> is the name of your dependent variable and <code>subject</code> is the name of the variable you use to identify subjects.</p>
+<p>What about interactions? If you have a design with three factors, <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span>, you have three main effects, three two-way interactions (<span class="math inline">\(AB\)</span>, <span class="math inline">\(AC\)</span>, and <span class="math inline">\(BC\)</span>), and one three-way interaction <span class="math inline">\(ABC\)</span>. So there are 7 possible random slopes to consider. Which of these effects would need a random slope? Here are the steps you need to follow to figure it out for each interaction term.</p>
+<ol style="list-style-type: decimal">
+<li>If all factors involved in the interaction are between subjects, you don’t need a slope.</li>
+<li>Identify the highest-order combination of within-subject factors included in the interaction. So if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are within-subject factors and <span class="math inline">\(C\)</span> is between subjects, then <span class="math inline">\(AB\)</span> is the highest order combination. If <span class="math inline">\(A\)</span> is within subjects and <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are between subjects, then <span class="math inline">\(A\)</span> is the highest order combination.</li>
+<li>Check whether each subject has multiple observations on the DV in each cell (or level) resulting from the combination of the within factors you identified in the previous step. If you do, then you need a random slope. If you have only one observation per subject/cell combination, then you don’t.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="psyteachr_footer">
+  
+</div>
+<script>
+
+/* update total correct if #total_correct exists */
+update_total_correct = function() {
+  if (t = document.getElementById("total_correct")) {
+    t.innerHTML =
+      document.getElementsByClassName("correct").length + " of " +
+      document.getElementsByClassName("solveme").length + " correct";
+  }
+}
+
+/* solution button toggling function */
+b_func = function() {
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "");
+  }
+  
+  if (my_answer !== "" & real_answers.includes(my_answer)) {
+    cl.add("correct");
+  } else {
+    cl.remove("correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol){
+    var tol = JSON.parse(this.dataset.tol);  
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("correct");
+    } else {
+      cl.remove("correct");
+    }  
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("correct");
+    }  
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+  
+  /* set up solveme inputs */
+  var solveme = document.getElementsByClassName("solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off"); 
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+    
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+    
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introducing-linear-mixed-effects-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="specifying-random-effects-in-linear-mixed-effects-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"],
+"google": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": {},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

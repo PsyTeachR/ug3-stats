@@ -1,7 +1,7 @@
 --- 
 title: "Learning Statistical Models Through Simulation in R"
 author: "Dale J. Barr"
-date: "`r Sys.Date()`"
+date: "2020-06-29"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -10,14 +10,7 @@ link-citations: yes
 description: "Textbook on statistical models for social scientists."
 ---
 
-```{r cite-packages, include = FALSE}
-# automatically create a bib database for R packages
-# add any packages you want to cite here
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'tidyverse', 'kableExtra'
-), 'packages.bib')
 
-```
 
 # Overview {-}
 
@@ -28,7 +21,6 @@ The following topics are covered:
 * linear modeling workflow;
 * variance-covariance matrices;
 * multiple regression;
-* interactions (continuous-by-categorical; categorical-by-categorical);
 * linear mixed-effects regression;
 * generalized linear mixed-effects regression.
 
@@ -36,11 +28,11 @@ The material in this course forms the basis for a one-semester course for third-
 
 Unlike other textbooks you may have encountered, this is an **interactive textbook**. Each chapter contains embedded exercises as well as web applications to help students better understand the content. The interactive content will only work if you access this material through a web browser. Printing out the material is not recommended. If you want to access the textbook without an internet connection or have a local version to keep in case this site changes or moves, you can [download a version for offline use](offline-textbook.zip). Just extract the files from the ZIP archive, locate the file `index.html` in the `docs` directory, and open this file using a web browser.
 
-## How to cite this book {-}
+## How to cite this book
 
 Barr, Dale J. (2020). *Learning statistical models through simulation in R: An interactive textbook*. Version 0.9-1. Retrieved from https://psyteachr.github.io/book/ug3-stats.
 
-## Information for educators {-}
+## Information for educators
 
 You are free to re-use and modify the material in this textbook for your own purposes, with the stipulation that you cite the original work. Please note additional terms of the [Creative Commons CC-BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/) governing re-use of this material.
 
