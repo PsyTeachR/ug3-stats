@@ -1,7 +1,7 @@
 --- 
 title: "Learning Statistical Models Through Simulation in R"
 author: "Dale J. Barr"
-date: "`r Sys.Date()`"
+date: "2020-06-29"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -10,14 +10,7 @@ link-citations: yes
 description: "Textbook on statistical models for social scientists."
 ---
 
-```{r cite-packages, include = FALSE}
-# automatically create a bib database for R packages
-# add any packages you want to cite here
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'tidyverse', 'kableExtra'
-), 'packages.bib')
 
-```
 
 # Overview {-}
 
