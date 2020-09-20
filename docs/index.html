@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-06-29" />
+<meta name="date" content="2020-09-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -134,10 +134,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a><ul>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#how-to-cite-this-book"><i class="fa fa-check"></i><b>0.1</b> How to cite this book</a></li>
-<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#information-for-educators"><i class="fa fa-check"></i><b>0.2</b> Information for educators</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-book"><i class="fa fa-check"></i>How to cite this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#information-for-educators"><i class="fa fa-check"></i>Information for educators</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#goal-of-this-course"><i class="fa fa-check"></i><b>1.1</b> Goal of this course</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#flexibility"><i class="fa fa-check"></i><b>1.1.1</b> Flexibility</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#generalizability"><i class="fa fa-check"></i><b>1.2</b> Generalizability</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#reproduciblity"><i class="fa fa-check"></i><b>1.3</b> Reproduciblity</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#a-simulation-based-approach"><i class="fa fa-check"></i><b>1.4</b> A simulation-based approach</a></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#what-you-will-learn"><i class="fa fa-check"></i><b>1.5</b> What you will learn</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html"><i class="fa fa-check"></i><b>2</b> Understanding correlation and regression through bivariate simulation</a><ul>
 <li class="chapter" data-level="2.1" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#correlation-matrices"><i class="fa fa-check"></i><b>2.1</b> Correlation matrices</a></li>
 <li class="chapter" data-level="2.2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#simulating-bivariate-data"><i class="fa fa-check"></i><b>2.2</b> Simulating bivariate data</a><ul>
@@ -262,7 +270,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Learning Statistical Models Through Simulation in R</h1>
 <p class="author"><em>Dale J. Barr</em></p>
-<p class="date"><em>2020-06-29</em></p>
+<p class="date"><em>2020-09-20</em></p>
 </div>
 <div id="overview" class="section level1 unnumbered">
 <h1>Overview</h1>
@@ -272,17 +280,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>linear modeling workflow;</li>
 <li>variance-covariance matrices;</li>
 <li>multiple regression;</li>
+<li>interactions (continuous-by-categorical; categorical-by-categorical);</li>
 <li>linear mixed-effects regression;</li>
 <li>generalized linear mixed-effects regression.</li>
 </ul>
 <p>The material in this course forms the basis for a one-semester course for third-year undergradautes taught by <a href="">Dale Barr</a> at the <a href="">University of Glasgow School of Psychology</a>. It is part of the <a href="https://psyteachr.github.io">PsyTeachR series of course materials</a> developed by University of Glasgow Psychology staff.</p>
 <p>Unlike other textbooks you may have encountered, this is an <strong>interactive textbook</strong>. Each chapter contains embedded exercises as well as web applications to help students better understand the content. The interactive content will only work if you access this material through a web browser. Printing out the material is not recommended. If you want to access the textbook without an internet connection or have a local version to keep in case this site changes or moves, you can <a href="offline-textbook.zip">download a version for offline use</a>. Just extract the files from the ZIP archive, locate the file <code>index.html</code> in the <code>docs</code> directory, and open this file using a web browser.</p>
-<div id="how-to-cite-this-book" class="section level2">
-<h2><span class="header-section-number">0.1</span> How to cite this book</h2>
+<div id="how-to-cite-this-book" class="section level2 unnumbered">
+<h2>How to cite this book</h2>
 <p>Barr, Dale J. (2020). <em>Learning statistical models through simulation in R: An interactive textbook</em>. Version 0.9-1. Retrieved from <a href="https://psyteachr.github.io/book/ug3-stats" class="uri">https://psyteachr.github.io/book/ug3-stats</a>.</p>
 </div>
-<div id="information-for-educators" class="section level2">
-<h2><span class="header-section-number">0.2</span> Information for educators</h2>
+<div id="information-for-educators" class="section level2 unnumbered">
+<h2>Information for educators</h2>
 <p>You are free to re-use and modify the material in this textbook for your own purposes, with the stipulation that you cite the original work. Please note additional terms of the <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons CC-BY-SA 4.0 license</a> governing re-use of this material.</p>
 <p>The book was built using the R <a href="https://bookdown.org"><strong><code>bookdown</code></strong></a> package. The source files are available at <a href="https://github.com/psyteachr/ug3-stats">github</a>.</p>
 

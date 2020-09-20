@@ -63,6 +63,7 @@ glossary <- function(term, display = NULL, shortdef = "", link = TRUE) {
       the_html <- xml2::read_html(url)
       the_node <- rvest::html_node(the_html, hash)
       the_text <- rvest::html_text(the_node)
+
       gsub("\'", "&#39;", the_text)
     },
     error = function(e) { "" }
