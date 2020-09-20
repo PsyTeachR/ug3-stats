@@ -75,8 +75,8 @@ rainy_days %>%
 ## # A tibble: 2 x 2
 ##   city         sd
 ##   <chr>     <dbl>
-## 1 Barcelona  6.98
-## 2 Glasgow    9.11
+## 1 Barcelona  6.89
+## 2 Glasgow    9.25
 ```
 
 
@@ -159,7 +159,7 @@ The app below allows you to manipulate the intercept and slope of a line in log 
 
 <div class="figure" style="text-align: center">
 <iframe src="http://shiny.psy.gla.ac.uk/Dale/logit?showcase=0" width="100%" height="500px"></iframe>
-<p class="caption">(\#fig:logit-app)**Logistic regression web app** <http://shiny.gla.ac.uk/Dale/logit></p>
+<p class="caption">(\#fig:logit-app)**Logistic regression web app** <http://shiny.psy.gla.ac.uk/Dale/logit></p>
 </div>
 
 ### Estimating logistic regression models in R

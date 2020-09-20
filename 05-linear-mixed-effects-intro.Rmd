@@ -144,7 +144,7 @@ ggplot(sleepstudy, aes(x = Days, y = Reaction)) +
 
 ## How to model this data?
 
-Before proceeding, there is one important thing to note. Unfortunately, the description of the data in the `sleepstudy` package is inaccurate. Specifically, it states:
+Before proceeding, there is one important thing to note. Unfortunately, the description of the `sleepstudy` data in the `lme4` package is inaccurate. The documentation states:
 
 > On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night.
 
@@ -152,7 +152,7 @@ However, this is what the [Belenky article](https://doi.org/10.1046/j.1365-2869.
 
 > The first 3 days (T1, T2 and B) were adaptation and training (T1 and T2) and baseline (B) and subjects were required to be in bed from 23:00 to 07:00 h [8 h required time in bed (TIB)]. On the third day (B), baseline measures were taken. Beginning on the fourth day and continuing for a total of 7 days (E1–E7) subjects were in one of four sleep conditions [9 h required TIB (22:00–07:00 h), 7 h required TIB (24:00–07:00 h), 5 h required TIB (02:00–07:00 h), or 3 h required TIB (04:00–07:00 h)], effectively one sleep augmentation condition, and three sleep restriction conditions.
 
-In short, there were seven days of sleep restriction, not ten. The days coded as `0` and `1` were adaptation and training, and the day coded as `2`, where the baseline measurement was taken should be the place where we start measuring.
+One thing to note is that the dataset includes data from only one of the three conditions (the 3h TIB condition). But the more important thing is that the documentation of `sleepstudy` is wrong: there were seven nights of sleep restriction, not nine, with the first night of restriction occurring after the third day. The first two days, coded as `0`, `1`, were adaptation and training. The day coded as `2`, where the baseline measurement was taken should be the place where we start our analysis. If we include the days `0` and `1` in our analysis, this might bias our results, since any changes in performance during the first two days have to do with training, not sleep restriction.
 
 <div class="try">
 
@@ -370,7 +370,17 @@ is significantly different from zero,
 
 Neither the complete or no-pooling approach is satisfactory. It would be desirable to improve our estimates for individual participants by taking advantage of what we know about the other participants. This will help us better distinguish signal from error for each participant and improve generalization to the population. As the web app below will show, this becomes particularly important when we have unbalanced or missing data.
 
-Partial pooling is what happens when you treat a factor as random: estimates at each level of the factor (i.e., for each subject) become informed by information from other levels (i.e., other subjects).
+In the no-pooling model, we treated `Subject` as a `r glossary("fixed factor", display = "**fixed factor**")`. Each pair of intercept and slope estimates is determined by that subject's data alone. However, we are not interested in these 18 subjects in and of themselves; rather, we are interested in them as examples drawn from a larger population of potential subjects. This subjects-as-fixed-effects approach is suboptimal if your goal is to generalize to new participants in the population of interest. 
+
+Partial pooling happens when you treat a factor as a random instead of fixed in your analysis. A `r glossary("random factor", display = "**random factor**")` is a factor whose levels are considered to represent a proper subset of all the levels in the population. Usually, you treat a factor as random when the levels you have in the data are the result of sampling, and you want to generalize beyond those levels. In this case, we have eighteen unique subjects and thus, eighteen levels of the `Subject` factor, and would like to say something general about effects of sleep deprivation on the population of potential subjects.
+
+Just as there are two types of factors---fixed and random---there are 
+
+A way to include random factors in your analysis is to use a `r glossary("linear mixed-effects model")`. 
+
+estimates at each level of the factor (i.e., for each subject) become informed by information from other levels (i.e., other subjects). Rather than estimating the intercept and slope for each participant without considering the estimates for other subjects, the model estimates values for the population, and pulls the estimates for individual subjects toward those values, a statistical phenomenon known as `shrinkage`. 
+
+The population estimates are informed by the individual estimates, but each individual estimate is "pulled" toward the population value.
 
 The multilevel model is below. It is important that you understand the math and what it means. It looks complicated at first, but there's really nothing below that you haven't seen before. We'll explain everything step by step.
 

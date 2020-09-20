@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-06-29" />
+<meta name="date" content="2020-09-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -134,10 +134,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a><ul>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#how-to-cite-this-book"><i class="fa fa-check"></i><b>0.1</b> How to cite this book</a></li>
-<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#information-for-educators"><i class="fa fa-check"></i><b>0.2</b> Information for educators</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-book"><i class="fa fa-check"></i>How to cite this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#information-for-educators"><i class="fa fa-check"></i>Information for educators</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#goal-of-this-course"><i class="fa fa-check"></i><b>1.1</b> Goal of this course</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#flexibility"><i class="fa fa-check"></i><b>1.1.1</b> Flexibility</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#generalizability"><i class="fa fa-check"></i><b>1.2</b> Generalizability</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#reproduciblity"><i class="fa fa-check"></i><b>1.3</b> Reproduciblity</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#a-simulation-based-approach"><i class="fa fa-check"></i><b>1.4</b> A simulation-based approach</a></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#what-you-will-learn"><i class="fa fa-check"></i><b>1.5</b> What you will learn</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html"><i class="fa fa-check"></i><b>2</b> Understanding correlation and regression through bivariate simulation</a><ul>
 <li class="chapter" data-level="2.1" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#correlation-matrices"><i class="fa fa-check"></i><b>2.1</b> Correlation matrices</a></li>
 <li class="chapter" data-level="2.2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#simulating-bivariate-data"><i class="fa fa-check"></i><b>2.2</b> Simulating bivariate data</a><ul>
@@ -358,7 +366,7 @@ Show me
 </div>
 <div id="how-to-model-this-data" class="section level2">
 <h2><span class="header-section-number">5.3</span> How to model this data?</h2>
-<p>Before proceeding, there is one important thing to note. Unfortunately, the description of the data in the <code>sleepstudy</code> package is inaccurate. Specifically, it states:</p>
+<p>Before proceeding, there is one important thing to note. Unfortunately, the description of the <code>sleepstudy</code> data in the <code>lme4</code> package is inaccurate. The documentation states:</p>
 <blockquote>
 <p>On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night.</p>
 </blockquote>
@@ -366,7 +374,7 @@ Show me
 <blockquote>
 <p>The first 3 days (T1, T2 and B) were adaptation and training (T1 and T2) and baseline (B) and subjects were required to be in bed from 23:00 to 07:00 h [8 h required time in bed (TIB)]. On the third day (B), baseline measures were taken. Beginning on the fourth day and continuing for a total of 7 days (E1–E7) subjects were in one of four sleep conditions [9 h required TIB (22:00–07:00 h), 7 h required TIB (24:00–07:00 h), 5 h required TIB (02:00–07:00 h), or 3 h required TIB (04:00–07:00 h)], effectively one sleep augmentation condition, and three sleep restriction conditions.</p>
 </blockquote>
-<p>In short, there were seven days of sleep restriction, not ten. The days coded as <code>0</code> and <code>1</code> were adaptation and training, and the day coded as <code>2</code>, where the baseline measurement was taken should be the place where we start measuring.</p>
+<p>One thing to note is that the dataset includes data from only one of the three conditions (the 3h TIB condition). But the more important thing is that the documentation of <code>sleepstudy</code> is wrong: there were seven nights of sleep restriction, not nine, with the first night of restriction occurring after the third day. The first two days, coded as <code>0</code>, <code>1</code>, were adaptation and training. The day coded as <code>2</code>, where the baseline measurement was taken should be the place where we start our analysis. If we include the days <code>0</code> and <code>1</code> in our analysis, this might bias our results, since any changes in performance during the first two days have to do with training, not sleep restriction.</p>
 <div class="try">
 <h3 id="exercise-1" class="unnumbered">Exercise</h3>
 <p>Remove from the dataset observations where <code>Days</code> is coded <code>0</code> or <code>1</code>, and then make a new variable <code>days_deprived</code> from the <code>Days</code> variable so that the sequence starts at day 2, with day 2 being re-coded as day 0, day 3 as day 1, day 4 as day 2, etc. This new variable now tracks the number of days of sleep deprivation. Store the new table as <code>sleep2</code>.</p>
@@ -645,7 +653,12 @@ t(17) = 6.197, <span class="math inline">\(p &lt; .001\)</span>.</p>
 <div id="partial-pooling-using-mixed-effects-models" class="section level3">
 <h3><span class="header-section-number">5.3.3</span> Partial pooling using mixed-effects models</h3>
 <p>Neither the complete or no-pooling approach is satisfactory. It would be desirable to improve our estimates for individual participants by taking advantage of what we know about the other participants. This will help us better distinguish signal from error for each participant and improve generalization to the population. As the web app below will show, this becomes particularly important when we have unbalanced or missing data.</p>
-<p>Partial pooling is what happens when you treat a factor as random: estimates at each level of the factor (i.e., for each subject) become informed by information from other levels (i.e., other subjects).</p>
+<p>In the no-pooling model, we treated <code>Subject</code> as a <a class='glossary' target='_blank' title='A factor whose levels are assumed to represent all the levels of interest in a population; its levels would remain fixed across replications of the study.' href='https://psyteachr.github.io/glossary/f#fixed-factor'><strong>fixed factor</strong></a>. Each pair of intercept and slope estimates is determined by that subject’s data alone. However, we are not interested in these 18 subjects in and of themselves; rather, we are interested in them as examples drawn from a larger population of potential subjects. This subjects-as-fixed-effects approach is suboptimal if your goal is to generalize to new participants in the population of interest.</p>
+<p>Partial pooling happens when you treat a factor as a random instead of fixed in your analysis. A <a class='glossary' target='_blank' title='A factor whose levels are taken to represent a proper subset of a population of interest, typically because the observed levels are the result of sampling.' href='https://psyteachr.github.io/glossary/r#random-factor'><strong>random factor</strong></a> is a factor whose levels are considered to represent a proper subset of all the levels in the population. Usually, you treat a factor as random when the levels you have in the data are the result of sampling, and you want to generalize beyond those levels. In this case, we have eighteen unique subjects and thus, eighteen levels of the <code>Subject</code> factor, and would like to say something general about effects of sleep deprivation on the population of potential subjects.</p>
+<p>Just as there are two types of factors—fixed and random—there are</p>
+<p>A way to include random factors in your analysis is to use a <a class='glossary' target='_blank' title='A type of regression model that involves estimating both fixed effects and random effects.' href='https://psyteachr.github.io/glossary/l#linear-mixed-effects-model'>linear mixed-effects model</a>.</p>
+<p>estimates at each level of the factor (i.e., for each subject) become informed by information from other levels (i.e., other subjects). Rather than estimating the intercept and slope for each participant without considering the estimates for other subjects, the model estimates values for the population, and pulls the estimates for individual subjects toward those values, a statistical phenomenon known as <code>shrinkage</code>.</p>
+<p>The population estimates are informed by the individual estimates, but each individual estimate is “pulled” toward the population value.</p>
 <p>The multilevel model is below. It is important that you understand the math and what it means. It looks complicated at first, but there’s really nothing below that you haven’t seen before. We’ll explain everything step by step.</p>
 <p><em>Level 1:</em></p>
 <p><span class="math display">\[\begin{equation}
