@@ -34,22 +34,22 @@ First, let's define our little data set, `dat`.
 ## # A tibble: 16 x 4
 ##    subject priming structure    RT
 ##    <fct>   <chr>   <chr>     <dbl>
-##  1 1       yes     noun       790.
-##  2 2       yes     noun       822.
-##  3 3       yes     noun       776.
-##  4 4       yes     noun       783.
-##  5 5       yes     verb       783.
-##  6 6       yes     verb       800.
-##  7 7       yes     verb       809.
-##  8 8       yes     verb       783.
-##  9 9       no      noun       791.
-## 10 10      no      noun       806.
-## 11 11      no      noun       787.
-## 12 12      no      noun       807.
-## 13 13      no      verb       820.
-## 14 14      no      verb       781.
-## 15 15      no      verb       791.
-## 16 16      no      verb       824.
+##  1 1       yes     noun       757.
+##  2 2       yes     noun       785.
+##  3 3       yes     noun       775.
+##  4 4       yes     noun       793.
+##  5 5       yes     verb       776.
+##  6 6       yes     verb       840.
+##  7 7       yes     verb       817.
+##  8 8       yes     verb       801.
+##  9 9       no      noun       807.
+## 10 10      no      noun       779.
+## 11 11      no      noun       812.
+## 12 12      no      noun       792.
+## 13 13      no      verb       787.
+## 14 14      no      verb       838.
+## 15 15      no      verb       804.
+## 16 16      no      verb       811.
 ```
 
 This is between subjects data, so we can fit a model using `lm()`.  In the model, we include effects of `priming` and `structure` as well as their interaction. Instead of typing `priming + structure + priming:structure` we can simply type the shortcut `priming * structure`.
@@ -67,21 +67,21 @@ This is between subjects data, so we can fit a model using `lm()`.  In the model
 ## lm(formula = RT ~ priming * structure, data = dat)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -23.250 -10.739  -5.003  10.856  29.414 
+##    Min     1Q Median     3Q    Max 
+## -32.16 -10.38  -0.87  10.88  31.56 
 ## 
 ## Coefficients:
 ##                          Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)               797.537      8.421  94.713   <2e-16 ***
-## primingyes                 -4.785     11.908  -0.402    0.695    
-## structureverb               6.450     11.908   0.542    0.598    
-## primingyes:structureverb   -5.377     16.841  -0.319    0.755    
+## (Intercept)                797.32      10.09  79.023   <2e-16 ***
+## primingyes                 -19.80      14.27  -1.388    0.190    
+## structureverb               12.80      14.27   0.897    0.387    
+## primingyes:structureverb    17.95      20.18   0.890    0.391    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 16.84 on 12 degrees of freedom
-## Multiple R-squared:  0.08322,	Adjusted R-squared:  -0.146 
-## F-statistic: 0.3631 on 3 and 12 DF,  p-value: 0.7808
+## Residual standard error: 20.18 on 12 degrees of freedom
+## Multiple R-squared:  0.3549,	Adjusted R-squared:  0.1936 
+## F-statistic:   2.2 on 3 and 12 DF,  p-value: 0.1408
 ```
 
 Note that in the output the predictors are shown as `primingyes` and `structureverb`. The value `yes` is a level of `priming`; the level **not shown** is the one chosen as baseline, and in the default treatment coding scheme, the not-shown level (`no`) is coded as 0, and the shown level (`yes`) is coded as 1. Likewise, for `structure`, `noun` is coded as 0 and `verb` is coded as 1.
@@ -105,9 +105,9 @@ OK, now that we've dropped `priming`, we should have 3 parameter estimates inste
 
 ```
 ##              (Intercept)            structureverb structurenoun:primingyes 
-##               797.537380                 6.450453                -4.785226 
+##               797.318742                12.801297               -19.802343 
 ## structureverb:primingyes 
-##               -10.162669
+##                -1.850278
 ```
 
 There are still 4 of them, and we're suddenly getting `primingyes:structureverb`. This is weird and *not at all* what we intended.  If we try to do the model comparison:
@@ -124,8 +124,8 @@ There are still 4 of them, and we're suddenly getting `primingyes:structureverb`
 ## Model 1: RT ~ structure + priming:structure
 ## Model 2: RT ~ priming * structure
 ##   Res.Df    RSS Df  Sum of Sq F Pr(>F)
-## 1     12 3403.5                       
-## 2     12 3403.5  0 4.5475e-13
+## 1     12 4886.5                       
+## 2     12 4886.5  0 9.0949e-13
 ```
 
 we'd get nonsensical results.
@@ -700,51 +700,51 @@ Let's assume that your data is contained in a table `dat` like the one below.
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:right;"> 0.41 </td>
+   <td style="text-align:right;"> 1.03 </td>
    <td style="text-align:left;"> A1 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> -0.25 </td>
+   <td style="text-align:right;"> 1.19 </td>
    <td style="text-align:left;"> A1 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 0.40 </td>
+   <td style="text-align:right;"> -0.87 </td>
    <td style="text-align:left;"> A1 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> -0.64 </td>
+   <td style="text-align:right;"> 1.30 </td>
    <td style="text-align:left;"> A1 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> -0.09 </td>
+   <td style="text-align:right;"> -0.74 </td>
    <td style="text-align:left;"> A2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> -1.56 </td>
+   <td style="text-align:right;"> -1.21 </td>
    <td style="text-align:left;"> A2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 1.43 </td>
+   <td style="text-align:right;"> -0.27 </td>
    <td style="text-align:left;"> A2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 0.50 </td>
+   <td style="text-align:right;"> -0.31 </td>
    <td style="text-align:left;"> A2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> -0.42 </td>
+   <td style="text-align:right;"> -0.56 </td>
    <td style="text-align:left;"> A3 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 0.00 </td>
+   <td style="text-align:right;"> -0.03 </td>
    <td style="text-align:left;"> A3 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> -0.46 </td>
+   <td style="text-align:right;"> -0.48 </td>
    <td style="text-align:left;"> A3 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> -0.67 </td>
+   <td style="text-align:right;"> 0.91 </td>
    <td style="text-align:left;"> A3 </td>
   </tr>
 </tbody>
@@ -774,20 +774,20 @@ Let's assume that your data is contained in a table `dat` like the one below.
 
 ```
 ## # A tibble: 12 x 4
-##            Y A      A2v1  A3v1
-##        <dbl> <chr> <int> <int>
-##  1  0.407    A1        0     0
-##  2 -0.248    A1        0     0
-##  3  0.404    A1        0     0
-##  4 -0.639    A1        0     0
-##  5 -0.0853   A2        1     0
-##  6 -1.56     A2        1     0
-##  7  1.43     A2        1     0
-##  8  0.500    A2        1     0
-##  9 -0.419    A3        0     1
-## 10  0.000205 A3        0     1
-## 11 -0.462    A3        0     1
-## 12 -0.672    A3        0     1
+##          Y A      A2v1  A3v1
+##      <dbl> <chr> <int> <int>
+##  1  1.03   A1        0     0
+##  2  1.19   A1        0     0
+##  3 -0.870  A1        0     0
+##  4  1.30   A1        0     0
+##  5 -0.745  A2        1     0
+##  6 -1.21   A2        1     0
+##  7 -0.274  A2        1     0
+##  8 -0.314  A2        1     0
+##  9 -0.562  A3        0     1
+## 10 -0.0343 A3        0     1
+## 11 -0.477  A3        0     1
+## 12  0.914  A3        0     1
 ```
 
 
@@ -815,20 +815,20 @@ dat_sum <- dat %>%
 
 ```
 ## # A tibble: 12 x 4
-##            Y A      A2v1  A3v1
-##        <dbl> <chr> <int> <int>
-##  1  0.407    A1       -1    -1
-##  2 -0.248    A1       -1    -1
-##  3  0.404    A1       -1    -1
-##  4 -0.639    A1       -1    -1
-##  5 -0.0853   A2        1     0
-##  6 -1.56     A2        1     0
-##  7  1.43     A2        1     0
-##  8  0.500    A2        1     0
-##  9 -0.419    A3        0     1
-## 10  0.000205 A3        0     1
-## 11 -0.462    A3        0     1
-## 12 -0.672    A3        0     1
+##          Y A      A2v1  A3v1
+##      <dbl> <chr> <int> <int>
+##  1  1.03   A1       -1    -1
+##  2  1.19   A1       -1    -1
+##  3 -0.870  A1       -1    -1
+##  4  1.30   A1       -1    -1
+##  5 -0.745  A2        1     0
+##  6 -1.21   A2        1     0
+##  7 -0.274  A2        1     0
+##  8 -0.314  A2        1     0
+##  9 -0.562  A3        0     1
+## 10 -0.0343 A3        0     1
+## 11 -0.477  A3        0     1
+## 12  0.914  A3        0     1
 ```
 
 
@@ -857,20 +857,20 @@ dat_dev
 
 ```
 ## # A tibble: 12 x 4
-##            Y A       A2v1   A3v1
-##        <dbl> <chr>  <dbl>  <dbl>
-##  1  0.407    A1    -0.333 -0.333
-##  2 -0.248    A1    -0.333 -0.333
-##  3  0.404    A1    -0.333 -0.333
-##  4 -0.639    A1    -0.333 -0.333
-##  5 -0.0853   A2     0.667 -0.333
-##  6 -1.56     A2     0.667 -0.333
-##  7  1.43     A2     0.667 -0.333
-##  8  0.500    A2     0.667 -0.333
-##  9 -0.419    A3    -0.333  0.667
-## 10  0.000205 A3    -0.333  0.667
-## 11 -0.462    A3    -0.333  0.667
-## 12 -0.672    A3    -0.333  0.667
+##          Y A       A2v1   A3v1
+##      <dbl> <chr>  <dbl>  <dbl>
+##  1  1.03   A1    -0.333 -0.333
+##  2  1.19   A1    -0.333 -0.333
+##  3 -0.870  A1    -0.333 -0.333
+##  4  1.30   A1    -0.333 -0.333
+##  5 -0.745  A2     0.667 -0.333
+##  6 -1.21   A2     0.667 -0.333
+##  7 -0.274  A2     0.667 -0.333
+##  8 -0.314  A2     0.667 -0.333
+##  9 -0.562  A3    -0.333  0.667
+## 10 -0.0343 A3    -0.333  0.667
+## 11 -0.477  A3    -0.333  0.667
+## 12  0.914  A3    -0.333  0.667
 ```
 
 

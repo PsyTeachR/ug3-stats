@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-09-20" />
+<meta name="date" content="2020-09-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -142,7 +142,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#flexibility"><i class="fa fa-check"></i><b>1.1.1</b> Flexibility</a></li>
 </ul></li>
 <li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#generalizability"><i class="fa fa-check"></i><b>1.2</b> Generalizability</a></li>
-<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#reproduciblity"><i class="fa fa-check"></i><b>1.3</b> Reproduciblity</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#reproduciblity-and-transparency"><i class="fa fa-check"></i><b>1.3</b> Reproduciblity and Transparency</a></li>
 <li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#a-simulation-based-approach"><i class="fa fa-check"></i><b>1.4</b> A simulation-based approach</a></li>
 <li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#what-you-will-learn"><i class="fa fa-check"></i><b>1.5</b> What you will learn</a></li>
 </ul></li>
@@ -326,8 +326,8 @@ Figure 8.1: <strong>Distribution of number of rainy days for 500 years of simula
 <pre><code>## # A tibble: 2 x 2
 ##   city         sd
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 Barcelona  6.89
-## 2 Glasgow    9.25</code></pre>
+## 1 Barcelona  6.87
+## 2 Glasgow    9.59</code></pre>
 </div>
 <div id="spurious-interactions-due-to-scaling-effects" class="section level4">
 <h4><span class="header-section-number">8.2.1.3</span> Spurious interactions due to scaling effects</h4>
@@ -427,6 +427,11 @@ Figure 8.2: <strong>Logistic regression web app</strong> <a href="http://shiny.p
 <p>For multi-level data where there are random effects to be modeled, you use the <code>glmer</code> function from <code>lme4</code>:</p>
 <p><code>glmer(DV ~ IV1 + IV2 + ... (1 | subject), data, family = binomial)</code></p>
 
+<div id="refs" class="references">
+<div>
+<p>Yarkoni, Tal. n.d. “The Generalizability Crisis.” <a href="https://doi.org/10.31234/osf.io/jqw35">https://doi.org/10.31234/osf.io/jqw35</a>.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
