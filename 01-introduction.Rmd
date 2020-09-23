@@ -40,8 +40,58 @@ Another important property of analyses is `r glossary("transparency")`: the exte
 
 ## A simulation-based approach
 
-A final characteristic that distinguishes this course is that it uses a simulation-based approach to learning about statistical models.
+A final characteristic that distinguishes this course is that it uses a **simulation-based approach** to learning about statistical models. By data simulation we mean specifying a model to characterize a population of interest and then using the computer's random number generator to simulate the process of sampling data from that population. We will look at a simple example of this below.
+
+The typical problem that you will face when you analyze data is that you won't know the 'ground truth' about the population you are studying. You take a sample from that population, make some assumptions about how the observed data have been generated, and then use the observed data to estimate unknown population parameters and the uncertainty around these parameters. 
+
+Data simulation inverts this process. You to define the parameters of a model representing the ground truth about a (hypothetical) population and then generate data from it. You can then analyze the resulting data in the way that you normally would, and see how well your parameter estimates correspond to the true values.
+
+Let's look at an example. Let's assume you are interested in the question of whether being a parent of a toddler 'sharpens' your reflexes. If you've ever taken care of a toddler, you know that physical danger always seems imminent---they could fall of the chair they just climbed on, slam their finger in a door, bang their head on the corner of a table, etc.---so you need to be attentive and ready to act fast. You hypothesize that this vigilance will translate into faster response times in other situations where a toddler is not around, such as in a psychological laboratory. So you recruit a set of parents of toddlers to come into the lab. You give each parent the task of pressing a button as quickly as possible in response to a flashing light, and measure their response time (in milliseconds). For each parent, you calculate their mean response time over all trials. We can simulate the mean response time for each of say, 50 parents using the `rnorm()` function in R. But before we do that, we will load in the packages that we need (tidyverse) and set the `r glossary("random seed")` to make sure that you (the reader) get the same random values as me (the author).
+
+```{r set-seed, message=FALSE}
+library("tidyverse")
+
+set.seed(2020)  # can be any arbitrary integer
+```
+
+```{r rnorm-exp}
+parents <- rnorm(n = 50, mean = 480, sd = 40)
+
+parents
+```
+
+We chose to generate the data using `rnorm()`---a function that generates random numbers from a normal distribution---reflecting our assumption that mean response time is normally distributed in the population. A normal distribution is defined by two parameters, a mean (usually notated with the Greek letter $\mu$, pronounced "myoo"), and a standard deviation (usually notated with the Greek letter $\sigma$, pronounced "sigma"). Since we have generated the data ourselves, both $\mu$ and $\sigma$ are known, and in the call to `rnorm()`, we set them to the values 480 and 40 respectively.
+
+But of course, to test our hypothesis, we need a comparison group, so we define a control group of non-parents. We generate data from this control group in the same way as above, but changing the mean.
+
+```{r norm-ctl}
+control <- rnorm(n = 50, mean = 500, sd = 40)
+```
+
+Let's put them into a `r glossary("tibble")` to make it easier to plot and analyze the data. Each row from this table represents the mean response time from a particular subject.
+
+```{r studydata}
+dat <- tibble(group = rep(c("parent", "control"), c(length(parents), length(control))),
+              rt = c(parents, control))
+
+dat
+```
+
+Here are some things to try with this simulated data.
+
+1. Plot the data in some sensible way.
+2. Calculate means and standard deviations. How do they compare with the population parameters?
+3. Run a t-test on these data. Is the effect of group significant? 
+
+Once you have done these things, do them again, but changing the sample size, population parameters or both.
 
 ## What you will learn
 
-- TODO
+By the end of this course, you should be able to:
+
+- simulate bivariate data
+- understand the relationship between correlation and regression
+- specify regression models to reflect various study designs
+- specify and interpret various types of interactions
+- simulate data from these models, including multilevel data
+- handle continuous, count, or nominal dependent variables.

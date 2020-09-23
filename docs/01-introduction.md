@@ -14,7 +14,7 @@ The most flexible approach available is the General Linear Model approach, in wh
 
 $$Y_i = \beta_0 + \beta_1 X_i + e_i$$
 
-where $Y_i$ is the measured response for observation $i$, modeled in terms of an <a class='glossary' target='_blank' title='Also referred to as y-intercept, this is a constant corresponding to the value of the \(y\) variable (in a regression context, the response variable) when all predictor variables are set to zero.' href='https://psyteachr.github.io/glossary/i#intercept'>intercept</a> term plus the effect of <a class='glossary' target='_blank' title='A variable whose value is used (in a model) to predict the value of a response variable.' href='https://psyteachr.github.io/glossary/p#predictor-variable'>predictor</a> $X_i$ weighted by coefficient $\beta_1$ and <a class='glossary' target='_blank' title='NA' href='https://psyteachr.github.io/glossary/r#residual-error'>residual error</a> term $e_i$, which reflects unmodeled variance.
+where $Y_i$ is the measured response for observation $i$, modeled in terms of an <a class='glossary' target='_blank' title='Also referred to as y-intercept, this is a constant corresponding to the value of the \(y\) variable (in a regression context, the response variable) when all predictor variables are set to zero.' href='https://psyteachr.github.io/glossary/i#intercept'>intercept</a> term plus the effect of <a class='glossary' target='_blank' title='A variable whose value is used (in a model) to predict the value of a response variable.' href='https://psyteachr.github.io/glossary/p#predictor-variable'>predictor</a> $X_i$ weighted by coefficient $\beta_1$ and <a class='glossary' target='_blank' title='That part of an observation that cannot be captured by the statistical model, and thus is assumed to reflect unknown factors.' href='https://psyteachr.github.io/glossary/r#residual-error'>residual error</a> term $e_i$, which reflects unmodeled variance.
 
 You might recognize the above equation as representing the equation for a line ($y = mx + b$), with $\beta_0$ playing the role of the <a class='glossary' target='_blank' title='Also referred to as y-intercept, this is a constant corresponding to the value of the \(y\) variable (in a regression context, the response variable) when all predictor variables are set to zero.' href='https://psyteachr.github.io/glossary/i#intercept'>y-intercept</a> and $\beta_1$ playing the role of the <a class='glossary' target='_blank' title='A quantity that captures how much change in one variable is associated with a unit increase in another variable.' href='https://psyteachr.github.io/glossary/s#slope'>slope</a>. The $e_i$ term reflects what is left of observation $i$ after accounting for the the intercept and the predictor $X_i$.
 
@@ -40,8 +40,89 @@ Another important property of analyses is <a class='glossary' target='_blank' ti
 
 ## A simulation-based approach
 
-A final characteristic that distinguishes this course is that it uses a simulation-based approach to learning about statistical models.
+A final characteristic that distinguishes this course is that it uses a **simulation-based approach** to learning about statistical models. By data simulation we mean specifying a model to characterize a population of interest and then using the computer's random number generator to simulate the process of sampling data from that population. We will look at a simple example of this below.
+
+The typical problem that you will face when you analyze data is that you won't know the 'ground truth' about the population you are studying. You take a sample from that population, make some assumptions about how the observed data have been generated, and then use the observed data to estimate unknown population parameters and the uncertainty around these parameters. 
+
+Data simulation inverts this process. You to define the parameters of a model representing the ground truth about a (hypothetical) population and then generate data from it. You can then analyze the resulting data in the way that you normally would, and see how well your parameter estimates correspond to the true values.
+
+Let's look at an example. Let's assume you are interested in the question of whether being a parent of a toddler 'sharpens' your reflexes. If you've ever taken care of a toddler, you know that physical danger always seems imminent---they could fall of the chair they just climbed on, slam their finger in a door, bang their head on the corner of a table, etc.---so you need to be attentive and ready to act fast. You hypothesize that this vigilance will translate into faster response times in other situations where a toddler is not around, such as in a psychological laboratory. So you recruit a set of parents of toddlers to come into the lab. You give each parent the task of pressing a button as quickly as possible in response to a flashing light, and measure their response time (in milliseconds). For each parent, you calculate their mean response time over all trials. We can simulate the mean response time for each of say, 50 parents using the `rnorm()` function in R. But before we do that, we will load in the packages that we need (tidyverse) and set the <a class='glossary' target='_blank' title='A value used to set the initial state of a random number generator.' href='https://psyteachr.github.io/glossary/r#random-seed'>random seed</a> to make sure that you (the reader) get the same random values as me (the author).
+
+
+```r
+library("tidyverse")
+
+set.seed(2020)  # can be any arbitrary integer
+```
+
+
+```r
+parents <- rnorm(n = 50, mean = 480, sd = 40)
+
+parents
+```
+
+```
+##  [1] 495.0789 492.0619 436.0791 434.7838 368.1386 508.8229 517.5648 470.8249
+##  [9] 550.3653 484.6947 445.8751 516.3704 527.8549 465.1366 475.0696 552.0017
+## [17] 548.1598 358.4494 388.4410 482.3321 566.9746 523.9273 492.7288 477.0741
+## [25] 513.3707 487.9500 531.9137 517.4687 474.1027 484.4173 447.4998 450.2519
+## [33] 523.8138 577.4149 495.5247 491.6251 468.5761 483.0406 457.5881 497.8875
+## [41] 516.3400 459.7976 467.9598 450.9586 432.7969 490.1230 465.1715 480.8872
+## [49] 506.4018 499.5517
+```
+
+We chose to generate the data using `rnorm()`---a function that generates random numbers from a normal distribution---reflecting our assumption that mean response time is normally distributed in the population. A normal distribution is defined by two parameters, a mean (usually notated with the Greek letter $\mu$, pronounced "myoo"), and a standard deviation (usually notated with the Greek letter $\sigma$, pronounced "sigma"). Since we have generated the data ourselves, both $\mu$ and $\sigma$ are known, and in the call to `rnorm()`, we set them to the values 480 and 40 respectively.
+
+But of course, to test our hypothesis, we need a comparison group, so we define a control group of non-parents. We generate data from this control group in the same way as above, but changing the mean.
+
+
+```r
+control <- rnorm(n = 50, mean = 500, sd = 40)
+```
+
+Let's put them into a <a class='glossary' target='_blank' title='A container for tabular data with some different properties to a data frame' href='https://psyteachr.github.io/glossary/t#tibble'>tibble</a> to make it easier to plot and analyze the data. Each row from this table represents the mean response time from a particular subject.
+
+
+```r
+dat <- tibble(group = rep(c("parent", "control"), c(length(parents), length(control))),
+              rt = c(parents, control))
+
+dat
+```
+
+```
+## # A tibble: 100 x 2
+##    group     rt
+##    <chr>  <dbl>
+##  1 parent  495.
+##  2 parent  492.
+##  3 parent  436.
+##  4 parent  435.
+##  5 parent  368.
+##  6 parent  509.
+##  7 parent  518.
+##  8 parent  471.
+##  9 parent  550.
+## 10 parent  485.
+## # … with 90 more rows
+```
+
+Here are some things to try with this simulated data.
+
+1. Plot the data in some sensible way.
+2. Calculate means and standard deviations. How do they compare with the population parameters?
+3. Run a t-test on these data. Is the effect of group significant? 
+
+Once you have done these things, do them again, but changing the sample size, population parameters or both.
 
 ## What you will learn
 
-- TODO
+By the end of this course, you should be able to:
+
+- simulate bivariate data
+- understand the relationship between correlation and regression
+- specify regression models to reflect various study designs
+- specify and interpret various types of interactions
+- simulate data from these models, including multilevel data
+- handle continuous, count, or nominal dependent variables.
