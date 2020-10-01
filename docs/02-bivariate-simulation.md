@@ -503,14 +503,9 @@ You can see that our simulated humans are much like the normal ones, except that
 
 Here is a web app that you should play around with to better understand the relationship between covariance matrices, bivariate normal distributions, and correlation coefficients.
 
-
-```r
-knitr::include_app("http://shiny.psy.gla.ac.uk/Dale/bivariate", height="410px")
-```
-
 <div class="figure" style="text-align: center">
-<iframe src="http://shiny.psy.gla.ac.uk/Dale/bivariate?showcase=0" width="100%" height="410px"></iframe>
-<p class="caption">(\#fig:bivariate_app)**CAPTION THIS FIGURE!!**</p>
+<iframe src="https://shiny.psy.gla.ac.uk/Dale/bivariate?showcase=0" width="100%" height="410px"></iframe>
+<p class="caption">(\#fig:bivariate_app)*Shiny web app at [https://shiny.psy.gla.ac.uk/Dale/bivariate](https://shiny.psy.gla.ac.uk/Dale/bivariate){target="blank"}*</p>
 </div>
 
 ## Relationship between correlation and regression
