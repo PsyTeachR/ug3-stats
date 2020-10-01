@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-09-23" />
+<meta name="date" content="2020-10-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -652,12 +652,11 @@ Figure 2.7: Real and simulated humans.
 <div id="bivariate-app" class="section level3">
 <h3><span class="header-section-number">2.2.1</span> Bivariate app</h3>
 <p>Here is a web app that you should play around with to better understand the relationship between covariance matrices, bivariate normal distributions, and correlation coefficients.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">knitr<span class="op">::</span><span class="kw">include_app</span>(<span class="st">&quot;http://shiny.psy.gla.ac.uk/Dale/bivariate&quot;</span>, <span class="dt">height=</span><span class="st">&quot;410px&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center">
-<iframe src="http://shiny.psy.gla.ac.uk/Dale/bivariate?showcase=0" width="100%" height="410px">
+<iframe src="https://shiny.psy.gla.ac.uk/Dale/bivariate?showcase=0" width="100%" height="410px">
 </iframe>
 <p class="caption">
-(#fig:bivariate_app)<strong>CAPTION THIS FIGURE!!</strong>
+(#fig:bivariate_app)<em>Shiny web app at <a href="https://shiny.psy.gla.ac.uk/Dale/bivariate" target="blank">https://shiny.psy.gla.ac.uk/Dale/bivariate</a></em>
 </p>
 </div>
 </div>
@@ -673,8 +672,8 @@ Figure 2.7: Real and simulated humans.
 <p><span class="math display">\[\beta_1 = \rho \frac{\sigma_Y}{\sigma_X}\]</span></p>
 <p>Given the estimates above for log height and weight, can you solve for <span class="math inline">\(\beta_1\)</span>?</p>
 <!-- TODO make this use webex -->
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1">b1 &lt;-<span class="st"> </span><span class="fl">.96</span> <span class="op">*</span><span class="st"> </span>(.<span class="dv">65</span> <span class="op">/</span><span class="st"> </span><span class="fl">.26</span>)</a>
-<a class="sourceLine" id="cb42-2" title="2">b1</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">b1 &lt;-<span class="st"> </span><span class="fl">.96</span> <span class="op">*</span><span class="st"> </span>(.<span class="dv">65</span> <span class="op">/</span><span class="st"> </span><span class="fl">.26</span>)</a>
+<a class="sourceLine" id="cb41-2" title="2">b1</a></code></pre></div>
 <pre><code>## [1] 2.4</code></pre>
 <p>The next thing to note is that for mathematical reasons, the regression line is guaranteed to go through the point corresponding to the mean of <span class="math inline">\(X\)</span> and the mean of <span class="math inline">\(Y\)</span>, i.e., the point <span class="math inline">\((\bar{X}, \bar{Y})\)</span>. (You can think of the regression line “pivoting” around that point depending on the slope). You also know that <span class="math inline">\(\beta_0\)</span> is the y-intercept, the point where the line crosses the vertical axis at <span class="math inline">\(X = 0\)</span>. From this information, and the estimates above, can you figure out the value of <span class="math inline">\(\beta_0\)</span>?</p>
 <!-- TODO: use webex -->
@@ -686,7 +685,7 @@ At <span class="math inline">\(X = \bar{X}\)</span>, <span class="math inline">\
 <p>Since <span class="math inline">\(\beta_1 = 2.4\)</span>, <span class="math inline">\(\bar{X} = 4.11\)</span>, and <span class="math inline">\(\bar{Y} = 4.74\)</span>, <span class="math inline">\(\beta_0 = -5.124\)</span>. Thus, our regression equation is:</p>
 <p><span class="math display">\[Y_i =  -5.124 + 2.4X_i + e_i.\]</span></p>
 <p>To check our results, let’s first run a regression on the log-transformed data using <code>lm()</code>, which estimates parameters using ordinary least squares regression.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">summary</span>(<span class="kw">lm</span>(wlog <span class="op">~</span><span class="st"> </span>hlog, handw_log))</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="kw">summary</span>(<span class="kw">lm</span>(wlog <span class="op">~</span><span class="st"> </span>hlog, handw_log))</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = wlog ~ hlog, data = handw_log)
@@ -707,10 +706,10 @@ At <span class="math inline">\(X = \bar{X}\)</span>, <span class="math inline">\
 ## F-statistic:  5802 on 1 and 473 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Looks pretty close. The reason that it doesn’t match exactly is only because we’ve rounded off our estimates to two decimal places for convenience.</p>
 <p>As another check, let’s superimpose the regression line we computed by hand on the scatterplot of the log-transformed data.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="kw">ggplot</span>(handw_log, <span class="kw">aes</span>(hlog, wlog)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb46-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">.2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb46-3" title="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;log(height)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;log(weight)&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb46-4" title="4"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="fl">-5.124</span>, <span class="dt">slope =</span> <span class="fl">2.4</span>, <span class="dt">colour =</span> <span class="st">&#39;blue&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1"><span class="kw">ggplot</span>(handw_log, <span class="kw">aes</span>(hlog, wlog)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">.2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-3" title="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;log(height)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;log(weight)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-4" title="4"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="fl">-5.124</span>, <span class="dt">slope =</span> <span class="fl">2.4</span>, <span class="dt">colour =</span> <span class="st">&#39;blue&#39;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:scatter-with-line"></span>
 <img src="02-bivariate-simulation_files/figure-html/scatter-with-line-1.png" alt="Log transformed values with superimposed regression line." width="100%" />
 <p class="caption">

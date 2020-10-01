@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-09-23" />
+<meta name="date" content="2020-10-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -282,12 +282,12 @@ Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots + \beta_m X_{mi} + e_i
 <div id="data-import-and-visualization" class="section level3">
 <h3><span class="header-section-number">3.1.1</span> Data import and visualization</h3>
 <p>Let’s load in the data <a href="data/grades.csv" target="_download">grades.csv</a> and have a look.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="kw">library</span>(<span class="st">&quot;corrr&quot;</span>) <span class="co"># correlation matrices</span></a>
-<a class="sourceLine" id="cb47-2" title="2"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
-<a class="sourceLine" id="cb47-3" title="3"></a>
-<a class="sourceLine" id="cb47-4" title="4">grades &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/grades.csv&quot;</span>, <span class="dt">col_types =</span> <span class="st">&quot;ddii&quot;</span>)</a>
-<a class="sourceLine" id="cb47-5" title="5"></a>
-<a class="sourceLine" id="cb47-6" title="6">grades</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="kw">library</span>(<span class="st">&quot;corrr&quot;</span>) <span class="co"># correlation matrices</span></a>
+<a class="sourceLine" id="cb46-2" title="2"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
+<a class="sourceLine" id="cb46-3" title="3"></a>
+<a class="sourceLine" id="cb46-4" title="4">grades &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/grades.csv&quot;</span>, <span class="dt">col_types =</span> <span class="st">&quot;ddii&quot;</span>)</a>
+<a class="sourceLine" id="cb46-5" title="5"></a>
+<a class="sourceLine" id="cb46-6" title="6">grades</a></code></pre></div>
 <pre><code>## # A tibble: 100 x 4
 ##    grade   GPA lecture nclicks
 ##    &lt;dbl&gt; &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;
@@ -303,10 +303,10 @@ Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots + \beta_m X_{mi} + e_i
 ## 10  2.24 3.27       10     115
 ## # … with 90 more rows</code></pre>
 <p>First let’s look at all the pairwise correlations.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1">grades <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb49-2" title="2"><span class="st">  </span><span class="kw">correlate</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb49-3" title="3"><span class="st">  </span><span class="kw">shave</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb49-4" title="4"><span class="st">  </span><span class="kw">fashion</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">grades <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-2" title="2"><span class="st">  </span><span class="kw">correlate</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-3" title="3"><span class="st">  </span><span class="kw">shave</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-4" title="4"><span class="st">  </span><span class="kw">fashion</span>()</a></code></pre></div>
 <pre><code>## 
 ## Correlation method: &#39;pearson&#39;
 ## Missing treated using: &#39;pairwise.complete.obs&#39;</code></pre>
@@ -315,7 +315,7 @@ Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots + \beta_m X_{mi} + e_i
 ## 2     GPA   .25                     
 ## 3 lecture   .24  .44                
 ## 4 nclicks   .16  .30     .36</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="kw">pairs</span>(grades)</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="kw">pairs</span>(grades)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:pairs"></span>
 <img src="03-multiple-regression_files/figure-html/pairs-1.png" alt="All pairwise relationships in the `grades` dataset." width="100%" />
 <p class="caption">
@@ -333,9 +333,9 @@ Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots + \beta_m X_{mi} + e_i
 <p><code>lm(Y ~ X1 + X2 + ... + Xm, data)</code></p>
 <p>The <code>Y</code> variable is your response variable, and the <code>X</code> variables are the predictor variables. Note that you don’t need to explicitly specify the intercept or residual terms; those are included by default.</p>
 <p>For the current data, let’s predict <code>grade</code> from <code>lecture</code> and <code>nclicks</code>.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1">my_model &lt;-<span class="st"> </span><span class="kw">lm</span>(grade <span class="op">~</span><span class="st"> </span>lecture <span class="op">+</span><span class="st"> </span>nclicks, grades)</a>
-<a class="sourceLine" id="cb53-2" title="2"></a>
-<a class="sourceLine" id="cb53-3" title="3"><span class="kw">summary</span>(my_model)</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1">my_model &lt;-<span class="st"> </span><span class="kw">lm</span>(grade <span class="op">~</span><span class="st"> </span>lecture <span class="op">+</span><span class="st"> </span>nclicks, grades)</a>
+<a class="sourceLine" id="cb52-2" title="2"></a>
+<a class="sourceLine" id="cb52-3" title="3"><span class="kw">summary</span>(my_model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = grade ~ lecture + nclicks, data = grades)
@@ -379,27 +379,27 @@ Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots + \beta_m X_{mi} + e_i
 <p>You need to include <strong>all</strong> of the predictor variables in the new table. You’ll get an error message if your tibble is missing any predictors. You also need to make sure that the variable names in the new table <strong>exactly</strong> match the variable names in the model.</p>
 </div>
 <p>Let’s create a tibble with new values and try it out.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="co">## a &#39;tribble&#39; is a way to make a tibble by rows,</span></a>
-<a class="sourceLine" id="cb55-2" title="2"><span class="co">## rather than by columns. This is sometimes useful</span></a>
-<a class="sourceLine" id="cb55-3" title="3">new_data &lt;-<span class="st"> </span><span class="kw">tribble</span>(<span class="op">~</span>lecture, <span class="op">~</span>nclicks,</a>
-<a class="sourceLine" id="cb55-4" title="4">                    <span class="dv">3</span>, <span class="dv">70</span>,</a>
-<a class="sourceLine" id="cb55-5" title="5">                    <span class="dv">10</span>, <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb55-6" title="6">                    <span class="dv">0</span>, <span class="dv">20</span>,</a>
-<a class="sourceLine" id="cb55-7" title="7">                    <span class="dv">5</span>, <span class="dv">100</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1"><span class="co">## a &#39;tribble&#39; is a way to make a tibble by rows,</span></a>
+<a class="sourceLine" id="cb54-2" title="2"><span class="co">## rather than by columns. This is sometimes useful</span></a>
+<a class="sourceLine" id="cb54-3" title="3">new_data &lt;-<span class="st"> </span><span class="kw">tribble</span>(<span class="op">~</span>lecture, <span class="op">~</span>nclicks,</a>
+<a class="sourceLine" id="cb54-4" title="4">                    <span class="dv">3</span>, <span class="dv">70</span>,</a>
+<a class="sourceLine" id="cb54-5" title="5">                    <span class="dv">10</span>, <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb54-6" title="6">                    <span class="dv">0</span>, <span class="dv">20</span>,</a>
+<a class="sourceLine" id="cb54-7" title="7">                    <span class="dv">5</span>, <span class="dv">100</span>)</a></code></pre></div>
 <div class="info">
 <p>The <code>tribble()</code> function provides a way to build a tibble row by row, whereas with <code>tibble()</code> the table is built column by column.</p>
 <p>The first row of the <code>tribble()</code> contains the column names, each preceded by a tilde (<code>~</code>).</p>
 <p>This is sometimes easier to read than doing it row by row, although the result is the same. Consider that we could have made the above table using</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1">new_data &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">lecture =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb56-2" title="2">                   <span class="dt">nclicks =</span> <span class="kw">c</span>(<span class="dv">70</span>, <span class="dv">130</span>, <span class="dv">20</span>, <span class="dv">100</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1">new_data &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">lecture =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb55-2" title="2">                   <span class="dt">nclicks =</span> <span class="kw">c</span>(<span class="dv">70</span>, <span class="dv">130</span>, <span class="dv">20</span>, <span class="dv">100</span>))</a></code></pre></div>
 </div>
 <p>Now that we’ve created our table <code>new_data</code>, we just pass it to <code>predict()</code> and it will return a vector with the predictions for <span class="math inline">\(Y\)</span> (<code>grade</code>).</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1"><span class="kw">predict</span>(my_model, new_data)</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1"><span class="kw">predict</span>(my_model, new_data)</a></code></pre></div>
 <pre><code>##        1        2        3        4 
 ## 2.090214 3.033869 1.563087 2.424790</code></pre>
 <p>That’s great, but maybe we want to line it up with the predictor values. We can do this by just adding it as a new column to <code>new_data</code>.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1">new_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb59-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">predicted_grade =</span> <span class="kw">predict</span>(my_model, new_data))</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1">new_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">predicted_grade =</span> <span class="kw">predict</span>(my_model, new_data))</a></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
 ##   lecture nclicks predicted_grade
 ##     &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;
@@ -413,17 +413,17 @@ Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots + \beta_m X_{mi} + e_i
 <h3><span class="header-section-number">3.1.4</span> Visualizing partial effects</h3>
 <p>As noted above the parameter estimates for each regression coefficient tell us about the <strong>partial</strong> effect of that variable; it’s effect holding all of the others constant. Is there a way to visualize this partial effect? Yes, you can do this using the <code>predict()</code> function, by making a table with varying values for the focal predictor, while filling in all of the other predictors with their mean values.</p>
 <p>For example, let’s visualize the partial effect of <code>lecture</code> on <code>grade</code> holding <code>nclicks</code> constant at its mean value.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1">nclicks_mean &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(nclicks) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>()</a>
-<a class="sourceLine" id="cb61-2" title="2"></a>
-<a class="sourceLine" id="cb61-3" title="3"><span class="co">## new data for prediction</span></a>
-<a class="sourceLine" id="cb61-4" title="4">new_lecture &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">lecture =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb61-5" title="5">                      <span class="dt">nclicks =</span> nclicks_mean)</a>
-<a class="sourceLine" id="cb61-6" title="6"></a>
-<a class="sourceLine" id="cb61-7" title="7"><span class="co">## add the predicted value to new_lecture</span></a>
-<a class="sourceLine" id="cb61-8" title="8">new_lecture2 &lt;-<span class="st"> </span>new_lecture <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb61-9" title="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">grade =</span> <span class="kw">predict</span>(my_model, new_lecture))</a>
-<a class="sourceLine" id="cb61-10" title="10"></a>
-<a class="sourceLine" id="cb61-11" title="11">new_lecture2</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1">nclicks_mean &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(nclicks) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>()</a>
+<a class="sourceLine" id="cb60-2" title="2"></a>
+<a class="sourceLine" id="cb60-3" title="3"><span class="co">## new data for prediction</span></a>
+<a class="sourceLine" id="cb60-4" title="4">new_lecture &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">lecture =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb60-5" title="5">                      <span class="dt">nclicks =</span> nclicks_mean)</a>
+<a class="sourceLine" id="cb60-6" title="6"></a>
+<a class="sourceLine" id="cb60-7" title="7"><span class="co">## add the predicted value to new_lecture</span></a>
+<a class="sourceLine" id="cb60-8" title="8">new_lecture2 &lt;-<span class="st"> </span>new_lecture <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb60-9" title="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">grade =</span> <span class="kw">predict</span>(my_model, new_lecture))</a>
+<a class="sourceLine" id="cb60-10" title="10"></a>
+<a class="sourceLine" id="cb60-11" title="11">new_lecture2</a></code></pre></div>
 <pre><code>## # A tibble: 11 x 3
 ##    lecture nclicks grade
 ##      &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;
@@ -439,9 +439,9 @@ Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots + \beta_m X_{mi} + e_i
 ## 10       9    98.3  2.78
 ## 11      10    98.3  2.87</code></pre>
 <p>Now let’s plot.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="kw">ggplot</span>(grades, <span class="kw">aes</span>(lecture, grade)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb63-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb63-3" title="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> new_lecture2)</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1"><span class="kw">ggplot</span>(grades, <span class="kw">aes</span>(lecture, grade)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb62-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb62-3" title="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> new_lecture2)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:partial-lecture-plot"></span>
 <img src="03-multiple-regression_files/figure-html/partial-lecture-plot-1.png" alt="Partial effect of 'lecture' on grade, with nclicks at its mean value." width="100%" />
 <p class="caption">
@@ -465,11 +465,11 @@ z = \frac{X - \bar{X}}{\sigma}
 \]</span></p>
 <p>A <span class="math inline">\(z\)</span> score represents the distance of a score <span class="math inline">\(X\)</span> from the sample mean (<span class="math inline">\(\bar{X}\)</span>) in standard deviation units (<span class="math inline">\(\sigma\)</span>). So a <span class="math inline">\(z\)</span> score of 1 means that the score is one standard deviation about the mean; a <span class="math inline">\(z\)</span>-score of -2.5 means 2.5 standard deviations below the mean. <span class="math inline">\(Z\)</span>-scores give us a way of comparing things that come from different populations by calibrating them to the standard normal distribution (a distribution with a mean of 0 and a standard deviation of 1).</p>
 <p>So we re-scale our predictors by converting them to <span class="math inline">\(z\)</span>-scores. This is easy enough to do.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1">grades2 &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">lecture_c =</span> (lecture <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(lecture)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(lecture),</a>
-<a class="sourceLine" id="cb64-3" title="3">         <span class="dt">nclicks_c =</span> (nclicks <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(nclicks)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(nclicks))</a>
-<a class="sourceLine" id="cb64-4" title="4"></a>
-<a class="sourceLine" id="cb64-5" title="5">grades2</a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1">grades2 &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb63-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">lecture_c =</span> (lecture <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(lecture)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(lecture),</a>
+<a class="sourceLine" id="cb63-3" title="3">         <span class="dt">nclicks_c =</span> (nclicks <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(nclicks)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(nclicks))</a>
+<a class="sourceLine" id="cb63-4" title="4"></a>
+<a class="sourceLine" id="cb63-5" title="5">grades2</a></code></pre></div>
 <pre><code>## # A tibble: 100 x 6
 ##    grade   GPA lecture nclicks lecture_c nclicks_c
 ##    &lt;dbl&gt; &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;
@@ -485,9 +485,9 @@ z = \frac{X - \bar{X}}{\sigma}
 ## 10  2.24 3.27       10     115   1.47       1.08  
 ## # … with 90 more rows</code></pre>
 <p>Now let’s re-fit the model using the centered and scaled predictors.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1">my_model_scaled &lt;-<span class="st"> </span><span class="kw">lm</span>(grade <span class="op">~</span><span class="st"> </span>lecture_c <span class="op">+</span><span class="st"> </span>nclicks_c, grades2)</a>
-<a class="sourceLine" id="cb66-2" title="2"></a>
-<a class="sourceLine" id="cb66-3" title="3"><span class="kw">summary</span>(my_model_scaled)</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1">my_model_scaled &lt;-<span class="st"> </span><span class="kw">lm</span>(grade <span class="op">~</span><span class="st"> </span>lecture_c <span class="op">+</span><span class="st"> </span>nclicks_c, grades2)</a>
+<a class="sourceLine" id="cb65-2" title="2"></a>
+<a class="sourceLine" id="cb65-3" title="3"><span class="kw">summary</span>(my_model_scaled)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = grade ~ lecture_c + nclicks_c, data = grades2)
@@ -523,10 +523,10 @@ z = \frac{X - \bar{X}}{\sigma}
 <p>But you might ask: maybe its the case that better students get better grades, and the relationship between <code>lecture</code>, <code>nclicks</code>, and <code>grade</code> is just mediated by student quality. After all, better students are more likely to go to lecture and download the materials. So we can ask, are attendance and downloads associated with better grades <strong>above and beyond</strong> student ability, as measured by GPA?</p>
 <p>The way we can test this hypothesis is by using <strong>model comparison</strong>. The logic is as follows. First, estimate a model containing any control predictors but excluding the focal predictors of interest. Second, estimate a model containing the control predictors as well as the focal predictors. Finally, compare the two models, to see if there is any statistically significant gain by including the predictors.</p>
 <p>Here is how you do this:</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(grade <span class="op">~</span><span class="st"> </span>GPA, grades) <span class="co"># control model</span></a>
-<a class="sourceLine" id="cb68-2" title="2">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(grade <span class="op">~</span><span class="st"> </span>GPA <span class="op">+</span><span class="st"> </span>lecture <span class="op">+</span><span class="st"> </span>nclicks, grades) <span class="co"># bigger model</span></a>
-<a class="sourceLine" id="cb68-3" title="3"></a>
-<a class="sourceLine" id="cb68-4" title="4"><span class="kw">anova</span>(m1, m2)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" title="1">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(grade <span class="op">~</span><span class="st"> </span>GPA, grades) <span class="co"># control model</span></a>
+<a class="sourceLine" id="cb67-2" title="2">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(grade <span class="op">~</span><span class="st"> </span>GPA <span class="op">+</span><span class="st"> </span>lecture <span class="op">+</span><span class="st"> </span>nclicks, grades) <span class="co"># bigger model</span></a>
+<a class="sourceLine" id="cb67-3" title="3"></a>
+<a class="sourceLine" id="cb67-4" title="4"><span class="kw">anova</span>(m1, m2)</a></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: grade ~ GPA
@@ -552,80 +552,82 @@ z = \frac{X - \bar{X}}{\sigma}
 <h3><span class="header-section-number">3.2.1</span> Dummy coding</h3>
 <p>For a factor with two levels, choose one level as zero and the other as one. The choice is arbitrary, and will affect the sign of the coefficient, but not its standard error or p-value. Here is some code that will do this. Note that if you have a predictor of type character or factor, R will automatically do that for you. We don’t want R to do this for reasons that will become apparent in the next lecture, so let’s learn how to make our own numeric predictor.</p>
 <p>First, we gin up some fake data to use in our analysis.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1">fake_data &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb70-2" title="2">                    <span class="dt">group =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>), <span class="dt">each =</span> <span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb70-3" title="3"></a>
-<a class="sourceLine" id="cb70-4" title="4">fake_data</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1">fake_data &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb69-2" title="2">                    <span class="dt">group =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>), <span class="dt">each =</span> <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb69-3" title="3"></a>
+<a class="sourceLine" id="cb69-4" title="4">fake_data</a></code></pre></div>
 <pre><code>## # A tibble: 10 x 2
-##         Y group
-##     &lt;dbl&gt; &lt;chr&gt;
-##  1 -0.912 A    
-##  2 -0.356 A    
-##  3  1.29  A    
-##  4 -0.184 A    
-##  5  2.20  A    
-##  6  1.51  B    
-##  7  0.282 B    
-##  8  1.28  B    
-##  9  0.964 B    
-## 10 -0.358 B</code></pre>
+##          Y group
+##      &lt;dbl&gt; &lt;chr&gt;
+##  1 -0.0203 A    
+##  2 -0.803  A    
+##  3  0.667  A    
+##  4 -0.0467 A    
+##  5  0.630  A    
+##  6 -0.316  B    
+##  7  0.988  B    
+##  8 -0.148  B    
+##  9  1.76   B    
+## 10  1.31   B</code></pre>
 <p>Now let’s add a new variable, <code>group_d</code>, which is the dummy coded group variable. We will use the <code>dplyr::if_else()</code> function to define the new column.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1">fake_data2 &lt;-<span class="st"> </span>fake_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb72-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group_d =</span> <span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> &quot;B&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
-<a class="sourceLine" id="cb72-3" title="3"></a>
-<a class="sourceLine" id="cb72-4" title="4">fake_data2</a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1">fake_data2 &lt;-<span class="st"> </span>fake_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb71-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group_d =</span> <span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> &quot;B&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb71-3" title="3"></a>
+<a class="sourceLine" id="cb71-4" title="4">fake_data2</a></code></pre></div>
 <pre><code>## # A tibble: 10 x 3
-##         Y group group_d
-##     &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
-##  1 -0.912 A           0
-##  2 -0.356 A           0
-##  3  1.29  A           0
-##  4 -0.184 A           0
-##  5  2.20  A           0
-##  6  1.51  B           1
-##  7  0.282 B           1
-##  8  1.28  B           1
-##  9  0.964 B           1
-## 10 -0.358 B           1</code></pre>
+##          Y group group_d
+##      &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
+##  1 -0.0203 A           0
+##  2 -0.803  A           0
+##  3  0.667  A           0
+##  4 -0.0467 A           0
+##  5  0.630  A           0
+##  6 -0.316  B           1
+##  7  0.988  B           1
+##  8 -0.148  B           1
+##  9  1.76   B           1
+## 10  1.31   B           1</code></pre>
 <p>Now we just run it as a regular regression model.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">summary</span>(<span class="kw">lm</span>(Y <span class="op">~</span><span class="st"> </span>group_d, fake_data2))</a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="kw">summary</span>(<span class="kw">lm</span>(Y <span class="op">~</span><span class="st"> </span>group_d, fake_data2))</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Y ~ group_d, data = fake_data2)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.3183 -0.7189 -0.1139  0.7176  1.7910 
+##      Min       1Q   Median       3Q      Max 
+## -1.03521 -0.68341  0.08137  0.57252  1.04525 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   0.4061     0.4744   0.856    0.417
-## group_d       0.3305     0.6709   0.493    0.636
+## (Intercept)  0.08544    0.34596   0.247    0.811
+## group_d      0.63389    0.48926   1.296    0.231
 ## 
-## Residual standard error: 1.061 on 8 degrees of freedom
-## Multiple R-squared:  0.02943,	Adjusted R-squared:  -0.09189 
-## F-statistic: 0.2426 on 1 and 8 DF,  p-value: 0.6356</code></pre>
+## Residual standard error: 0.7736 on 8 degrees of freedom
+## Multiple R-squared:  0.1734,	Adjusted R-squared:  0.07011 
+## F-statistic: 1.679 on 1 and 8 DF,  p-value: 0.2312</code></pre>
 <p>Note that if we reverse the coding we get the same result, just the sign is different.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1">fake_data3 &lt;-<span class="st"> </span>fake_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb76-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group_d =</span> <span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> &quot;A&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
-<a class="sourceLine" id="cb76-3" title="3"></a>
-<a class="sourceLine" id="cb76-4" title="4"><span class="kw">summary</span>(<span class="kw">lm</span>(Y <span class="op">~</span><span class="st"> </span>group_d, fake_data3))</a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" title="1">fake_data3 &lt;-<span class="st"> </span>fake_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb75-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group_d =</span> <span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> &quot;A&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb75-3" title="3"></a>
+<a class="sourceLine" id="cb75-4" title="4"><span class="kw">summary</span>(<span class="kw">lm</span>(Y <span class="op">~</span><span class="st"> </span>group_d, fake_data3))</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Y ~ group_d, data = fake_data3)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.3183 -0.7189 -0.1139  0.7176  1.7910 
+##      Min       1Q   Median       3Q      Max 
+## -1.03521 -0.68341  0.08137  0.57252  1.04525 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   0.7365     0.4744   1.552    0.159
-## group_d      -0.3305     0.6709  -0.493    0.636
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)   0.7193     0.3460   2.079   0.0712 .
+## group_d      -0.6339     0.4893  -1.296   0.2312  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.061 on 8 degrees of freedom
-## Multiple R-squared:  0.02943,	Adjusted R-squared:  -0.09189 
-## F-statistic: 0.2426 on 1 and 8 DF,  p-value: 0.6356</code></pre>
+## Residual standard error: 0.7736 on 8 degrees of freedom
+## Multiple R-squared:  0.1734,	Adjusted R-squared:  0.07011 
+## F-statistic: 1.679 on 1 and 8 DF,  p-value: 0.2312</code></pre>
 <p>The interpretation of the intercept is the estimated mean for the group coded as zero. You can see by plugging in zero for X in the prediction formula below. Thus, <span class="math inline">\(\beta_1\)</span> can be interpreted as the difference between the mean for the baseline group and the group coded as 1.</p>
 <p><span class="math display">\[\hat{Y_i} = \hat{\beta}_0 + \hat{\beta}_1 X_i \]</span></p>
 <!--
@@ -639,122 +641,122 @@ Why not just use **factors** as your predictors?
 <div id="dummy-coding-when-k-2" class="section level3">
 <h3><span class="header-section-number">3.2.2</span> Dummy coding when <span class="math inline">\(k &gt; 2\)</span></h3>
 <p>When the predictor variable is a factor with <span class="math inline">\(k\)</span> levels where <span class="math inline">\(k&gt;2\)</span>, we need <span class="math inline">\(k-1\)</span> predictors to code that variable. So if the factor has 4 levels, we’ll need to define three predictors. Here is code to do that. Try it out and see if you can figure out how it works.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1">mydata &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">season =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;winter&quot;</span>, <span class="st">&quot;spring&quot;</span>, <span class="st">&quot;summer&quot;</span>, <span class="st">&quot;fall&quot;</span>), <span class="dt">each =</span> <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb78-2" title="2">                 <span class="dt">bodyweight_kg =</span> <span class="kw">c</span>(<span class="kw">rnorm</span>(<span class="dv">5</span>, <span class="dv">105</span>, <span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb78-3" title="3">                                   <span class="kw">rnorm</span>(<span class="dv">5</span>, <span class="dv">103</span>, <span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb78-4" title="4">                                   <span class="kw">rnorm</span>(<span class="dv">5</span>, <span class="dv">101</span>, <span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb78-5" title="5">                                   <span class="kw">rnorm</span>(<span class="dv">5</span>, <span class="fl">102.5</span>, <span class="dv">3</span>)))</a>
-<a class="sourceLine" id="cb78-6" title="6"></a>
-<a class="sourceLine" id="cb78-7" title="7">mydata</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1">mydata &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">season =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;winter&quot;</span>, <span class="st">&quot;spring&quot;</span>, <span class="st">&quot;summer&quot;</span>, <span class="st">&quot;fall&quot;</span>), <span class="dt">each =</span> <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb77-2" title="2">                 <span class="dt">bodyweight_kg =</span> <span class="kw">c</span>(<span class="kw">rnorm</span>(<span class="dv">5</span>, <span class="dv">105</span>, <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb77-3" title="3">                                   <span class="kw">rnorm</span>(<span class="dv">5</span>, <span class="dv">103</span>, <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb77-4" title="4">                                   <span class="kw">rnorm</span>(<span class="dv">5</span>, <span class="dv">101</span>, <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb77-5" title="5">                                   <span class="kw">rnorm</span>(<span class="dv">5</span>, <span class="fl">102.5</span>, <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb77-6" title="6"></a>
+<a class="sourceLine" id="cb77-7" title="7">mydata</a></code></pre></div>
 <pre><code>## # A tibble: 20 x 2
 ##    season bodyweight_kg
 ##    &lt;chr&gt;          &lt;dbl&gt;
-##  1 winter         107. 
-##  2 winter         106. 
-##  3 winter         102. 
-##  4 winter         103. 
-##  5 winter         111. 
-##  6 spring         105. 
-##  7 spring         104. 
-##  8 spring          99.2
-##  9 spring         108. 
-## 10 spring         104. 
-## 11 summer          95.2
-## 12 summer          95.6
-## 13 summer          99.4
-## 14 summer         109. 
-## 15 summer         104. 
-## 16 fall           106. 
+##  1 winter         103. 
+##  2 winter         100. 
+##  3 winter         104. 
+##  4 winter         105. 
+##  5 winter         103. 
+##  6 spring         102. 
+##  7 spring         103. 
+##  8 spring         106. 
+##  9 spring         102. 
+## 10 spring         107. 
+## 11 summer         101. 
+## 12 summer         100. 
+## 13 summer         106. 
+## 14 summer          97.6
+## 15 summer          97.9
+## 16 fall           103. 
 ## 17 fall           102. 
-## 18 fall           104. 
-## 19 fall           105. 
-## 20 fall            96.6</code></pre>
+## 18 fall           106. 
+## 19 fall           104. 
+## 20 fall            98.8</code></pre>
 <p>Now let’s add three predictors to code the variable <code>season</code>.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1"><span class="co">## baseline value is &#39;winter&#39;</span></a>
-<a class="sourceLine" id="cb80-2" title="2">mydata2 &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb80-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">V1 =</span> <span class="kw">if_else</span>(season <span class="op">==</span><span class="st"> &quot;spring&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb80-4" title="4">         <span class="dt">V2 =</span> <span class="kw">if_else</span>(season <span class="op">==</span><span class="st"> &quot;summer&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb80-5" title="5">         <span class="dt">V3 =</span> <span class="kw">if_else</span>(season <span class="op">==</span><span class="st"> &quot;fall&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
-<a class="sourceLine" id="cb80-6" title="6"></a>
-<a class="sourceLine" id="cb80-7" title="7">mydata2</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="co">## baseline value is &#39;winter&#39;</span></a>
+<a class="sourceLine" id="cb79-2" title="2">mydata2 &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb79-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">V1 =</span> <span class="kw">if_else</span>(season <span class="op">==</span><span class="st"> &quot;spring&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb79-4" title="4">         <span class="dt">V2 =</span> <span class="kw">if_else</span>(season <span class="op">==</span><span class="st"> &quot;summer&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb79-5" title="5">         <span class="dt">V3 =</span> <span class="kw">if_else</span>(season <span class="op">==</span><span class="st"> &quot;fall&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb79-6" title="6"></a>
+<a class="sourceLine" id="cb79-7" title="7">mydata2</a></code></pre></div>
 <pre><code>## # A tibble: 20 x 5
 ##    season bodyweight_kg    V1    V2    V3
 ##    &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 winter         107.      0     0     0
-##  2 winter         106.      0     0     0
-##  3 winter         102.      0     0     0
-##  4 winter         103.      0     0     0
-##  5 winter         111.      0     0     0
-##  6 spring         105.      1     0     0
-##  7 spring         104.      1     0     0
-##  8 spring          99.2     1     0     0
-##  9 spring         108.      1     0     0
-## 10 spring         104.      1     0     0
-## 11 summer          95.2     0     1     0
-## 12 summer          95.6     0     1     0
-## 13 summer          99.4     0     1     0
-## 14 summer         109.      0     1     0
-## 15 summer         104.      0     1     0
-## 16 fall           106.      0     0     1
+##  1 winter         103.      0     0     0
+##  2 winter         100.      0     0     0
+##  3 winter         104.      0     0     0
+##  4 winter         105.      0     0     0
+##  5 winter         103.      0     0     0
+##  6 spring         102.      1     0     0
+##  7 spring         103.      1     0     0
+##  8 spring         106.      1     0     0
+##  9 spring         102.      1     0     0
+## 10 spring         107.      1     0     0
+## 11 summer         101.      0     1     0
+## 12 summer         100.      0     1     0
+## 13 summer         106.      0     1     0
+## 14 summer          97.6     0     1     0
+## 15 summer          97.9     0     1     0
+## 16 fall           103.      0     0     1
 ## 17 fall           102.      0     0     1
-## 18 fall           104.      0     0     1
-## 19 fall           105.      0     0     1
-## 20 fall            96.6     0     0     1</code></pre>
+## 18 fall           106.      0     0     1
+## 19 fall           104.      0     0     1
+## 20 fall            98.8     0     0     1</code></pre>
 </div>
 </div>
 <div id="equivalence-between-multiple-regression-and-one-way-anova" class="section level2">
 <h2><span class="header-section-number">3.3</span> Equivalence between multiple regression and one-way ANOVA</h2>
 <p>If we wanted to see whether our bodyweight varies over season, we could do a one way ANOVA on <code>mydata2</code> like so.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" title="1"><span class="co">## make season into a factor with baseline level &#39;winter&#39;</span></a>
-<a class="sourceLine" id="cb82-2" title="2">mydata3 &lt;-<span class="st"> </span>mydata2 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb82-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">season =</span> <span class="kw">factor</span>(season, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;winter&quot;</span>, <span class="st">&quot;spring&quot;</span>, <span class="st">&quot;summer&quot;</span>, <span class="st">&quot;fall&quot;</span>)))</a>
-<a class="sourceLine" id="cb82-4" title="4"></a>
-<a class="sourceLine" id="cb82-5" title="5">my_anova &lt;-<span class="st"> </span><span class="kw">aov</span>(bodyweight_kg <span class="op">~</span><span class="st"> </span>season, mydata3)</a>
-<a class="sourceLine" id="cb82-6" title="6"><span class="kw">summary</span>(my_anova)</a></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" title="1"><span class="co">## make season into a factor with baseline level &#39;winter&#39;</span></a>
+<a class="sourceLine" id="cb81-2" title="2">mydata3 &lt;-<span class="st"> </span>mydata2 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb81-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">season =</span> <span class="kw">factor</span>(season, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;winter&quot;</span>, <span class="st">&quot;spring&quot;</span>, <span class="st">&quot;summer&quot;</span>, <span class="st">&quot;fall&quot;</span>)))</a>
+<a class="sourceLine" id="cb81-4" title="4"></a>
+<a class="sourceLine" id="cb81-5" title="5">my_anova &lt;-<span class="st"> </span><span class="kw">aov</span>(bodyweight_kg <span class="op">~</span><span class="st"> </span>season, mydata3)</a>
+<a class="sourceLine" id="cb81-6" title="6"><span class="kw">summary</span>(my_anova)</a></code></pre></div>
 <pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)
-## season       3  70.46   23.48   1.358  0.291
-## Residuals   16 276.67   17.29</code></pre>
+## season       3  34.17  11.391   1.692  0.209
+## Residuals   16 107.71   6.732</code></pre>
 <p>OK, now can we replicate that result using the regression model below?</p>
 <p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{3i} + e_i\]</span></p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" title="1"><span class="kw">summary</span>(<span class="kw">lm</span>(bodyweight_kg <span class="op">~</span><span class="st"> </span>V1 <span class="op">+</span><span class="st"> </span>V2 <span class="op">+</span><span class="st"> </span>V3, mydata3))</a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1"><span class="kw">summary</span>(<span class="kw">lm</span>(bodyweight_kg <span class="op">~</span><span class="st"> </span>V1 <span class="op">+</span><span class="st"> </span>V2 <span class="op">+</span><span class="st"> </span>V3, mydata3))</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = bodyweight_kg ~ V1 + V2 + V3, data = mydata3)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -6.1830 -2.8084  0.0885  2.5205  8.0144 
+## -3.7903 -1.8196 -0.2201  1.0868  5.2542 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  105.854      1.860  56.921   &lt;2e-16 ***
-## V1            -1.962      2.630  -0.746   0.4666    
-## V2            -5.198      2.630  -1.976   0.0656 .  
-## V3            -3.033      2.630  -1.153   0.2658    
+## (Intercept) 103.0110     1.1603  88.777   &lt;2e-16 ***
+## V1            0.9739     1.6410   0.593    0.561    
+## V2           -2.5994     1.6410  -1.584    0.133    
+## V3           -0.4272     1.6410  -0.260    0.798    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 4.158 on 16 degrees of freedom
-## Multiple R-squared:  0.203,	Adjusted R-squared:  0.05353 
-## F-statistic: 1.358 on 3 and 16 DF,  p-value: 0.2912</code></pre>
+## Residual standard error: 2.595 on 16 degrees of freedom
+## Multiple R-squared:  0.2409,	Adjusted R-squared:  0.09851 
+## F-statistic: 1.692 on 3 and 16 DF,  p-value: 0.2087</code></pre>
 <p>Note that the <span class="math inline">\(F\)</span> values and <span class="math inline">\(p\)</span> values are identical for the two methods!</p>
 </div>
 <div id="solution-to-partial-effect-plot" class="section level2">
 <h2><span class="header-section-number">3.4</span> Solution to partial effect plot</h2>
 <p>First create a tibble with new predictors. We might also want to know the range of values that <code>nclicks</code> varies over.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1">lecture_mean &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(lecture) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>()</a>
-<a class="sourceLine" id="cb86-2" title="2">min_nclicks &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(nclicks) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">min</span>()</a>
-<a class="sourceLine" id="cb86-3" title="3">max_nclicks &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(nclicks) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">max</span>()</a>
-<a class="sourceLine" id="cb86-4" title="4"></a>
-<a class="sourceLine" id="cb86-5" title="5"><span class="co">## new data for prediction</span></a>
-<a class="sourceLine" id="cb86-6" title="6">new_nclicks &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">lecture =</span> lecture_mean,</a>
-<a class="sourceLine" id="cb86-7" title="7">                      <span class="dt">nclicks =</span> min_nclicks<span class="op">:</span>max_nclicks)</a>
-<a class="sourceLine" id="cb86-8" title="8"></a>
-<a class="sourceLine" id="cb86-9" title="9"><span class="co">## add the predicted value to new_lecture</span></a>
-<a class="sourceLine" id="cb86-10" title="10">new_nclicks2 &lt;-<span class="st"> </span>new_nclicks <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb86-11" title="11"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">grade =</span> <span class="kw">predict</span>(my_model, new_nclicks))</a>
-<a class="sourceLine" id="cb86-12" title="12"></a>
-<a class="sourceLine" id="cb86-13" title="13">new_nclicks2</a></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" title="1">lecture_mean &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(lecture) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>()</a>
+<a class="sourceLine" id="cb85-2" title="2">min_nclicks &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(nclicks) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">min</span>()</a>
+<a class="sourceLine" id="cb85-3" title="3">max_nclicks &lt;-<span class="st"> </span>grades <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(nclicks) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">max</span>()</a>
+<a class="sourceLine" id="cb85-4" title="4"></a>
+<a class="sourceLine" id="cb85-5" title="5"><span class="co">## new data for prediction</span></a>
+<a class="sourceLine" id="cb85-6" title="6">new_nclicks &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">lecture =</span> lecture_mean,</a>
+<a class="sourceLine" id="cb85-7" title="7">                      <span class="dt">nclicks =</span> min_nclicks<span class="op">:</span>max_nclicks)</a>
+<a class="sourceLine" id="cb85-8" title="8"></a>
+<a class="sourceLine" id="cb85-9" title="9"><span class="co">## add the predicted value to new_lecture</span></a>
+<a class="sourceLine" id="cb85-10" title="10">new_nclicks2 &lt;-<span class="st"> </span>new_nclicks <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb85-11" title="11"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">grade =</span> <span class="kw">predict</span>(my_model, new_nclicks))</a>
+<a class="sourceLine" id="cb85-12" title="12"></a>
+<a class="sourceLine" id="cb85-13" title="13">new_nclicks2</a></code></pre></div>
 <pre><code>## # A tibble: 76 x 3
 ##    lecture nclicks grade
 ##      &lt;dbl&gt;   &lt;int&gt; &lt;dbl&gt;
@@ -770,9 +772,9 @@ Why not just use **factors** as your predictors?
 ## 10    6.99      63  2.42
 ## # … with 66 more rows</code></pre>
 <p>Now plot.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1"><span class="kw">ggplot</span>(grades, <span class="kw">aes</span>(nclicks, grade)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb88-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb88-3" title="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> new_nclicks2)</a></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1"><span class="kw">ggplot</span>(grades, <span class="kw">aes</span>(nclicks, grade)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb87-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb87-3" title="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> new_nclicks2)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:partial-nclicks"></span>
 <img src="03-multiple-regression_files/figure-html/partial-nclicks-1.png" alt="Partial effect plot of nclicks on grade." width="100%" />
 <p class="caption">

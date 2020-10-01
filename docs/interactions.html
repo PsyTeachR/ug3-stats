@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-09-23" />
+<meta name="date" content="2020-10-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -296,24 +296,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[Y_i = 450 + 2 X_i + e_i\]</span></p>
 <p>where <span class="math inline">\(X_i\)</span> is the amount of sonic distraction.</p>
 <p>Let’s simulate data for 100 participants as below with <span class="math inline">\(\sigma = 80\)</span>, setting the seed before we begin.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" title="1"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
-<a class="sourceLine" id="cb89-2" title="2"><span class="kw">set.seed</span>(<span class="dv">1031</span>)</a>
-<a class="sourceLine" id="cb89-3" title="3"></a>
-<a class="sourceLine" id="cb89-4" title="4">n_subj &lt;-<span class="st"> </span>100L  <span class="co"># simulate data for 100 subjects</span></a>
-<a class="sourceLine" id="cb89-5" title="5">b0_urban &lt;-<span class="st"> </span><span class="dv">450</span> <span class="co"># y-intercept</span></a>
-<a class="sourceLine" id="cb89-6" title="6">b1_urban &lt;-<span class="st"> </span><span class="dv">2</span>   <span class="co"># slope</span></a>
-<a class="sourceLine" id="cb89-7" title="7"></a>
-<a class="sourceLine" id="cb89-8" title="8"><span class="co"># decomposition table</span></a>
-<a class="sourceLine" id="cb89-9" title="9">urban &lt;-<span class="st"> </span><span class="kw">tibble</span>(</a>
-<a class="sourceLine" id="cb89-10" title="10">  <span class="dt">subj_id =</span> <span class="dv">1</span><span class="op">:</span>n_subj,</a>
-<a class="sourceLine" id="cb89-11" title="11">  <span class="dt">group =</span> <span class="st">&quot;urban&quot;</span>,</a>
-<a class="sourceLine" id="cb89-12" title="12">  <span class="dt">b0 =</span> <span class="dv">450</span>,</a>
-<a class="sourceLine" id="cb89-13" title="13">  <span class="dt">b1 =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb89-14" title="14">  <span class="dt">dist_level =</span> <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span>n_subj, n_subj, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb89-15" title="15">  <span class="dt">err =</span> <span class="kw">rnorm</span>(n_subj, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">80</span>),</a>
-<a class="sourceLine" id="cb89-16" title="16">  <span class="dt">simple_rt =</span> b0 <span class="op">+</span><span class="st"> </span>b1 <span class="op">*</span><span class="st"> </span>dist_level <span class="op">+</span><span class="st"> </span>err)</a>
-<a class="sourceLine" id="cb89-17" title="17"></a>
-<a class="sourceLine" id="cb89-18" title="18">urban</a></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
+<a class="sourceLine" id="cb88-2" title="2"><span class="kw">set.seed</span>(<span class="dv">1031</span>)</a>
+<a class="sourceLine" id="cb88-3" title="3"></a>
+<a class="sourceLine" id="cb88-4" title="4">n_subj &lt;-<span class="st"> </span>100L  <span class="co"># simulate data for 100 subjects</span></a>
+<a class="sourceLine" id="cb88-5" title="5">b0_urban &lt;-<span class="st"> </span><span class="dv">450</span> <span class="co"># y-intercept</span></a>
+<a class="sourceLine" id="cb88-6" title="6">b1_urban &lt;-<span class="st"> </span><span class="dv">2</span>   <span class="co"># slope</span></a>
+<a class="sourceLine" id="cb88-7" title="7"></a>
+<a class="sourceLine" id="cb88-8" title="8"><span class="co"># decomposition table</span></a>
+<a class="sourceLine" id="cb88-9" title="9">urban &lt;-<span class="st"> </span><span class="kw">tibble</span>(</a>
+<a class="sourceLine" id="cb88-10" title="10">  <span class="dt">subj_id =</span> <span class="dv">1</span><span class="op">:</span>n_subj,</a>
+<a class="sourceLine" id="cb88-11" title="11">  <span class="dt">group =</span> <span class="st">&quot;urban&quot;</span>,</a>
+<a class="sourceLine" id="cb88-12" title="12">  <span class="dt">b0 =</span> <span class="dv">450</span>,</a>
+<a class="sourceLine" id="cb88-13" title="13">  <span class="dt">b1 =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb88-14" title="14">  <span class="dt">dist_level =</span> <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span>n_subj, n_subj, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb88-15" title="15">  <span class="dt">err =</span> <span class="kw">rnorm</span>(n_subj, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">80</span>),</a>
+<a class="sourceLine" id="cb88-16" title="16">  <span class="dt">simple_rt =</span> b0 <span class="op">+</span><span class="st"> </span>b1 <span class="op">*</span><span class="st"> </span>dist_level <span class="op">+</span><span class="st"> </span>err)</a>
+<a class="sourceLine" id="cb88-17" title="17"></a>
+<a class="sourceLine" id="cb88-18" title="18">urban</a></code></pre></div>
 <pre><code>## # A tibble: 100 x 7
 ##    subj_id group    b0    b1 dist_level     err simple_rt
 ##      &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;int&gt;   &lt;dbl&gt;     &lt;dbl&gt;
@@ -329,9 +329,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 10      10 urban   450     2         70   20.7       611.
 ## # … with 90 more rows</code></pre>
 <p>Let’s plot the data we created, along with the line of best fit.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" title="1"><span class="kw">ggplot</span>(urban, <span class="kw">aes</span>(dist_level, simple_rt)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb91-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">.2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb91-3" title="3"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" title="1"><span class="kw">ggplot</span>(urban, <span class="kw">aes</span>(dist_level, simple_rt)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb90-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">.2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb90-3" title="3"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <div class="figure" style="text-align: center"><span id="fig:plot-urban"></span>
 <img src="04-interactions-course-notes_files/figure-html/plot-urban-1.png" alt="*Effect of sonic distraction on simple RT, urban group.*" width="100%" />
@@ -341,26 +341,26 @@ Figure 4.1: <em>Effect of sonic distraction on simple RT, urban group.</em>
 </div>
 <p>Now let’s simulate data for the urban group. We assume that these participants should perhaps have a little higher intercept, maybe because they are less familiar with technology. Most importantly, we assume that they would have a steeper slope because they are more affected by the noise. Something like:</p>
 <p><span class="math display">\[Y_i = 500 + 3 X_i + e_i\]</span></p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" title="1">b0_rural &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb93-2" title="2">b1_rural &lt;-<span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb93-3" title="3"></a>
-<a class="sourceLine" id="cb93-4" title="4">rural &lt;-<span class="st"> </span><span class="kw">tibble</span>(</a>
-<a class="sourceLine" id="cb93-5" title="5">  <span class="dt">subj_id =</span> <span class="dv">1</span><span class="op">:</span>n_subj <span class="op">+</span><span class="st"> </span>n_subj,</a>
-<a class="sourceLine" id="cb93-6" title="6">  <span class="dt">group =</span> <span class="st">&quot;rural&quot;</span>,</a>
-<a class="sourceLine" id="cb93-7" title="7">  <span class="dt">b0 =</span> b0_rural,</a>
-<a class="sourceLine" id="cb93-8" title="8">  <span class="dt">b1 =</span> b1_rural,</a>
-<a class="sourceLine" id="cb93-9" title="9">  <span class="dt">dist_level =</span> <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span>n_subj, n_subj, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb93-10" title="10">  <span class="dt">err =</span> <span class="kw">rnorm</span>(n_subj, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">80</span>),</a>
-<a class="sourceLine" id="cb93-11" title="11">  <span class="dt">simple_rt =</span> b0 <span class="op">+</span><span class="st"> </span>b1 <span class="op">*</span><span class="st"> </span>dist_level <span class="op">+</span><span class="st"> </span>err)</a></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" title="1">b0_rural &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb92-2" title="2">b1_rural &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb92-3" title="3"></a>
+<a class="sourceLine" id="cb92-4" title="4">rural &lt;-<span class="st"> </span><span class="kw">tibble</span>(</a>
+<a class="sourceLine" id="cb92-5" title="5">  <span class="dt">subj_id =</span> <span class="dv">1</span><span class="op">:</span>n_subj <span class="op">+</span><span class="st"> </span>n_subj,</a>
+<a class="sourceLine" id="cb92-6" title="6">  <span class="dt">group =</span> <span class="st">&quot;rural&quot;</span>,</a>
+<a class="sourceLine" id="cb92-7" title="7">  <span class="dt">b0 =</span> b0_rural,</a>
+<a class="sourceLine" id="cb92-8" title="8">  <span class="dt">b1 =</span> b1_rural,</a>
+<a class="sourceLine" id="cb92-9" title="9">  <span class="dt">dist_level =</span> <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span>n_subj, n_subj, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb92-10" title="10">  <span class="dt">err =</span> <span class="kw">rnorm</span>(n_subj, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">80</span>),</a>
+<a class="sourceLine" id="cb92-11" title="11">  <span class="dt">simple_rt =</span> b0 <span class="op">+</span><span class="st"> </span>b1 <span class="op">*</span><span class="st"> </span>dist_level <span class="op">+</span><span class="st"> </span>err)</a></code></pre></div>
 <p>Now let’s plot the data from the two groups side by side.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" title="1">all_data &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(urban, rural)</a>
-<a class="sourceLine" id="cb94-2" title="2"></a>
-<a class="sourceLine" id="cb94-3" title="3"><span class="kw">ggplot</span>(all_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">group =</span> <span class="kw">fct_relevel</span>(group, <span class="st">&quot;urban&quot;</span>)), </a>
-<a class="sourceLine" id="cb94-4" title="4">       <span class="kw">aes</span>(dist_level, simple_rt, <span class="dt">colour =</span> group)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb94-5" title="5"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb94-6" title="6"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb94-7" title="7"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>group) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb94-8" title="8"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" title="1">all_data &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(urban, rural)</a>
+<a class="sourceLine" id="cb93-2" title="2"></a>
+<a class="sourceLine" id="cb93-3" title="3"><span class="kw">ggplot</span>(all_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">group =</span> <span class="kw">fct_relevel</span>(group, <span class="st">&quot;urban&quot;</span>)), </a>
+<a class="sourceLine" id="cb93-4" title="4">       <span class="kw">aes</span>(dist_level, simple_rt, <span class="dt">colour =</span> group)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb93-5" title="5"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb93-6" title="6"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb93-7" title="7"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>group) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb93-8" title="8"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</a></code></pre></div>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <div class="figure" style="text-align: center"><span id="fig:combined-plot"></span>
 <img src="04-interactions-course-notes_files/figure-html/combined-plot-1.png" alt="*Effect of sonic distraction on simple RT for urban and rural participants.*" width="100%" />
@@ -411,11 +411,11 @@ Figure 4.2: <em>Effect of sonic distraction on simple RT for urban and rural par
 <p>Compare this to <span class="math inline">\(Y_{i\_rural}\)</span> above. The dummy-coding trick works!</p>
 <p>Now let’s see how to estimate the regression in R. Let’s say we wanted to test the hypothesis that the slopes for the two lines are different. Note that this just amounts to testing the null hypothesis that <span class="math inline">\(\beta_3 = 0\)</span>, because <span class="math inline">\(\beta_3\)</span> is our slope offset.</p>
 <p>We have already created the dataset <code>all_data</code> combining the simulated data for our two groups. The way we express our model using R formula syntax is <code>Y ~ X1 + X2 + X1:X2</code> where <code>X1:X2</code> tells R to create a predictor that is the product of predictors X1 and X2. There is a shortcut <code>Y ~ X1 * X2</code> which tells R to calculate all possible main effects and interactions. First we’ll add a dummy predictor to our model, storing the result in <code>all_data2</code>.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" title="1">all_data2 &lt;-<span class="st"> </span>all_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb96-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">grp =</span> <span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> &quot;rural&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a></code></pre></div>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" title="1">sonic_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(simple_rt <span class="op">~</span><span class="st"> </span>dist_level <span class="op">+</span><span class="st"> </span>grp <span class="op">+</span><span class="st"> </span>dist_level<span class="op">:</span>grp, all_data2)</a>
-<a class="sourceLine" id="cb97-2" title="2"></a>
-<a class="sourceLine" id="cb97-3" title="3"><span class="kw">summary</span>(sonic_mod)</a></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" title="1">all_data2 &lt;-<span class="st"> </span>all_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb95-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">grp =</span> <span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> &quot;rural&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" title="1">sonic_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(simple_rt <span class="op">~</span><span class="st"> </span>dist_level <span class="op">+</span><span class="st"> </span>grp <span class="op">+</span><span class="st"> </span>dist_level<span class="op">:</span>grp, all_data2)</a>
+<a class="sourceLine" id="cb96-2" title="2"></a>
+<a class="sourceLine" id="cb96-3" title="3"><span class="kw">summary</span>(sonic_mod)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = simple_rt ~ dist_level + grp + dist_level:grp, data = all_data2)
