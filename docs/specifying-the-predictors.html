@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-10-01" />
+<meta name="date" content="2020-10-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -294,22 +294,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## # A tibble: 16 x 4
 ##    subject priming structure    RT
 ##    &lt;fct&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
-##  1 1       yes     noun       805.
-##  2 2       yes     noun       797.
-##  3 3       yes     noun       839.
-##  4 4       yes     noun       799.
-##  5 5       yes     verb       795.
-##  6 6       yes     verb       811.
-##  7 7       yes     verb       770.
-##  8 8       yes     verb       791.
-##  9 9       no      noun       766.
-## 10 10      no      noun       814.
-## 11 11      no      noun       818.
-## 12 12      no      noun       793.
-## 13 13      no      verb       804.
-## 14 14      no      verb       815.
-## 15 15      no      verb       799.
-## 16 16      no      verb       808.</code></pre>
+##  1 1       yes     noun       794.
+##  2 2       yes     noun       804.
+##  3 3       yes     noun       831.
+##  4 4       yes     noun       791.
+##  5 5       yes     verb       810.
+##  6 6       yes     verb       810.
+##  7 7       yes     verb       789.
+##  8 8       yes     verb       796.
+##  9 9       no      noun       819.
+## 10 10      no      noun       786.
+## 11 11      no      noun       812.
+## 12 12      no      noun       773.
+## 13 13      no      verb       817.
+## 14 14      no      verb       779.
+## 15 15      no      verb       778.
+## 16 16      no      verb       815.</code></pre>
 <p>This is between subjects data, so we can fit a model using <code>lm()</code>. In the model, we include effects of <code>priming</code> and <code>structure</code> as well as their interaction. Instead of typing <code>priming + structure + priming:structure</code> we can simply type the shortcut <code>priming * structure</code>.</p>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" title="1">  ps_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(RT <span class="op">~</span><span class="st"> </span>priming <span class="op">*</span><span class="st"> </span>structure, dat)</a>
 <a class="sourceLine" id="cb164-2" title="2"></a>
@@ -320,20 +320,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -31.770  -8.263  -1.588  10.361  28.664 
+## -24.544 -12.691  -2.997  15.454  25.863 
 ## 
 ## Coefficients:
 ##                          Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)               797.830      8.918  89.461   &lt;2e-16 ***
-## primingyes                 12.343     12.612   0.979    0.347    
-## structureverb               8.879     12.612   0.704    0.495    
-## primingyes:structureverb  -27.140     17.836  -1.522    0.154    
+## (Intercept)              797.7273     9.2731  86.026   &lt;2e-16 ***
+## primingyes                 7.1786    13.1142   0.547    0.594    
+## structureverb             -0.4245    13.1142  -0.032    0.975    
+## primingyes:structureverb  -3.0322    18.5463  -0.163    0.873    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 17.84 on 12 degrees of freedom
-## Multiple R-squared:  0.1787,	Adjusted R-squared:  -0.02663 
-## F-statistic: 0.8703 on 3 and 12 DF,  p-value: 0.4833</code></pre>
+## Residual standard error: 18.55 on 12 degrees of freedom
+## Multiple R-squared:  0.03563,	Adjusted R-squared:  -0.2055 
+## F-statistic: 0.1478 on 3 and 12 DF,  p-value: 0.9291</code></pre>
 <p>Note that in the output the predictors are shown as <code>primingyes</code> and <code>structureverb</code>. The value <code>yes</code> is a level of <code>priming</code>; the level <strong>not shown</strong> is the one chosen as baseline, and in the default treatment coding scheme, the not-shown level (<code>no</code>) is coded as 0, and the shown level (<code>yes</code>) is coded as 1. Likewise, for <code>structure</code>, <code>noun</code> is coded as 0 and <code>verb</code> is coded as 1.</p>
 <p>This is not ideal, for reasons we will discuss further below. But I want to show you a further quirk of using factor variables as predictors.</p>
 <p>Let’s say we wanted to test the effect of <code>priming</code> by itself using model comparison. To do this, we would fit another model where we exclude this effect while keeping the interaction. Despite what you may have heard to the contrary, in a fully randomized, balanced experiment, all factors are orthogonal, and so it is completely legitimate to drop a main effect while leaving an interaction term in the model.</p>
@@ -342,9 +342,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" title="1">  <span class="co">## not right!</span></a>
 <a class="sourceLine" id="cb167-2" title="2">  <span class="kw">coef</span>(ps_mod_nopriming)</a></code></pre></div>
 <pre><code>##              (Intercept)            structureverb structurenoun:primingyes 
-##               797.830379                 8.878616                12.342891 
+##              797.7272655               -0.4244564                7.1785523 
 ## structureverb:primingyes 
-##               -14.796837</code></pre>
+##                4.1463069</code></pre>
 <p>There are still 4 of them, and we’re suddenly getting <code>primingyes:structureverb</code>. This is weird and <em>not at all</em> what we intended. If we try to do the model comparison:</p>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" title="1">  <span class="co">## nonsense result</span></a>
 <a class="sourceLine" id="cb169-2" title="2">  <span class="kw">anova</span>(ps_mod_nopriming, ps_mod)</a></code></pre></div>
@@ -352,9 +352,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Model 1: RT ~ structure + priming:structure
 ## Model 2: RT ~ priming * structure
-##   Res.Df    RSS Df   Sum of Sq F Pr(&gt;F)
-## 1     12 3817.7                        
-## 2     12 3817.7  0 -4.5475e-13</code></pre>
+##   Res.Df    RSS Df  Sum of Sq F Pr(&gt;F)
+## 1     12 4127.6                       
+## 2     12 4127.6  0 9.0949e-13</code></pre>
 <p>we’d get nonsensical results.</p>
 <p>Is this a bug? No. It was a (in my view, heavy handed) design choice by the R creators to try to prevent everyone from doing something that at least some of us should be able to do at least some of the time.</p>
 <p>But we can do whatever we please if instead of using factors we define our own numerical predictors. This adds a bit of work but avoids other headaches and mistakes that we might make by using factors. Also, being very explicit about how predictors are defined is probably a good thing.</p>
@@ -1369,6 +1369,14 @@ A
 <tbody>
 <tr>
 <td style="text-align:right;">
+0.31
+</td>
+<td style="text-align:left;">
+A1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
 0.06
 </td>
 <td style="text-align:left;">
@@ -1377,7 +1385,7 @@ A1
 </tr>
 <tr>
 <td style="text-align:right;">
-2.04
+0.85
 </td>
 <td style="text-align:left;">
 A1
@@ -1385,7 +1393,7 @@ A1
 </tr>
 <tr>
 <td style="text-align:right;">
-1.44
+1.35
 </td>
 <td style="text-align:left;">
 A1
@@ -1393,15 +1401,7 @@ A1
 </tr>
 <tr>
 <td style="text-align:right;">
--0.98
-</td>
-<td style="text-align:left;">
-A1
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-0.21
+-0.57
 </td>
 <td style="text-align:left;">
 A2
@@ -1409,7 +1409,7 @@ A2
 </tr>
 <tr>
 <td style="text-align:right;">
--0.33
+0.73
 </td>
 <td style="text-align:left;">
 A2
@@ -1417,7 +1417,7 @@ A2
 </tr>
 <tr>
 <td style="text-align:right;">
-0.99
+-0.07
 </td>
 <td style="text-align:left;">
 A2
@@ -1425,7 +1425,7 @@ A2
 </tr>
 <tr>
 <td style="text-align:right;">
--0.18
+-0.03
 </td>
 <td style="text-align:left;">
 A2
@@ -1433,7 +1433,7 @@ A2
 </tr>
 <tr>
 <td style="text-align:right;">
-1.02
+-0.39
 </td>
 <td style="text-align:left;">
 A3
@@ -1441,7 +1441,7 @@ A3
 </tr>
 <tr>
 <td style="text-align:right;">
-0.83
+-0.07
 </td>
 <td style="text-align:left;">
 A3
@@ -1449,7 +1449,7 @@ A3
 </tr>
 <tr>
 <td style="text-align:right;">
--0.31
+0.36
 </td>
 <td style="text-align:left;">
 A3
@@ -1457,7 +1457,7 @@ A3
 </tr>
 <tr>
 <td style="text-align:right;">
-1.48
+-1.29
 </td>
 <td style="text-align:left;">
 A3
@@ -1483,18 +1483,18 @@ Click to view resulting table
 <pre><code>## # A tibble: 12 x 4
 ##          Y A      A2v1  A3v1
 ##      &lt;dbl&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt;
-##  1  0.0649 A1        0     0
-##  2  2.04   A1        0     0
-##  3  1.44   A1        0     0
-##  4 -0.980  A1        0     0
-##  5  0.211  A2        1     0
-##  6 -0.334  A2        1     0
-##  7  0.988  A2        1     0
-##  8 -0.184  A2        1     0
-##  9  1.02   A3        0     1
-## 10  0.831  A3        0     1
-## 11 -0.305  A3        0     1
-## 12  1.48   A3        0     1</code></pre>
+##  1  0.313  A1        0     0
+##  2  0.0601 A1        0     0
+##  3  0.852  A1        0     0
+##  4  1.35   A1        0     0
+##  5 -0.574  A2        1     0
+##  6  0.726  A2        1     0
+##  7 -0.0722 A2        1     0
+##  8 -0.0343 A2        1     0
+##  9 -0.387  A3        0     1
+## 10 -0.0718 A3        0     1
+## 11  0.358  A3        0     1
+## 12 -1.29   A3        0     1</code></pre>
 </div>
 </div>
 <div id="sum-2" class="section level4">
@@ -1514,18 +1514,18 @@ Click to view resulting table
 <pre><code>## # A tibble: 12 x 4
 ##          Y A      A2v1  A3v1
 ##      &lt;dbl&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt;
-##  1  0.0649 A1       -1    -1
-##  2  2.04   A1       -1    -1
-##  3  1.44   A1       -1    -1
-##  4 -0.980  A1       -1    -1
-##  5  0.211  A2        1     0
-##  6 -0.334  A2        1     0
-##  7  0.988  A2        1     0
-##  8 -0.184  A2        1     0
-##  9  1.02   A3        0     1
-## 10  0.831  A3        0     1
-## 11 -0.305  A3        0     1
-## 12  1.48   A3        0     1</code></pre>
+##  1  0.313  A1       -1    -1
+##  2  0.0601 A1       -1    -1
+##  3  0.852  A1       -1    -1
+##  4  1.35   A1       -1    -1
+##  5 -0.574  A2        1     0
+##  6  0.726  A2        1     0
+##  7 -0.0722 A2        1     0
+##  8 -0.0343 A2        1     0
+##  9 -0.387  A3        0     1
+## 10 -0.0718 A3        0     1
+## 11  0.358  A3        0     1
+## 12 -1.29   A3        0     1</code></pre>
 </div>
 </div>
 <div id="deviation-2" class="section level4">
@@ -1543,18 +1543,18 @@ Click to view resulting table
 <pre><code>## # A tibble: 12 x 4
 ##          Y A       A2v1   A3v1
 ##      &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-##  1  0.0649 A1    -0.333 -0.333
-##  2  2.04   A1    -0.333 -0.333
-##  3  1.44   A1    -0.333 -0.333
-##  4 -0.980  A1    -0.333 -0.333
-##  5  0.211  A2     0.667 -0.333
-##  6 -0.334  A2     0.667 -0.333
-##  7  0.988  A2     0.667 -0.333
-##  8 -0.184  A2     0.667 -0.333
-##  9  1.02   A3    -0.333  0.667
-## 10  0.831  A3    -0.333  0.667
-## 11 -0.305  A3    -0.333  0.667
-## 12  1.48   A3    -0.333  0.667</code></pre>
+##  1  0.313  A1    -0.333 -0.333
+##  2  0.0601 A1    -0.333 -0.333
+##  3  0.852  A1    -0.333 -0.333
+##  4  1.35   A1    -0.333 -0.333
+##  5 -0.574  A2     0.667 -0.333
+##  6  0.726  A2     0.667 -0.333
+##  7 -0.0722 A2     0.667 -0.333
+##  8 -0.0343 A2     0.667 -0.333
+##  9 -0.387  A3    -0.333  0.667
+## 10 -0.0718 A3    -0.333  0.667
+## 11  0.358  A3    -0.333  0.667
+## 12 -1.29   A3    -0.333  0.667</code></pre>
 </div>
 </div>
 </div>
