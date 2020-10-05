@@ -284,7 +284,7 @@ $$
 \end{pmatrix}
 $$
 
-The variances (squared standard deviations, ${\sigma_x}^2$ and ${\sigma_y}^2$) are in the diagonal, and the covariances (the correlation times the two standard deviations, $\rho_{xy} \sigma_x \sigma_y$) are in the off-diagonal. It is useful to remember that the covariance is just the correlation times the product of the two variances. As we saw above with the correlation matrices, there is redundant information in the table; namely, the covariance appears in the top right cell as well as the bottom left cell of the matrix.
+The variances (squared standard deviations, ${\sigma_x}^2$ and ${\sigma_y}^2$) are in the diagonal, and the covariances (the correlation times the two standard deviations, $\rho_{xy} \sigma_x \sigma_y$) are in the off-diagonal. It is useful to remember that the covariance is just the correlation times the product of the two standard deviations. As we saw above with the correlation matrices, there is redundant information in the table; namely, the covariance appears in the top right cell as well as the bottom left cell of the matrix.
 
 So plugging in the values we got above, our covariance matrix should be
 
@@ -390,7 +390,7 @@ $$Y_i = \beta_0 + \beta_1 X_i + e_i.$$
 
 Here, we are trying to predict the weight ($Y_i$) of person $i$ from their observed height ($X_i$). In this equation, $\beta_0$ and $\beta_1$ are the y-intercept and slope parameters respectively, and the $e_i$s are the residuals. It is conventionally assumed that the $e_i$ values are from a normal distribution with mean of zero and variance $\sigma^2$; the math-y way of saying this is $e_i \sim N(0, \sigma^2)$, where $\sim$ is read as "distributed according to" and $N(0, \sigma^2)$ means "Normal distribution ($N$) with mean of 0 and variance of $\sigma^2$".
 
-It turns out that if we have estimates of the means of X and Y (denoted by $\bar{X}$ and $\bar{Y}$ respectively), of their standard deviations ($\hat{\sigma}_x$ and $\hat{\sigma}_y$), and the correlation between X and Y ($\hat{\rho}$), we have all the information we need to estimate the parameters of the regression equation $\beta_0$ and $\beta_1$. Here's how.
+It turns out that if we have estimates of the means of X and Y (denoted by $\mu_x$ and $\mu_y$ respectively), of their standard deviations ($\hat{\sigma}_x$ and $\hat{\sigma}_y$), and the correlation between X and Y ($\hat{\rho}$), we have all the information we need to estimate the parameters of the regression equation $\beta_0$ and $\beta_1$. Here's how.
 
 First, the slope of the regression line $\beta_1$ equals the correlation coefficient $\rho$ times the ratio of the standard deviations of $Y$ and $X$. 
 
@@ -405,20 +405,20 @@ b1 <- .96 * (.65 / .26)
 b1
 ```
 
-The next thing to note is that for mathematical reasons, the regression line is guaranteed to go through the point corresponding to the mean of $X$ and the mean of $Y$, i.e., the point $(\bar{X}, \bar{Y})$. (You can think of the regression line "pivoting" around that point depending on the slope). You also know that $\beta_0$ is the y-intercept, the point where the line crosses the vertical axis at $X = 0$. From this information, and the estimates above, can you figure out the value of $\beta_0$?
+The next thing to note is that for mathematical reasons, the regression line is guaranteed to go through the point corresponding to the mean of $X$ and the mean of $Y$, i.e., the point $(\mu_x, \mu_y)$. (You can think of the regression line "pivoting" around that point depending on the slope). You also know that $\beta_0$ is the y-intercept, the point where the line crosses the vertical axis at $X = 0$. From this information, and the estimates above, can you figure out the value of $\beta_0$?
 
 <!-- TODO: use webex -->
 
 Here is the reasoning by which you can solve for $\beta_0$.
 
-The $\beta_1$ value tells you that for each change in $X$ you have a corresponding change of `r b1` for $Y$, and you know that the line goes through the points $(\bar{X}, \bar{Y})$ as well as the y-intercept $(0, \beta_0)$. 
+The $\beta_1$ value tells you that for each change in $X$ you have a corresponding change of `r b1` for $Y$, and you know that the line goes through the points $(\mu_x, \mu_y)$ as well as the y-intercept $(0, \beta_0)$. 
 
-Think about stepping back unit-by-unit from $X = \bar{X}$ to $X = 0$. 
-At $X = \bar{X}$, $Y = `r .mw`$. Each unit step you take backward in the X dimension, $Y$ will drop by $\beta_1 = `r b1`$ units.  When you get to zero, $Y$ will have dropped from $\bar{Y}$ to $\bar{Y} - \bar{X}\beta_1$.
+Think about stepping back unit-by-unit from $X = \mu_x$ to $X = 0$. 
+At $X = \mu_x$, $Y = `r .mw`$. Each unit step you take backward in the X dimension, $Y$ will drop by $\beta_1 = `r b1`$ units.  When you get to zero, $Y$ will have dropped from $\mu_y$ to $\mu_y - \mu_x\beta_1$.
 
-So the general solution is: $\beta_0 = \bar{Y} - \bar{X}\beta_1$.
+So the general solution is: $\beta_0 = \mu_y - \mu_x\beta_1$.
 
-Since $\beta_1 = `r b1`$, $\bar{X} = `r .mh`$, and $\bar{Y} = `r .mw`$, $\beta_0 = `r b0 <- .mw - .mh * b1; b0`$. Thus, our regression equation is:
+Since $\beta_1 = `r b1`$, $\mu_x = `r .mh`$, and $\mu_y = `r .mw`$, $\beta_0 = `r b0 <- .mw - .mh * b1; b0`$. Thus, our regression equation is:
 
 $$Y_i =  `r b0` + `r b1`X_i + e_i.$$
 
