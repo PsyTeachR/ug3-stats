@@ -195,10 +195,10 @@ Now, you can't just read off the $\hat{\beta}$ values and choose the one with th
 Remember $z$ scores?
 
 $$
-z = \frac{X - \bar{X}}{\sigma}
+z = \frac{X - \mu_x}{\sigma_x}
 $$
 
-A $z$ score represents the distance of a score $X$ from the sample mean ($\bar{X}$) in standard deviation units ($\sigma$). So a $z$ score of 1 means that the score is one standard deviation about the mean; a $z$-score of -2.5 means 2.5 standard deviations below the mean.  $Z$-scores give us a way of comparing things that come from different populations by calibrating them to the standard normal distribution (a distribution with a mean of 0 and a standard deviation of 1).
+A $z$ score represents the distance of a score $X$ from the sample mean ($\mu_x$) in standard deviation units ($\sigma_x$). So a $z$ score of 1 means that the score is one standard deviation about the mean; a $z$-score of -2.5 means 2.5 standard deviations below the mean.  $Z$-scores give us a way of comparing things that come from different populations by calibrating them to the standard normal distribution (a distribution with a mean of 0 and a standard deviation of 1).
 
 So we re-scale our predictors by converting them to $z$-scores. This is easy enough to do.
 
@@ -246,7 +246,7 @@ in other words, that all of the coefficients (except the intercept) are zero. If
 
 $$Y_i = \beta_0$$
 
-gives just as good of a prediction as the model including all of the predictors and their coefficients. In other words, your best prediction for $Y$ is just its mean ($\bar{Y}$); the $X$ variables are irrelevant. We rejected this null hypothesis, which implies that we can do better by including our two predictors, `lecture` and `nclicks`.
+gives just as good of a prediction as the model including all of the predictors and their coefficients. In other words, your best prediction for $Y$ is just its mean ($\mu_y$); the $X$ variables are irrelevant. We rejected this null hypothesis, which implies that we can do better by including our two predictors, `lecture` and `nclicks`.
 
 But you might ask: maybe its the case that better students get better grades, and the relationship between `lecture`, `nclicks`, and `grade` is just mediated by student quality. After all, better students are more likely to go to lecture and download the materials. So we can ask, are attendance and downloads associated with better grades **above and beyond** student ability, as measured by GPA?
 
