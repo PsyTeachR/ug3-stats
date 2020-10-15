@@ -14,10 +14,13 @@
 |symbol            |pronunciation |definition                                                                                                      |
 |:-----------------|:-------------|:---------------------------------------------------------------------------------------------------------------|
 |$\mu$             |meeYU         |generally, a population mean; sometimes, a model intercept. $\mu_x$ represents the mean of x                    |
-|$\rho_{xy}$       |row           |population correlation between $X$ and $Y$                                                                      |
 |$\sigma$          |sigma         |lower case sigma is the standard deviation; $\sigma_x$ is the standard deviation of $X$                         |
 |$\sigma^2$        |sigma squared |variance                                                                                                        |
-|$\sum$            |sigma         |upper case sigma is an instruction to add; e.g., $\sum X_i$ is the instruction to sum together all values of X. |
+|$\rho$            |row           |population correlation; $\rho_{xy}$ is the correlation in the population between $X$ and $Y$                    |
+|$r$               |row           |sample correlation; r_{xy} is the correlation in the sample between $X$ and $Y$                                 |
 |$\mathbf{\Sigma}$ |sigma         |the capital letter sigma in boldface represents a variance-covariance matrix                                    |
+|$\sum$            |sigma         |upper case sigma is an instruction to add; e.g., $\sum X_i$ is the instruction to sum together all values of X. |
+|$\beta            |beta          |regression coefficient                                                                                          |
 
 # Bibliography
+
