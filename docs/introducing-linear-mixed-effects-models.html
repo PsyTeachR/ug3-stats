@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-10-11" />
+<meta name="date" content="2020-10-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="interactions.html"/>
-<link rel="next" href="specifying-the-predictors.html"/>
+<link rel="next" href="modeling-experimental-data-with-linear-mixed-effects-models.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -180,8 +180,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="interactions.html"><a href="interactions.html#the-glm-for-a-factorial-design"><i class="fa fa-check"></i><b>4.5</b> The GLM for a factorial design</a><ul>
 <li class="chapter" data-level="4.5.1" data-path="interactions.html"><a href="interactions.html#estimation-equations"><i class="fa fa-check"></i><b>4.5.1</b> Estimation equations</a></li>
+<li class="chapter" data-level="4.5.2" data-path="interactions.html"><a href="interactions.html#factorial-app"><i class="fa fa-check"></i><b>4.5.2</b> Factorial App</a></li>
 </ul></li>
-<li class="chapter" data-level="4.6" data-path="interactions.html"><a href="interactions.html#factorial-app"><i class="fa fa-check"></i><b>4.6</b> Factorial App</a></li>
+<li class="chapter" data-level="4.6" data-path="interactions.html"><a href="interactions.html#code-your-own-categorical-predictors-in-factorial-designs"><i class="fa fa-check"></i><b>4.6</b> Code your own categorical predictors in factorial designs</a></li>
+<li class="chapter" data-level="4.7" data-path="interactions.html"><a href="interactions.html#coding-schemes-for-categorical-variables"><i class="fa fa-check"></i><b>4.7</b> Coding schemes for categorical variables</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="interactions.html"><a href="interactions.html#simple-versus-main-effects"><i class="fa fa-check"></i><b>4.7.1</b> Simple versus main effects</a></li>
+<li class="chapter" data-level="4.7.2" data-path="interactions.html"><a href="interactions.html#the-key-coding-schemes"><i class="fa fa-check"></i><b>4.7.2</b> The key coding schemes</a></li>
+<li class="chapter" data-level="4.7.3" data-path="interactions.html"><a href="interactions.html#what-about-factors-with-more-than-two-levels"><i class="fa fa-check"></i><b>4.7.3</b> What about factors with more than two levels?</a></li>
+<li class="chapter" data-level="4.7.4" data-path="interactions.html"><a href="interactions.html#example-three-level-factor"><i class="fa fa-check"></i><b>4.7.4</b> Example: Three-level factor</a></li>
+<li class="chapter" data-level="4.7.5" data-path="interactions.html"><a href="interactions.html#how-to-create-your-own-numeric-predictors"><i class="fa fa-check"></i><b>4.7.5</b> How to create your own numeric predictors</a></li>
+<li class="chapter" data-level="4.7.6" data-path="interactions.html"><a href="interactions.html#conclusion"><i class="fa fa-check"></i><b>4.7.6</b> Conclusion</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>5</b> Introducing Linear Mixed-Effects Models</a><ul>
 <li class="chapter" data-level="5.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
@@ -200,47 +209,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.6" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#multi-level-app"><i class="fa fa-check"></i><b>5.6</b> Multi-level app</a></li>
 <li class="chapter" data-level="5.7" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html"><i class="fa fa-check"></i><b>6</b> Specifying the predictors</a><ul>
+<li class="chapter" data-level="6" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>6</b> Modeling experimental data with linear mixed-effects models</a><ul>
 <li class="chapter" data-level="6.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="6.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#code-your-own-categorical-predictors"><i class="fa fa-check"></i><b>6.2</b> Code your own categorical predictors</a></li>
-<li class="chapter" data-level="6.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#coding-schemes-for-categorical-variables"><i class="fa fa-check"></i><b>6.3</b> Coding schemes for categorical variables</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#simple-versus-main-effects"><i class="fa fa-check"></i><b>6.3.1</b> Simple versus main effects</a></li>
-<li class="chapter" data-level="6.3.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#the-key-coding-schemes"><i class="fa fa-check"></i><b>6.3.2</b> The key coding schemes</a></li>
-<li class="chapter" data-level="6.3.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#what-about-factors-with-more-than-two-levels"><i class="fa fa-check"></i><b>6.3.3</b> What about factors with more than two levels?</a></li>
-<li class="chapter" data-level="6.3.4" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#example-three-level-factor"><i class="fa fa-check"></i><b>6.3.4</b> Example: Three-level factor</a></li>
-<li class="chapter" data-level="6.3.5" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#how-to-create-your-own-numeric-predictors"><i class="fa fa-check"></i><b>6.3.5</b> How to create your own numeric predictors</a></li>
-<li class="chapter" data-level="6.3.6" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#conclusion"><i class="fa fa-check"></i><b>6.3.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#web-app"><i class="fa fa-check"></i><b>6.2</b> Web app</a></li>
+<li class="chapter" data-level="6.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#replacing-t-test-and-anova-with-linear-mixed-effects-regression"><i class="fa fa-check"></i><b>6.3</b> Replacing t-test and ANOVA with linear mixed-effects regression</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#example-independent-samples-t-test-on-multi-level-data"><i class="fa fa-check"></i><b>6.3.1</b> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</a></li>
+<li class="chapter" data-level="6.3.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#when-is-a-random-intercepts-model-appropriate"><i class="fa fa-check"></i><b>6.3.2</b> When is a random-intercepts model appropriate?</a></li>
+<li class="chapter" data-level="6.3.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#rules-for-choosing-random-effects"><i class="fa fa-check"></i><b>6.3.3</b> Rules for choosing random effects</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#replacing-t-test-and-anova-with-linear-mixed-effects-regression"><i class="fa fa-check"></i><b>6.4</b> Replacing t-test and ANOVA with linear mixed-effects regression</a><ul>
-<li class="chapter" data-level="6.4.1" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#example-independent-samples-t-test-on-multi-level-data"><i class="fa fa-check"></i><b>6.4.1</b> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</a></li>
-<li class="chapter" data-level="6.4.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#when-is-a-random-intercepts-model-appropriate"><i class="fa fa-check"></i><b>6.4.2</b> When is a random-intercepts model appropriate?</a></li>
-<li class="chapter" data-level="6.4.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#rules-for-choosing-random-effects"><i class="fa fa-check"></i><b>6.4.3</b> Rules for choosing random effects</a></li>
+<li class="chapter" data-level="6.4" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#specifying-random-effects"><i class="fa fa-check"></i><b>6.4</b> Specifying random effects</a></li>
+<li class="chapter" data-level="6.5" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#simulating-data-with-crossed-random-factors"><i class="fa fa-check"></i><b>6.5</b> Simulating data with crossed random factors</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#set-up-the-environment-and-define-the-parameters-for-the-dgp"><i class="fa fa-check"></i><b>6.5.1</b> Set up the environment and define the parameters for the DGP</a></li>
+<li class="chapter" data-level="6.5.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#generate-a-sample-of-subjects"><i class="fa fa-check"></i><b>6.5.2</b> Generate a sample of subjects</a></li>
+<li class="chapter" data-level="6.5.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#generate-a-sample-of-encounters-trials"><i class="fa fa-check"></i><b>6.5.3</b> Generate a sample of encounters (trials)</a></li>
+<li class="chapter" data-level="6.5.4" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#join-subjects-items-and-trials"><i class="fa fa-check"></i><b>6.5.4</b> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></a></li>
+<li class="chapter" data-level="6.5.5" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#create-the-response-variable"><i class="fa fa-check"></i><b>6.5.5</b> Create the response variable</a></li>
 </ul></li>
+<li class="chapter" data-level="6.6" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#fitting-the-model"><i class="fa fa-check"></i><b>6.6</b> Fitting the model</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>7</b> Specifying random effects in linear mixed-effects models</a><ul>
+<li class="chapter" data-level="7" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>7</b> Generalized linear mixed-effects models</a><ul>
 <li class="chapter" data-level="7.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="7.2" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#web-app"><i class="fa fa-check"></i><b>7.2</b> Web app</a></li>
-<li class="chapter" data-level="7.3" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#specifying-random-effects"><i class="fa fa-check"></i><b>7.3</b> Specifying random effects</a></li>
-<li class="chapter" data-level="7.4" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#simulating-data-with-crossed-random-factors"><i class="fa fa-check"></i><b>7.4</b> Simulating data with crossed random factors</a><ul>
-<li class="chapter" data-level="7.4.1" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#set-up-the-environment-and-define-the-parameters-for-the-dgp"><i class="fa fa-check"></i><b>7.4.1</b> Set up the environment and define the parameters for the DGP</a></li>
-<li class="chapter" data-level="7.4.2" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#generate-a-sample-of-subjects"><i class="fa fa-check"></i><b>7.4.2</b> Generate a sample of subjects</a></li>
-<li class="chapter" data-level="7.4.3" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#generate-a-sample-of-encounters-trials"><i class="fa fa-check"></i><b>7.4.3</b> Generate a sample of encounters (trials)</a></li>
-<li class="chapter" data-level="7.4.4" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#join-subjects-items-and-trials"><i class="fa fa-check"></i><b>7.4.4</b> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></a></li>
-<li class="chapter" data-level="7.4.5" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#create-the-response-variable"><i class="fa fa-check"></i><b>7.4.5</b> Create the response variable</a></li>
+<li class="chapter" data-level="7.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#discrete-versus-continuous-data"><i class="fa fa-check"></i><b>7.2</b> Discrete versus continuous data</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#why-not-model-discrete-data-as-continuous"><i class="fa fa-check"></i><b>7.2.1</b> Why not model discrete data as continuous?</a></li>
 </ul></li>
-<li class="chapter" data-level="7.5" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#fitting-the-model"><i class="fa fa-check"></i><b>7.5</b> Fitting the model</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed-effects models</a><ul>
-<li class="chapter" data-level="8.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="8.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#discrete-versus-continuous-data"><i class="fa fa-check"></i><b>8.2</b> Discrete versus continuous data</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#why-not-model-discrete-data-as-continuous"><i class="fa fa-check"></i><b>8.2.1</b> Why not model discrete data as continuous?</a></li>
-</ul></li>
-<li class="chapter" data-level="8.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#generalized-linear-models"><i class="fa fa-check"></i><b>8.3</b> Generalized Linear Models</a></li>
-<li class="chapter" data-level="8.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Logistic regression</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#terminology"><i class="fa fa-check"></i><b>8.4.1</b> Terminology</a></li>
-<li class="chapter" data-level="8.4.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#properties-of-log-odds"><i class="fa fa-check"></i><b>8.4.2</b> Properties of log odds</a></li>
-<li class="chapter" data-level="8.4.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#link-and-variance-functions"><i class="fa fa-check"></i><b>8.4.3</b> Link and variance functions</a></li>
-<li class="chapter" data-level="8.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>8.4.4</b> Estimating logistic regression models in R</a></li>
+<li class="chapter" data-level="7.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#generalized-linear-models"><i class="fa fa-check"></i><b>7.3</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="7.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#logistic-regression"><i class="fa fa-check"></i><b>7.4</b> Logistic regression</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#terminology"><i class="fa fa-check"></i><b>7.4.1</b> Terminology</a></li>
+<li class="chapter" data-level="7.4.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#properties-of-log-odds"><i class="fa fa-check"></i><b>7.4.2</b> Properties of log odds</a></li>
+<li class="chapter" data-level="7.4.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#link-and-variance-functions"><i class="fa fa-check"></i><b>7.4.3</b> Link and variance functions</a></li>
+<li class="chapter" data-level="7.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>7.4.4</b> Estimating logistic regression models in R</a></li>
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
@@ -327,15 +324,15 @@ References:
 <p>Multi-level data of this type is extremely common in psychology. However, if you open up most introductory statistics textbooks and read through to the end, you’ll learn about t-tests, repeated-measures and mixed-model ANOVA, and multiple regression, but none of the techniques that you learn would be applicable to multi-level data of this sort. It suggests a serious gap in training, one which should be filled by teaching multi-level modeling. All of the other techniques—t-test, ANOVA, multiple regression—can be seen as special cases of the more general multi-level modeling approach. My view is that multi-level modeling should be taught as the <strong>default</strong>, not as an advanced approach that is too far beyond the reach of undergraduates.</p>
 <p>Let’s consider the <code>sleepstudy</code> data. The dataset contains eighteen participants from the three-hour sleep condition. Each day, over 10 days, participants performed a ten-minute “psychomotor vigilance test” where they had to monitor a display and press a button as quickly as possible each time a stimulus appeared. The dependent measure in the dataset is the participant’s average response time (RT) on the task for that day.</p>
 <p>It is always good to start by looking at the data. Here is data for a single subject.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" title="1"><span class="kw">library</span>(<span class="st">&quot;lme4&quot;</span>)</a>
-<a class="sourceLine" id="cb100-2" title="2"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
-<a class="sourceLine" id="cb100-3" title="3"></a>
-<a class="sourceLine" id="cb100-4" title="4">just_<span class="dv">308</span> &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb100-5" title="5"><span class="st">  </span><span class="kw">filter</span>(Subject <span class="op">==</span><span class="st"> &quot;308&quot;</span>)</a>
-<a class="sourceLine" id="cb100-6" title="6"></a>
-<a class="sourceLine" id="cb100-7" title="7"><span class="kw">ggplot</span>(just_<span class="dv">308</span>, <span class="kw">aes</span>(<span class="dt">x =</span> Days, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb100-8" title="8"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb100-9" title="9"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">9</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" title="1"><span class="kw">library</span>(<span class="st">&quot;lme4&quot;</span>)</a>
+<a class="sourceLine" id="cb117-2" title="2"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
+<a class="sourceLine" id="cb117-3" title="3"></a>
+<a class="sourceLine" id="cb117-4" title="4">just_<span class="dv">308</span> &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb117-5" title="5"><span class="st">  </span><span class="kw">filter</span>(Subject <span class="op">==</span><span class="st"> &quot;308&quot;</span>)</a>
+<a class="sourceLine" id="cb117-6" title="6"></a>
+<a class="sourceLine" id="cb117-7" title="7"><span class="kw">ggplot</span>(just_<span class="dv">308</span>, <span class="kw">aes</span>(<span class="dt">x =</span> Days, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb117-8" title="8"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb117-9" title="9"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">9</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:one-subject"></span>
 <img src="05-linear-mixed-effects-intro_files/figure-html/one-subject-1.png" alt="*Data from a single subject in Belenky et al. (2003)*" width="50%" />
 <p class="caption">
@@ -363,10 +360,10 @@ Hint, please
 Show me
 </button>
 <p>Same as above, except you just add one line: <code>facet_wrap(~Subject)</code></p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" title="1"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x =</span> Days, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb101-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb101-3" title="3"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">9</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb101-4" title="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject)</a></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" title="1"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x =</span> Days, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb118-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb118-3" title="3"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">9</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb118-4" title="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject)</a></code></pre></div>
 </div>
 </div>
 </div>
@@ -388,11 +385,11 @@ Show me
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" title="1">sleep2 &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb102-2" title="2"><span class="st">  </span><span class="kw">filter</span>(Days <span class="op">&gt;=</span><span class="st"> </span>2L) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb102-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">days_deprived =</span> Days <span class="op">-</span><span class="st"> </span>2L)</a></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" title="1">sleep2 &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb119-2" title="2"><span class="st">  </span><span class="kw">filter</span>(Days <span class="op">&gt;=</span><span class="st"> </span>2L) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb119-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">days_deprived =</span> Days <span class="op">-</span><span class="st"> </span>2L)</a></code></pre></div>
 <p>It is always a good idea to double check that the code works as intended. First, look at it:</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" title="1"><span class="kw">head</span>(sleep2)</a></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" title="1"><span class="kw">head</span>(sleep2)</a></code></pre></div>
 <pre><code>##   Reaction Days Subject days_deprived
 ## 1 250.8006    2     308             0
 ## 2 321.4398    3     308             1
@@ -401,8 +398,8 @@ Solution
 ## 5 382.2038    6     308             4
 ## 6 290.1486    7     308             5</code></pre>
 <p>And check that <code>Days</code> and <code>days_deprived</code> match up.</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" title="1">sleep2 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb105-2" title="2"><span class="st">  </span><span class="kw">count</span>(days_deprived, Days)</a></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" title="1">sleep2 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb122-2" title="2"><span class="st">  </span><span class="kw">count</span>(days_deprived, Days)</a></code></pre></div>
 <pre><code>##   days_deprived Days  n
 ## 1             0    2 18
 ## 2             1    3 18
@@ -416,11 +413,11 @@ Solution
 </div>
 </div>
 <p>Now let’s re-plot the data looking at just these eight data points from Day 0 to Day 7. We’ve just copied the code from above, substituting <code>sleep2</code> for <code>sleepstudy</code> and using <code>days_deprived</code> for our <code>x</code> variable.</p>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb107-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb107-3" title="3"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb107-4" title="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
-<a class="sourceLine" id="cb107-5" title="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb124-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb124-3" title="3"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb124-4" title="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
+<a class="sourceLine" id="cb124-5" title="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:plot-solution2"></span>
 <img src="05-linear-mixed-effects-intro_files/figure-html/plot-solution2-1.png" alt="*Data from Belenky et al. (2003), showing reaction time at baseline (0) and after each day of sleep deprivation.*" width="100%" />
 <p class="caption">
@@ -441,9 +438,9 @@ Figure 5.3: <em>Data from Belenky et al. (2003), showing reaction time at basel
 <p><span class="math display">\[e_{sd} \sim N\left(0, \sigma^2\right)\]</span></p>
 <p>where <span class="math inline">\(Y_{sd}\)</span> is the mean RT for subject <span class="math inline">\(s\)</span> on day <span class="math inline">\(d\)</span>, <span class="math inline">\(X_{sd}\)</span> is the value of <code>Day</code> associated with that case (0-7), and <span class="math inline">\(e_{sd}\)</span> is the error.</p>
 <p>We would fit such a model in R using the <code>lm()</code> function, e.g.:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" title="1">cp_model &lt;-<span class="st"> </span><span class="kw">lm</span>(Reaction <span class="op">~</span><span class="st"> </span>days_deprived, sleep2)</a>
-<a class="sourceLine" id="cb108-2" title="2"></a>
-<a class="sourceLine" id="cb108-3" title="3"><span class="kw">summary</span>(cp_model)</a></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" title="1">cp_model &lt;-<span class="st"> </span><span class="kw">lm</span>(Reaction <span class="op">~</span><span class="st"> </span>days_deprived, sleep2)</a>
+<a class="sourceLine" id="cb125-2" title="2"></a>
+<a class="sourceLine" id="cb125-3" title="3"><span class="kw">summary</span>(cp_model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Reaction ~ days_deprived, data = sleep2)
@@ -464,17 +461,17 @@ Figure 5.3: <em>Data from Belenky et al. (2003), showing reaction time at basel
 ## F-statistic: 38.23 on 1 and 142 DF,  p-value: 6.316e-09</code></pre>
 <p>According to this model, the predicted mean response time on Day 0 is about 268 milliseconds, with an increase of about 11 milliseconds per day of deprivation, on average. We can’t trust the standard errors for our regression coefficients, however, because we are assuming that all of the observations are independent (technically, that the residuals are). However, we can be pretty sure this is a bad assumption.</p>
 <p>Let’s add the model predictions to the graph that we created above. We can use <code>geom_abline()</code> to do so, specifying the intercept and slope for the line using the regression coefficients from the model fit, <code>coef(cp_model)</code>, which returns a two-element vector with intercept and slope, respectively.</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" title="1"><span class="kw">coef</span>(cp_model)</a></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" title="1"><span class="kw">coef</span>(cp_model)</a></code></pre></div>
 <pre><code>##   (Intercept) days_deprived 
 ##     267.96742      11.43543</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb112-2" title="2"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">coef</span>(cp_model)[<span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb112-3" title="3">              <span class="dt">slope =</span> <span class="kw">coef</span>(cp_model)[<span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb112-4" title="4">              <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb112-5" title="5"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb112-6" title="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb112-7" title="7"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
-<a class="sourceLine" id="cb112-8" title="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb129-2" title="2"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">coef</span>(cp_model)[<span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb129-3" title="3">              <span class="dt">slope =</span> <span class="kw">coef</span>(cp_model)[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb129-4" title="4">              <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb129-5" title="5"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb129-6" title="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb129-7" title="7"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
+<a class="sourceLine" id="cb129-8" title="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:cp-model-plot"></span>
 <img src="05-linear-mixed-effects-intro_files/figure-html/cp-model-plot-1.png" alt="Data plotted against predictions from the complete pooling model." width="100%" />
 <p class="caption">
@@ -490,7 +487,7 @@ Figure 5.4: Data plotted against predictions from the complete pooling model.
 <div class="danger">
 <p>The variable <code>Subject</code> in the <code>sleep2</code> dataset is nominal. We just use numbers as labels to preserve anonymity, without intending to imply that Subject 310 is one point better than Subject 309 and two points better than 308. Make sure that you define it as a factor so that it is not included as a continuous variable!</p>
 <p>We can test whether something is a factor in various ways. One is to use <code>summary()</code> on the table.</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" title="1">sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summary</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" title="1">sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summary</span>()</a></code></pre></div>
 <pre><code>##     Reaction          Days         Subject   days_deprived 
 ##  Min.   :203.0   Min.   :2.00   308    : 8   Min.   :0.00  
 ##  1st Qu.:265.2   1st Qu.:3.75   309    : 8   1st Qu.:1.75  
@@ -501,14 +498,14 @@ Figure 5.4: Data plotted against predictions from the complete pooling model.
 ##                                 (Other):96</code></pre>
 <p>Here you can see that it is not treated as a number because rather than giving you distributional information (means, etc.) it tells you how many observations there are at each level.</p>
 <p>You can also test it directly:</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" title="1">sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">is.factor</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" title="1">sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">is.factor</span>()</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>If something is not a factor, you can make it one be re-defining it using the <code>factor()</code> function.</p>
 </div>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" title="1">np_model &lt;-<span class="st"> </span><span class="kw">lm</span>(Reaction <span class="op">~</span><span class="st"> </span>days_deprived <span class="op">+</span><span class="st"> </span>Subject <span class="op">+</span><span class="st"> </span>days_deprived<span class="op">:</span>Subject,</a>
-<a class="sourceLine" id="cb117-2" title="2">               <span class="dt">data =</span> sleep2)</a>
-<a class="sourceLine" id="cb117-3" title="3"></a>
-<a class="sourceLine" id="cb117-4" title="4"><span class="kw">summary</span>(np_model)</a></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" title="1">np_model &lt;-<span class="st"> </span><span class="kw">lm</span>(Reaction <span class="op">~</span><span class="st"> </span>days_deprived <span class="op">+</span><span class="st"> </span>Subject <span class="op">+</span><span class="st"> </span>days_deprived<span class="op">:</span>Subject,</a>
+<a class="sourceLine" id="cb134-2" title="2">               <span class="dt">data =</span> sleep2)</a>
+<a class="sourceLine" id="cb134-3" title="3"></a>
+<a class="sourceLine" id="cb134-4" title="4"><span class="kw">summary</span>(np_model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Reaction ~ days_deprived + Subject + days_deprived:Subject, 
@@ -586,20 +583,20 @@ Answers and Explanation
 </div>
 </div>
 <p>In the “no pooling” model, there is no <em>overall</em> population intercept and slope that is being estimated; in this case, <code>(Intercept)</code> and <code>days_deprived</code> are estimates of the intercept and slope for subject 308, which was (arbitrarily) chosen as the baseline subject. To get population estimates, we could introduce a second stage of analysis where we calculate means of the individual intercepts and slopes. Let’s use the model estimates to calculate the intercepts and slopes for each subject.</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" title="1">all_intercepts &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">coef</span>(np_model)[<span class="st">&quot;(Intercept)&quot;</span>],</a>
-<a class="sourceLine" id="cb119-2" title="2">                    <span class="kw">coef</span>(np_model)[<span class="dv">3</span><span class="op">:</span><span class="dv">19</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(np_model)[<span class="st">&quot;(Intercept)&quot;</span>])</a>
-<a class="sourceLine" id="cb119-3" title="3"></a>
-<a class="sourceLine" id="cb119-4" title="4">all_slopes  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">coef</span>(np_model)[<span class="st">&quot;days_deprived&quot;</span>],</a>
-<a class="sourceLine" id="cb119-5" title="5">                 <span class="kw">coef</span>(np_model)[<span class="dv">20</span><span class="op">:</span><span class="dv">36</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(np_model)[<span class="st">&quot;days_deprived&quot;</span>])</a>
-<a class="sourceLine" id="cb119-6" title="6"></a>
-<a class="sourceLine" id="cb119-7" title="7">ids &lt;-<span class="st"> </span>sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">levels</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">factor</span>()</a>
-<a class="sourceLine" id="cb119-8" title="8"></a>
-<a class="sourceLine" id="cb119-9" title="9"><span class="co"># make a tibble with the data extracted above</span></a>
-<a class="sourceLine" id="cb119-10" title="10">np_coef &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">Subject =</span> ids,</a>
-<a class="sourceLine" id="cb119-11" title="11">                  <span class="dt">intercept =</span> all_intercepts,</a>
-<a class="sourceLine" id="cb119-12" title="12">                  <span class="dt">slope =</span> all_slopes)</a>
-<a class="sourceLine" id="cb119-13" title="13"></a>
-<a class="sourceLine" id="cb119-14" title="14">np_coef</a></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" title="1">all_intercepts &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">coef</span>(np_model)[<span class="st">&quot;(Intercept)&quot;</span>],</a>
+<a class="sourceLine" id="cb136-2" title="2">                    <span class="kw">coef</span>(np_model)[<span class="dv">3</span><span class="op">:</span><span class="dv">19</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(np_model)[<span class="st">&quot;(Intercept)&quot;</span>])</a>
+<a class="sourceLine" id="cb136-3" title="3"></a>
+<a class="sourceLine" id="cb136-4" title="4">all_slopes  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">coef</span>(np_model)[<span class="st">&quot;days_deprived&quot;</span>],</a>
+<a class="sourceLine" id="cb136-5" title="5">                 <span class="kw">coef</span>(np_model)[<span class="dv">20</span><span class="op">:</span><span class="dv">36</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(np_model)[<span class="st">&quot;days_deprived&quot;</span>])</a>
+<a class="sourceLine" id="cb136-6" title="6"></a>
+<a class="sourceLine" id="cb136-7" title="7">ids &lt;-<span class="st"> </span>sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">levels</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">factor</span>()</a>
+<a class="sourceLine" id="cb136-8" title="8"></a>
+<a class="sourceLine" id="cb136-9" title="9"><span class="co"># make a tibble with the data extracted above</span></a>
+<a class="sourceLine" id="cb136-10" title="10">np_coef &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">Subject =</span> ids,</a>
+<a class="sourceLine" id="cb136-11" title="11">                  <span class="dt">intercept =</span> all_intercepts,</a>
+<a class="sourceLine" id="cb136-12" title="12">                  <span class="dt">slope =</span> all_slopes)</a>
+<a class="sourceLine" id="cb136-13" title="13"></a>
+<a class="sourceLine" id="cb136-14" title="14">np_coef</a></code></pre></div>
 <pre><code>## # A tibble: 18 x 3
 ##    Subject intercept slope
 ##    &lt;fct&gt;       &lt;dbl&gt; &lt;dbl&gt;
@@ -622,15 +619,15 @@ Answers and Explanation
 ## 17 371          258. 12.3 
 ## 18 372          291. 11.1</code></pre>
 <p>Let’s see how well this model fits our data.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb121-2" title="2"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">data =</span> np_coef,</a>
-<a class="sourceLine" id="cb121-3" title="3">              <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">intercept =</span> intercept,</a>
-<a class="sourceLine" id="cb121-4" title="4">                            <span class="dt">slope =</span> slope),</a>
-<a class="sourceLine" id="cb121-5" title="5">              <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb121-6" title="6"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb121-7" title="7"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb121-8" title="8"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
-<a class="sourceLine" id="cb121-9" title="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb138-2" title="2"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">data =</span> np_coef,</a>
+<a class="sourceLine" id="cb138-3" title="3">              <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">intercept =</span> intercept,</a>
+<a class="sourceLine" id="cb138-4" title="4">                            <span class="dt">slope =</span> slope),</a>
+<a class="sourceLine" id="cb138-5" title="5">              <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb138-6" title="6"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb138-7" title="7"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb138-8" title="8"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
+<a class="sourceLine" id="cb138-9" title="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:np-model-fits"></span>
 <img src="05-linear-mixed-effects-intro_files/figure-html/np-model-fits-1.png" alt="Data plotted against fits from the no-pooling approach." width="100%" />
 <p class="caption">
@@ -638,8 +635,8 @@ Figure 5.5: Data plotted against fits from the no-pooling approach.
 </p>
 </div>
 <p>This is much better than the complete pooling model. If we want to test the null hypothesis that the fixed slope is zero, we could do using a one-sample test.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" title="1">.np1 &lt;-<span class="st"> </span>np_coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(slope) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">t.test</span>()</a></code></pre></div>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" title="1">np_coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(slope) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">t.test</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" title="1">.np1 &lt;-<span class="st"> </span>np_coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(slope) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">t.test</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" title="1">np_coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(slope) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">t.test</span>()</a></code></pre></div>
 <pre><code>## 
 ## 	One Sample t-test
 ## 
@@ -887,9 +884,9 @@ Y_{sd} = \gamma_{0} + S_{0s} + \left(\gamma_{1} + S_{1s}\right) X_{sd} + e_{sd}
 \end{equation*}\]</span></p>
 <p>The most reasonable model for these data is Model 2, so we’ll stick with that.</p>
 <p>Let’s fit the model, storing the result in object <code>pp_mod</code>.</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" title="1">pp_mod &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>days_deprived <span class="op">+</span><span class="st"> </span>(days_deprived <span class="op">|</span><span class="st"> </span>Subject), sleep2)</a>
-<a class="sourceLine" id="cb126-2" title="2"></a>
-<a class="sourceLine" id="cb126-3" title="3"><span class="kw">summary</span>(pp_mod)</a></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" title="1">pp_mod &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>days_deprived <span class="op">+</span><span class="st"> </span>(days_deprived <span class="op">|</span><span class="st"> </span>Subject), sleep2)</a>
+<a class="sourceLine" id="cb143-2" title="2"></a>
+<a class="sourceLine" id="cb143-3" title="3"><span class="kw">summary</span>(pp_mod)</a></code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: Reaction ~ days_deprived + (days_deprived | Subject)
 ##    Data: sleep2
@@ -917,11 +914,11 @@ Y_{sd} = \gamma_{0} + S_{0s} + \left(\gamma_{1} + S_{1s}\right) X_{sd} + e_{sd}
 ## days_deprvd -0.062</code></pre>
 <p>Before discussing how to interpret the output, let’s first plot the data against our model predictions. We can get model predictions using the <code>predict()</code> function (see <code>?predict.merMod</code> for information about use with mixed-effects models).</p>
 <p>First, create a new data frame with predictor values for <code>Subject</code> and <code>days_deprived</code>.</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" title="1">newdata &lt;-<span class="st"> </span><span class="kw">crossing</span>(</a>
-<a class="sourceLine" id="cb128-2" title="2">  <span class="dt">Subject =</span> sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">levels</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">factor</span>(),</a>
-<a class="sourceLine" id="cb128-3" title="3">  <span class="dt">days_deprived =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>)</a>
-<a class="sourceLine" id="cb128-4" title="4"></a>
-<a class="sourceLine" id="cb128-5" title="5">newdata</a></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" title="1">newdata &lt;-<span class="st"> </span><span class="kw">crossing</span>(</a>
+<a class="sourceLine" id="cb145-2" title="2">  <span class="dt">Subject =</span> sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">levels</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">factor</span>(),</a>
+<a class="sourceLine" id="cb145-3" title="3">  <span class="dt">days_deprived =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb145-4" title="4"></a>
+<a class="sourceLine" id="cb145-5" title="5">newdata</a></code></pre></div>
 <pre><code>## # A tibble: 144 x 2
 ##    Subject days_deprived
 ##    &lt;fct&gt;           &lt;int&gt;
@@ -937,16 +934,16 @@ Y_{sd} = \gamma_{0} + S_{0s} + \left(\gamma_{1} + S_{1s}\right) X_{sd} + e_{sd}
 ## 10 309                 1
 ## # … with 134 more rows</code></pre>
 <p>Then, run this through <code>predict()</code>. Typically we will add the prediction in as a new variable in the data frame of new data, giving it the same name as our DV (<code>Reaction</code>).</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" title="1">newdata2 &lt;-<span class="st"> </span>newdata <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb130-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Reaction =</span> <span class="kw">predict</span>(pp_mod, newdata))</a></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" title="1">newdata2 &lt;-<span class="st"> </span>newdata <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb147-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Reaction =</span> <span class="kw">predict</span>(pp_mod, newdata))</a></code></pre></div>
 <p>Now we are ready to plot.</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb131-2" title="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> newdata2,</a>
-<a class="sourceLine" id="cb131-3" title="3">            <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb131-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb131-5" title="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb131-6" title="6"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
-<a class="sourceLine" id="cb131-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb148-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb148-2" title="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> newdata2,</a>
+<a class="sourceLine" id="cb148-3" title="3">            <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb148-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb148-5" title="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">7</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb148-6" title="6"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
+<a class="sourceLine" id="cb148-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:pp-plot"></span>
 <img src="05-linear-mixed-effects-intro_files/figure-html/pp-plot-1.png" alt="Data plotted against predictions from a partial pooling approach." width="100%" />
 <p class="caption">
@@ -970,29 +967,29 @@ with each day of sleep deprivation adding an additional
 11 milliseconds
 to the response time, on average.</p>
 <p>If we need to get the fixed effects from the model, we can extract them using <code>fixef()</code>.</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" title="1"><span class="kw">fixef</span>(pp_mod)</a></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" title="1"><span class="kw">fixef</span>(pp_mod)</a></code></pre></div>
 <pre><code>##   (Intercept) days_deprived 
 ##     267.96742      11.43543</code></pre>
 <p>The standard errors give us estimates of the variability for these parameters due to sampling error. You could use these to calculate the <span class="math inline">\(t\)</span>-values or derive confidence intervals. Extract them using <code>vcov(pp_mod)</code> which gives a variance-covariance matrix (<em>not</em> the one associated with the random effects), pull out the diagonal using <code>diag()</code> and then take the square root using <code>sqrt()</code>.</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" title="1"><span class="kw">sqrt</span>(<span class="kw">diag</span>(<span class="kw">vcov</span>(pp_mod)))</a>
-<a class="sourceLine" id="cb135-2" title="2"></a>
-<a class="sourceLine" id="cb135-3" title="3"><span class="co"># OR, equivalently using pipes:</span></a>
-<a class="sourceLine" id="cb135-4" title="4"><span class="co"># vcov(pp_mod) %&gt;% diag() %&gt;% sqrt()</span></a></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" title="1"><span class="kw">sqrt</span>(<span class="kw">diag</span>(<span class="kw">vcov</span>(pp_mod)))</a>
+<a class="sourceLine" id="cb152-2" title="2"></a>
+<a class="sourceLine" id="cb152-3" title="3"><span class="co"># OR, equivalently using pipes:</span></a>
+<a class="sourceLine" id="cb152-4" title="4"><span class="co"># vcov(pp_mod) %&gt;% diag() %&gt;% sqrt()</span></a></code></pre></div>
 <pre><code>## [1] 8.265896 1.845293</code></pre>
 <p>Note that these <span class="math inline">\(t\)</span> values do not appear with <span class="math inline">\(p\)</span> values, as is customary in simpler modeling frameworks. There are multiple approaches for getting <span class="math inline">\(p\)</span> values from mixed-effects models, with advantages and disadvantages to each (see <a href="">Luke, 2017</a> for a survey of options). The <span class="math inline">\(t\)</span> values do not appear with degrees of freedom, because the degrees of freedom in a mixed-effects model are not well-defined. Often people will treat them as Wald <span class="math inline">\(z\)</span> values, i.e., as observations from the standard normal distribution. Because the <span class="math inline">\(t\)</span> distribution asymptotes the standard normal distribution as the number of observations goes to infinity, this “t-as-z” practice is legitimate if you have a large enough set of observations.</p>
 <p>To calculate the Wald <span class="math inline">\(z\)</span> values, just divide the fixed effect estimate by its standard error:</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" title="1">tvals &lt;-<span class="st"> </span><span class="kw">fixef</span>(pp_mod) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(<span class="kw">vcov</span>(pp_mod)))</a>
-<a class="sourceLine" id="cb137-2" title="2"></a>
-<a class="sourceLine" id="cb137-3" title="3">tvals</a></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" title="1">tvals &lt;-<span class="st"> </span><span class="kw">fixef</span>(pp_mod) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(<span class="kw">vcov</span>(pp_mod)))</a>
+<a class="sourceLine" id="cb154-2" title="2"></a>
+<a class="sourceLine" id="cb154-3" title="3">tvals</a></code></pre></div>
 <pre><code>##   (Intercept) days_deprived 
 ##     32.418437      6.197082</code></pre>
 <p>You can get the associated <span class="math inline">\(p\)</span>-values using the following formula:</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" title="1"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pnorm</span>(<span class="kw">abs</span>(tvals)))</a></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" title="1"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pnorm</span>(<span class="kw">abs</span>(tvals)))</a></code></pre></div>
 <pre><code>##   (Intercept) days_deprived 
 ##   0.00000e+00   5.75197e-10</code></pre>
 <p>This gives us strong evidence against the null hypothesis <span class="math inline">\(H_0: \gamma_1 = 0\)</span>. Sleep deprivation does appear to increase response time.</p>
 <p>You can get confidence intervals for the estimates using <code>confint()</code> (this technique uses the <em>parametric bootstrap</em>). <code>confint()</code> is a generic function, so to get help on this function, use <code>?confint.merMod</code>.</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" title="1"><span class="kw">confint</span>(pp_mod)</a></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb158-1" title="1"><span class="kw">confint</span>(pp_mod)</a></code></pre></div>
 <pre><code>## Computing profile confidence intervals ...</code></pre>
 <pre><code>##                     2.5 %      97.5 %
 ## .sig01         19.0979934  46.3366599
@@ -1015,7 +1012,7 @@ to the response time, on average.</p>
 651.6. The value in the next column,
 25.526, is just the standard deviation, <span class="math inline">\(\sigma\)</span>, which is the square root of the variance.</p>
 <p>We extract the residual standard deviation using the <code>sigma()</code> function.</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" title="1"><span class="kw">sigma</span>(pp_mod) <span class="co"># residual</span></a></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb162-1" title="1"><span class="kw">sigma</span>(pp_mod) <span class="co"># residual</span></a></code></pre></div>
 <pre><code>## [1] 25.5264</code></pre>
 <p>The two lines above the <code>Residual</code> line give us information about the variance-covariance matrix for the <code>Subject</code> random factor.</p>
 <pre><code>##  Groups   Name          Variance Std.Dev. Corr
@@ -1023,8 +1020,8 @@ to the response time, on average.</p>
 ##           days_deprived  45.78    6.766   0.18</code></pre>
 <p>The values in the <code>Variance</code> column gives us the main diagonal of the matrix, and the <code>Std.Dev.</code> values are just the square roots of these values. The <code>Corr</code> column tells us the correlation between the intercept and slope.</p>
 <p>We can extract these values from the fitted object <code>pp_mod</code> using the <code>VarCorr()</code> function. This returns a named list, with one element for each random factor. We have <code>Subject</code> as our only random factor, so the list will just be of length 1.</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb148-1" title="1"><span class="co"># variance-covariance matrix for random factor Subject</span></a>
-<a class="sourceLine" id="cb148-2" title="2"><span class="kw">VarCorr</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]] <span class="co"># equivalently: VarCorr(pp_mod)[[1]]</span></a></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" title="1"><span class="co"># variance-covariance matrix for random factor Subject</span></a>
+<a class="sourceLine" id="cb165-2" title="2"><span class="kw">VarCorr</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]] <span class="co"># equivalently: VarCorr(pp_mod)[[1]]</span></a></code></pre></div>
 <pre><code>##               (Intercept) days_deprived
 ## (Intercept)      958.3517      37.20460
 ## days_deprived     37.2046      45.77766
@@ -1036,22 +1033,22 @@ to the response time, on average.</p>
 ## (Intercept)     1.0000000     0.1776263
 ## days_deprived   0.1776263     1.0000000</code></pre>
 <p>The first few lines are a printout of the variance covariance matrix. You can see the variances in the main diagonal. We can get these with:</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" title="1"><span class="kw">diag</span>(<span class="kw">VarCorr</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]]) <span class="co"># just the variances</span></a></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" title="1"><span class="kw">diag</span>(<span class="kw">VarCorr</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]]) <span class="co"># just the variances</span></a></code></pre></div>
 <pre><code>##   (Intercept) days_deprived 
 ##     958.35165      45.77766</code></pre>
 <p>We can get the correlation between the intecepts and slopes in two ways. First, by extracting the <code>"correlation"</code> attribute and then pulling out the element in row 1 column 2 (<code>[1, 2]</code>):</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" title="1"><span class="kw">attr</span>(<span class="kw">VarCorr</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]], <span class="st">&quot;correlation&quot;</span>)[<span class="dv">1</span>, <span class="dv">2</span>] <span class="co"># the correlation</span></a></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" title="1"><span class="kw">attr</span>(<span class="kw">VarCorr</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]], <span class="st">&quot;correlation&quot;</span>)[<span class="dv">1</span>, <span class="dv">2</span>] <span class="co"># the correlation</span></a></code></pre></div>
 <pre><code>## [1] 0.1776263</code></pre>
 <p>Or we can directly compute the value from the variance-covariance matrix itself.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" title="1"><span class="co"># directly compute correlation from variance-covariance matrix</span></a>
-<a class="sourceLine" id="cb154-2" title="2">mx &lt;-<span class="st"> </span><span class="kw">VarCorr</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]]</a>
-<a class="sourceLine" id="cb154-3" title="3"></a>
-<a class="sourceLine" id="cb154-4" title="4"><span class="co">## if cov = rho * t00 * t11, then</span></a>
-<a class="sourceLine" id="cb154-5" title="5"><span class="co">## rho = cov / (t00 * t11).</span></a>
-<a class="sourceLine" id="cb154-6" title="6">mx[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">/</span><span class="st"> </span>(<span class="kw">sqrt</span>(mx[<span class="dv">1</span>, <span class="dv">1</span>]) <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(mx[<span class="dv">2</span>, <span class="dv">2</span>]))</a></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" title="1"><span class="co"># directly compute correlation from variance-covariance matrix</span></a>
+<a class="sourceLine" id="cb171-2" title="2">mx &lt;-<span class="st"> </span><span class="kw">VarCorr</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]]</a>
+<a class="sourceLine" id="cb171-3" title="3"></a>
+<a class="sourceLine" id="cb171-4" title="4"><span class="co">## if cov = rho * t00 * t11, then</span></a>
+<a class="sourceLine" id="cb171-5" title="5"><span class="co">## rho = cov / (t00 * t11).</span></a>
+<a class="sourceLine" id="cb171-6" title="6">mx[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">/</span><span class="st"> </span>(<span class="kw">sqrt</span>(mx[<span class="dv">1</span>, <span class="dv">1</span>]) <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(mx[<span class="dv">2</span>, <span class="dv">2</span>]))</a></code></pre></div>
 <pre><code>## [1] 0.1776263</code></pre>
 <p>We can pull out the estimated random effects (BLUPS) using <code>ranef()</code>. Like <code>VarCorr()</code> , the result is a named list, with each element corresponding to a single random factor.</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" title="1"><span class="kw">ranef</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" title="1"><span class="kw">ranef</span>(pp_mod)[[<span class="st">&quot;Subject&quot;</span>]]</a></code></pre></div>
 <pre><code>##     (Intercept) days_deprived
 ## 308  24.4992891     8.6020000
 ## 309 -59.3723102    -8.1277534
@@ -1073,12 +1070,12 @@ to the response time, on average.</p>
 ## 372  17.6826159     0.6623897</code></pre>
 <p>There are other extractor functions that are useful. See <code>?merMod-class</code> for details.</p>
 <p>We can get fitted values from the model using <code>fitted()</code> and residuals using <code>residuals()</code>. (These functions take into account “the conditional modes of the random effects”, i.e., the BLUPS).</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb158-1" title="1"><span class="kw">mutate</span>(sleep2,</a>
-<a class="sourceLine" id="cb158-2" title="2">       <span class="dt">fit =</span> <span class="kw">fitted</span>(pp_mod),</a>
-<a class="sourceLine" id="cb158-3" title="3">       <span class="dt">resid =</span> <span class="kw">residuals</span>(pp_mod)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb158-4" title="4"><span class="st">  </span><span class="kw">group_by</span>(Subject) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb158-5" title="5"><span class="st">  </span><span class="kw">slice</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">10</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb158-6" title="6"><span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="op">+</span><span class="ot">Inf</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb175-1" title="1"><span class="kw">mutate</span>(sleep2,</a>
+<a class="sourceLine" id="cb175-2" title="2">       <span class="dt">fit =</span> <span class="kw">fitted</span>(pp_mod),</a>
+<a class="sourceLine" id="cb175-3" title="3">       <span class="dt">resid =</span> <span class="kw">residuals</span>(pp_mod)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb175-4" title="4"><span class="st">  </span><span class="kw">group_by</span>(Subject) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb175-5" title="5"><span class="st">  </span><span class="kw">slice</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">10</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb175-6" title="6"><span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="op">+</span><span class="ot">Inf</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 18 x 6
 ## # Groups:   Subject [18]
 ##    Reaction  Days Subject days_deprived   fit  resid
@@ -1102,17 +1099,17 @@ to the response time, on average.</p>
 ## 17     278.     2 371                 0  261.  17.3 
 ## 18     298.     2 372                 0  286.  11.9</code></pre>
 <p>Finally, we can get predictions for new data using <code>predict()</code>, as we did above. Below we use <code>predict()</code> to imagine what might have happened had we continued our study for three extra days.</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb160-1" title="1"><span class="co">## create the table with new predictor values</span></a>
-<a class="sourceLine" id="cb160-2" title="2">ndat &lt;-<span class="st"> </span><span class="kw">crossing</span>(<span class="dt">Subject =</span> sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">levels</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">factor</span>(),</a>
-<a class="sourceLine" id="cb160-3" title="3">                 <span class="dt">days_deprived =</span> <span class="dv">8</span><span class="op">:</span><span class="dv">10</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb160-4" title="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Reaction =</span> <span class="kw">predict</span>(pp_mod, <span class="dt">newdata =</span> .))</a></code></pre></div>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb161-2" title="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">bind_rows</span>(newdata2, ndat),</a>
-<a class="sourceLine" id="cb161-3" title="3">            <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb161-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb161-5" title="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">10</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb161-6" title="6"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
-<a class="sourceLine" id="cb161-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" title="1"><span class="co">## create the table with new predictor values</span></a>
+<a class="sourceLine" id="cb177-2" title="2">ndat &lt;-<span class="st"> </span><span class="kw">crossing</span>(<span class="dt">Subject =</span> sleep2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">levels</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">factor</span>(),</a>
+<a class="sourceLine" id="cb177-3" title="3">                 <span class="dt">days_deprived =</span> <span class="dv">8</span><span class="op">:</span><span class="dv">10</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb177-4" title="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Reaction =</span> <span class="kw">predict</span>(pp_mod, <span class="dt">newdata =</span> .))</a></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" title="1"><span class="kw">ggplot</span>(sleep2, <span class="kw">aes</span>(<span class="dt">x =</span> days_deprived, <span class="dt">y =</span> Reaction)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb178-2" title="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">bind_rows</span>(newdata2, ndat),</a>
+<a class="sourceLine" id="cb178-3" title="3">            <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb178-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb178-5" title="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">10</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb178-6" title="6"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Subject) <span class="op">+</span></a>
+<a class="sourceLine" id="cb178-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Reaction Time&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Days deprived of sleep (0 = baseline)&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:extrap-plot"></span>
 <img src="05-linear-mixed-effects-intro_files/figure-html/extrap-plot-1.png" alt="Data against model with extrapolation." width="100%" />
 <p class="caption">
@@ -1243,7 +1240,7 @@ window.onload = function() {
         </div>
       </div>
 <a href="interactions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="specifying-the-predictors.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="modeling-experimental-data-with-linear-mixed-effects-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

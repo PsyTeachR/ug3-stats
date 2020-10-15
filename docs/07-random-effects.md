@@ -1,16 +1,237 @@
-# Specifying random effects in linear mixed-effects models
-
-
+# Modeling experimental data with linear mixed-effects models
 
 ## Learning objectives
 
-* specify maximal random effects structure for complex designs
+* specify linear mixed-effects models for experimental designs
 * simulate data for a design with crossed random factors of subjects and stimuli
 * estimate parameters for linear mixed-effects models with crossed random factors
 
 ## Web app
 
 - [Demo of crossed random effects](http://shiny.psy.gla.ac.uk/Dale/crossed)
+
+## Replacing t-test and ANOVA with linear mixed-effects regression
+
+As we have been emphasizing throughout this course, most data in psychology is multi-level---there are multiple observations on the DV for each subject. 
+
+In the last chapter, we saw how to perform multilevel linear regression with a continuous predictor. In this section, we'll see how a mixed-effects model can be used to replace a wide variety of standard techniques used in psychology for multi-level data with categorical predictors. Indeed, a very simple model with random intercepts can replace the following techniques, if they are used on **multi-level data**:
+
+* one sample t-test
+* between-subjects designs
+    - independent samples t-test
+    - one factor or factorial ANOVA
+* within-subjects designs
+    - paired samples t-tests
+    - one factor repeated measures ANOVA
+    - mixed-design ANOVA
+    - within-subjects factorial ANOVA
+
+### Example: Independent-samples $t$-test on multi-level data
+
+Let's consider a situation where you are testing the effect of alcohol consumption on simple reaction time (e.g., press a button as fast as you can after a light appears). To keep it simple, let's assume that you have collected data from 14 participants randomly assigned to perform a set of 10 simple RT trials after one of two interventions: drinking a pint of alcohol (treatment condition) or a placebo drink (placebo condition).  You have 7 participants in each of the two groups. Note that you would need more than this for a real study.
+
+The web app below presents simulated data from such a study. Subjects P01-P07 are from the placebo condition, while subjects T01-T07 are from the treatment condition.
+
+<div class="figure" style="text-align: center">
+<iframe src="http://shiny.psy.gla.ac.uk/Dale/icc?showcase=0" width="100%" height="620px"></iframe>
+<p class="caption">(\#fig:icc-app)Multi-level data from an independent samples design.</p>
+</div>
+
+If we were going to run a t-test on these data, we would first need to calculate subject means, because otherwise the observations are not independent. You could do this as follows. (If you want to run the code below, you can download sample data from the web app above and save it as `independent_samples.csv`).
+
+
+```r
+library("tidyverse")
+
+dat <- read_csv("data/independent_samples.csv", col_types = "cci")
+
+subj_means <- dat %>%
+  group_by(subject, cond) %>%
+  summarise(mean_rt = mean(RT)) %>%
+  ungroup()
+
+subj_means
+```
+
+```
+## # A tibble: 14 x 3
+##    subject cond  mean_rt
+##    <chr>   <chr>   <dbl>
+##  1 P01     P        354 
+##  2 P02     P        384.
+##  3 P03     P        391.
+##  4 P04     P        404.
+##  5 P05     P        421.
+##  6 P06     P        392 
+##  7 P07     P        400.
+##  8 T08     T        430.
+##  9 T09     T        432.
+## 10 T10     T        410.
+## 11 T11     T        455.
+## 12 T12     T        450.
+## 13 T13     T        418.
+## 14 T14     T        489.
+```
+
+Then, the $t$-test can be run using the "formula" version of `t.test()`.
+
+
+```r
+t.test(mean_rt ~ cond, subj_means)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  mean_rt by cond
+## t = -3.7985, df = 11.32, p-value = 0.002807
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -76.32580 -20.44563
+## sample estimates:
+## mean in group P mean in group T 
+##        392.3143        440.7000
+```
+
+While there is nothing wrong with this analysis, aggregating the data throws away information. we can see in the above web app that there are actually two different sources of variability: trial-by-trial variability in simple RT (represented by $\sigma$) and variability across subjects in terms of their how slow or fast they are relative to the population mean ($\gamma_{00}$).  The Data Generating Process for response time ($Y_{st}$) for subject $s$ on trial $t$ is shown below.
+
+*Level 1:*
+
+\begin{equation}
+Y_{st} = \beta_{0s} + \beta_{1} X_{s} + e_{st}
+\end{equation}
+
+*Level 2:*
+
+\begin{equation}
+\beta_{0s} = \gamma_{00} + S_{0s}
+\end{equation}
+
+\begin{equation}
+\beta_{1} = \gamma_{10}
+\end{equation}
+
+*Variance Components:*
+
+\begin{equation}
+S_{0s} \sim N\left(0, {\tau_{00}}^2\right) 
+\end{equation}
+
+\begin{equation}
+e_{st} \sim N\left(0, \sigma^2\right)
+\end{equation}
+
+In the above equation, $X_s$ is a numerical predictor coding which condition the subject $s$ is in; e.g., 0 for placebo, 1 for treatment.
+
+The multi-level equations are somewhat cumbersome for such a simple model; we could just reduce levels 1 and 2 to 
+
+\begin{equation}
+Y_{st} = \gamma_{00} + S_{0s} + \gamma_{10} X_s + e_{st},
+\end{equation}
+
+but it is worth becoming familiar with the multi-level format for when we encounter more complex designs.
+
+Unlike the `sleepstudy` data seen in the last chapter, we only have one random effect for each subject, $S_{0s}$. There is no random slope. Each subject appears in only one of the two treatment conditions, so it would not be possible to estimate how the effect of placebo versus alcohol varies over subjects.  The mixed-effects model that we would fit to these data, with random intercepts but no random slopes, is known as a **random intercepts model**.
+
+A random-intercepts model would adequately capture the two sources of variability mentioned above: the inter-subject variability in overall mean RT in the parameter ${\tau_{00}}^2$, and the trial-by-trial variability in the parameter $\sigma^2$. We can calculate the proportion of the total variability attributable to individual differences among subjects using the formula below.
+
+$$ICC = \frac{{\tau_{00}}^2}{{\tau_{00}}^2 + \sigma^2}$$
+
+This quantity, known as the **intra-class correlation coefficient**, and tells you how much clustering there is in your data. It ranges from 0 to 1, with 0 indicating that all the variability is due to residual variance, and 1 indicating that all the variability is due to individual differences among subjects.
+
+The lmer syntax for fitting a random intercepts model to the data is `lmer(RT ~ cond + (1 | subject), dat, REML=FALSE)`. Let's create our own numerical predictor first, to make it explicit that we are using dummy coding.
+
+
+```r
+dat2 <- dat %>%
+  mutate(cond_d = if_else(cond == "T", 1L, 0L))
+
+distinct(dat2, cond, cond_d)  ## double check
+```
+
+```
+## # A tibble: 2 x 2
+##   cond  cond_d
+##   <chr>  <int>
+## 1 P          0
+## 2 T          1
+```
+
+And now, estimate the model.
+
+
+```r
+library("lme4")
+
+mod <- lmer(RT ~ cond_d + (1 | subject), dat2, REML = FALSE)
+
+summary(mod)
+```
+
+```
+## Linear mixed model fit by maximum likelihood  ['lmerMod']
+## Formula: RT ~ cond_d + (1 | subject)
+##    Data: dat2
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1451.8   1463.5   -721.9   1443.8      136 
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.67117 -0.66677  0.01656  0.75361  2.58447 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  subject  (Intercept)  329.3   18.15   
+##  Residual             1574.7   39.68   
+## Number of obs: 140, groups:  subject, 14
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  392.314      8.339  47.045
+## cond_d        48.386     11.793   4.103
+## 
+## Correlation of Fixed Effects:
+##        (Intr)
+## cond_d -0.707
+```
+
+Play around with the sliders in the app above and check the lmer output panel until you understand how the output maps onto the model parameters.
+
+### When is a random-intercepts model appropriate?
+
+The random-intercepts model is appropriate for any one-sample or between-subjects data where you have multiple observations per participant. The data **must** be multi-level, because in single-level designs the subject variability is perfectly confounded with residual variability, making it impossible for the estimation algorithm to distinguish the two sources.
+
+A random-intercepts model is **sometimes** appropriate for within-subjects or mixed-design data. For designs where there is at least one within-subjects factor, and where you are performing analyses on subject means, it is generally the case that a random-intercepts model is appropriate.
+
+In a design with a single within-subjects factor, it is **only** appropriate when you have a single observation per subject per level of the within-subject factor. If you have more than one observation per subject per level, you need to enrich your random effects structure with random slopes, as described in the next section. If the reason you have multiple observations per subject per level is because you have each subject reacting to the same set of stimuli, then you might want to consider a mixed-effects model with crossed random effects for subjects and stimuli, as described in the next chapter. If you have sets of individual subject means on which you would normally perform a paired-samples t-test or repeated measures ANOVA, that would be data for which the random-intercepts model would be appropriate. 
+
+The same logic goes for factorial designs in which there is more than one within-subjects factor. In factorial designs, the random-intercepts model is appropriate if you have one observation per subject per **cell** formed by each combination of the within-subjects factors. For instance, if $A$ and $B$ are two two-level within-subject factors, you need to check that you have only one observation for each subject in $A_1B_1$, $A_1B_2$, $A_2B_1$, and $A_2B_2$. If you have more than one observation, you will need to consider including a random slope in your model.
+
+### Rules for choosing random effects
+
+For designs having at least one within-subject factor, it is typically the case that you need to also consider including random slopes for certain factors.  We will go into this in more detail in the next chapter, where we will consider more complex designs, but here are the basic guidelines.
+
+For categorical factor $A$, you need to consider a random slope for $A$ in the model if **both** of the following criteria are met:
+
+1. $A$ is a within-subjects factor;
+2. Each subject has multiple observations on the dependent variable for each level of $A$.
+
+You would specify a random slope for $A$ using the following model syntax:
+
+`DV ~ A + (A | subject)`
+
+where `DV` is the name of your dependent variable and `subject` is the name of the variable you use to identify subjects.
+
+What about interactions? If you have a design with three factors, $A$, $B$, and $C$, you have three main effects, three two-way interactions ($AB$, $AC$, and $BC$), and one three-way interaction $ABC$. So there are 7 possible random slopes to consider. Which of these effects would need a random slope? Here are the steps you need to follow to figure it out for each interaction term.
+
+1. If all factors involved in the interaction are between subjects, you don't need a slope.
+2. Identify the highest-order combination of within-subject factors included in the interaction. So if $A$ and $B$ are within-subject factors and $C$ is between subjects, then $AB$ is the highest order combination. If $A$ is within subjects and $B$ and $C$ are between subjects, then $A$ is the highest order combination.
+3. Check whether each subject has multiple observations on the DV in each cell (or level) resulting from the combination of the within factors you identified in the previous step. If you do, then you need a random slope. If you have only one observation per subject/cell combination, then you don't.
+
+
+
 
 ## Specifying random effects
 

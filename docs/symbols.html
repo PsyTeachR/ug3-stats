@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-10-11" />
+<meta name="date" content="2020-10-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,8 +180,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="interactions.html"><a href="interactions.html#the-glm-for-a-factorial-design"><i class="fa fa-check"></i><b>4.5</b> The GLM for a factorial design</a><ul>
 <li class="chapter" data-level="4.5.1" data-path="interactions.html"><a href="interactions.html#estimation-equations"><i class="fa fa-check"></i><b>4.5.1</b> Estimation equations</a></li>
+<li class="chapter" data-level="4.5.2" data-path="interactions.html"><a href="interactions.html#factorial-app"><i class="fa fa-check"></i><b>4.5.2</b> Factorial App</a></li>
 </ul></li>
-<li class="chapter" data-level="4.6" data-path="interactions.html"><a href="interactions.html#factorial-app"><i class="fa fa-check"></i><b>4.6</b> Factorial App</a></li>
+<li class="chapter" data-level="4.6" data-path="interactions.html"><a href="interactions.html#code-your-own-categorical-predictors-in-factorial-designs"><i class="fa fa-check"></i><b>4.6</b> Code your own categorical predictors in factorial designs</a></li>
+<li class="chapter" data-level="4.7" data-path="interactions.html"><a href="interactions.html#coding-schemes-for-categorical-variables"><i class="fa fa-check"></i><b>4.7</b> Coding schemes for categorical variables</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="interactions.html"><a href="interactions.html#simple-versus-main-effects"><i class="fa fa-check"></i><b>4.7.1</b> Simple versus main effects</a></li>
+<li class="chapter" data-level="4.7.2" data-path="interactions.html"><a href="interactions.html#the-key-coding-schemes"><i class="fa fa-check"></i><b>4.7.2</b> The key coding schemes</a></li>
+<li class="chapter" data-level="4.7.3" data-path="interactions.html"><a href="interactions.html#what-about-factors-with-more-than-two-levels"><i class="fa fa-check"></i><b>4.7.3</b> What about factors with more than two levels?</a></li>
+<li class="chapter" data-level="4.7.4" data-path="interactions.html"><a href="interactions.html#example-three-level-factor"><i class="fa fa-check"></i><b>4.7.4</b> Example: Three-level factor</a></li>
+<li class="chapter" data-level="4.7.5" data-path="interactions.html"><a href="interactions.html#how-to-create-your-own-numeric-predictors"><i class="fa fa-check"></i><b>4.7.5</b> How to create your own numeric predictors</a></li>
+<li class="chapter" data-level="4.7.6" data-path="interactions.html"><a href="interactions.html#conclusion"><i class="fa fa-check"></i><b>4.7.6</b> Conclusion</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>5</b> Introducing Linear Mixed-Effects Models</a><ul>
 <li class="chapter" data-level="5.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
@@ -200,47 +209,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.6" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#multi-level-app"><i class="fa fa-check"></i><b>5.6</b> Multi-level app</a></li>
 <li class="chapter" data-level="5.7" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html"><i class="fa fa-check"></i><b>6</b> Specifying the predictors</a><ul>
+<li class="chapter" data-level="6" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>6</b> Modeling experimental data with linear mixed-effects models</a><ul>
 <li class="chapter" data-level="6.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="6.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#code-your-own-categorical-predictors"><i class="fa fa-check"></i><b>6.2</b> Code your own categorical predictors</a></li>
-<li class="chapter" data-level="6.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#coding-schemes-for-categorical-variables"><i class="fa fa-check"></i><b>6.3</b> Coding schemes for categorical variables</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#simple-versus-main-effects"><i class="fa fa-check"></i><b>6.3.1</b> Simple versus main effects</a></li>
-<li class="chapter" data-level="6.3.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#the-key-coding-schemes"><i class="fa fa-check"></i><b>6.3.2</b> The key coding schemes</a></li>
-<li class="chapter" data-level="6.3.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#what-about-factors-with-more-than-two-levels"><i class="fa fa-check"></i><b>6.3.3</b> What about factors with more than two levels?</a></li>
-<li class="chapter" data-level="6.3.4" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#example-three-level-factor"><i class="fa fa-check"></i><b>6.3.4</b> Example: Three-level factor</a></li>
-<li class="chapter" data-level="6.3.5" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#how-to-create-your-own-numeric-predictors"><i class="fa fa-check"></i><b>6.3.5</b> How to create your own numeric predictors</a></li>
-<li class="chapter" data-level="6.3.6" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#conclusion"><i class="fa fa-check"></i><b>6.3.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#web-app"><i class="fa fa-check"></i><b>6.2</b> Web app</a></li>
+<li class="chapter" data-level="6.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#replacing-t-test-and-anova-with-linear-mixed-effects-regression"><i class="fa fa-check"></i><b>6.3</b> Replacing t-test and ANOVA with linear mixed-effects regression</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#example-independent-samples-t-test-on-multi-level-data"><i class="fa fa-check"></i><b>6.3.1</b> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</a></li>
+<li class="chapter" data-level="6.3.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#when-is-a-random-intercepts-model-appropriate"><i class="fa fa-check"></i><b>6.3.2</b> When is a random-intercepts model appropriate?</a></li>
+<li class="chapter" data-level="6.3.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#rules-for-choosing-random-effects"><i class="fa fa-check"></i><b>6.3.3</b> Rules for choosing random effects</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#replacing-t-test-and-anova-with-linear-mixed-effects-regression"><i class="fa fa-check"></i><b>6.4</b> Replacing t-test and ANOVA with linear mixed-effects regression</a><ul>
-<li class="chapter" data-level="6.4.1" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#example-independent-samples-t-test-on-multi-level-data"><i class="fa fa-check"></i><b>6.4.1</b> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</a></li>
-<li class="chapter" data-level="6.4.2" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#when-is-a-random-intercepts-model-appropriate"><i class="fa fa-check"></i><b>6.4.2</b> When is a random-intercepts model appropriate?</a></li>
-<li class="chapter" data-level="6.4.3" data-path="specifying-the-predictors.html"><a href="specifying-the-predictors.html#rules-for-choosing-random-effects"><i class="fa fa-check"></i><b>6.4.3</b> Rules for choosing random effects</a></li>
+<li class="chapter" data-level="6.4" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#specifying-random-effects"><i class="fa fa-check"></i><b>6.4</b> Specifying random effects</a></li>
+<li class="chapter" data-level="6.5" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#simulating-data-with-crossed-random-factors"><i class="fa fa-check"></i><b>6.5</b> Simulating data with crossed random factors</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#set-up-the-environment-and-define-the-parameters-for-the-dgp"><i class="fa fa-check"></i><b>6.5.1</b> Set up the environment and define the parameters for the DGP</a></li>
+<li class="chapter" data-level="6.5.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#generate-a-sample-of-subjects"><i class="fa fa-check"></i><b>6.5.2</b> Generate a sample of subjects</a></li>
+<li class="chapter" data-level="6.5.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#generate-a-sample-of-encounters-trials"><i class="fa fa-check"></i><b>6.5.3</b> Generate a sample of encounters (trials)</a></li>
+<li class="chapter" data-level="6.5.4" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#join-subjects-items-and-trials"><i class="fa fa-check"></i><b>6.5.4</b> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></a></li>
+<li class="chapter" data-level="6.5.5" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#create-the-response-variable"><i class="fa fa-check"></i><b>6.5.5</b> Create the response variable</a></li>
 </ul></li>
+<li class="chapter" data-level="6.6" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#fitting-the-model"><i class="fa fa-check"></i><b>6.6</b> Fitting the model</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>7</b> Specifying random effects in linear mixed-effects models</a><ul>
+<li class="chapter" data-level="7" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>7</b> Generalized linear mixed-effects models</a><ul>
 <li class="chapter" data-level="7.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="7.2" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#web-app"><i class="fa fa-check"></i><b>7.2</b> Web app</a></li>
-<li class="chapter" data-level="7.3" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#specifying-random-effects"><i class="fa fa-check"></i><b>7.3</b> Specifying random effects</a></li>
-<li class="chapter" data-level="7.4" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#simulating-data-with-crossed-random-factors"><i class="fa fa-check"></i><b>7.4</b> Simulating data with crossed random factors</a><ul>
-<li class="chapter" data-level="7.4.1" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#set-up-the-environment-and-define-the-parameters-for-the-dgp"><i class="fa fa-check"></i><b>7.4.1</b> Set up the environment and define the parameters for the DGP</a></li>
-<li class="chapter" data-level="7.4.2" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#generate-a-sample-of-subjects"><i class="fa fa-check"></i><b>7.4.2</b> Generate a sample of subjects</a></li>
-<li class="chapter" data-level="7.4.3" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#generate-a-sample-of-encounters-trials"><i class="fa fa-check"></i><b>7.4.3</b> Generate a sample of encounters (trials)</a></li>
-<li class="chapter" data-level="7.4.4" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#join-subjects-items-and-trials"><i class="fa fa-check"></i><b>7.4.4</b> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></a></li>
-<li class="chapter" data-level="7.4.5" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#create-the-response-variable"><i class="fa fa-check"></i><b>7.4.5</b> Create the response variable</a></li>
+<li class="chapter" data-level="7.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#discrete-versus-continuous-data"><i class="fa fa-check"></i><b>7.2</b> Discrete versus continuous data</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#why-not-model-discrete-data-as-continuous"><i class="fa fa-check"></i><b>7.2.1</b> Why not model discrete data as continuous?</a></li>
 </ul></li>
-<li class="chapter" data-level="7.5" data-path="specifying-random-effects-in-linear-mixed-effects-models.html"><a href="specifying-random-effects-in-linear-mixed-effects-models.html#fitting-the-model"><i class="fa fa-check"></i><b>7.5</b> Fitting the model</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed-effects models</a><ul>
-<li class="chapter" data-level="8.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="8.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#discrete-versus-continuous-data"><i class="fa fa-check"></i><b>8.2</b> Discrete versus continuous data</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#why-not-model-discrete-data-as-continuous"><i class="fa fa-check"></i><b>8.2.1</b> Why not model discrete data as continuous?</a></li>
-</ul></li>
-<li class="chapter" data-level="8.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#generalized-linear-models"><i class="fa fa-check"></i><b>8.3</b> Generalized Linear Models</a></li>
-<li class="chapter" data-level="8.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Logistic regression</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#terminology"><i class="fa fa-check"></i><b>8.4.1</b> Terminology</a></li>
-<li class="chapter" data-level="8.4.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#properties-of-log-odds"><i class="fa fa-check"></i><b>8.4.2</b> Properties of log odds</a></li>
-<li class="chapter" data-level="8.4.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#link-and-variance-functions"><i class="fa fa-check"></i><b>8.4.3</b> Link and variance functions</a></li>
-<li class="chapter" data-level="8.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>8.4.4</b> Estimating logistic regression models in R</a></li>
+<li class="chapter" data-level="7.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#generalized-linear-models"><i class="fa fa-check"></i><b>7.3</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="7.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#logistic-regression"><i class="fa fa-check"></i><b>7.4</b> Logistic regression</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#terminology"><i class="fa fa-check"></i><b>7.4.1</b> Terminology</a></li>
+<li class="chapter" data-level="7.4.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#properties-of-log-odds"><i class="fa fa-check"></i><b>7.4.2</b> Properties of log odds</a></li>
+<li class="chapter" data-level="7.4.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#link-and-variance-functions"><i class="fa fa-check"></i><b>7.4.3</b> Link and variance functions</a></li>
+<li class="chapter" data-level="7.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>7.4.4</b> Estimating logistic regression models in R</a></li>
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
@@ -304,19 +301,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">generally, a population mean; sometimes, a model intercept. <span class="math inline">\(\mu_x\)</span> represents the mean of x</td>
 </tr>
 <tr class="even">
-<td align="left"><span class="math inline">\(\rho_{xy}\)</span></td>
-<td align="left">row</td>
-<td align="left">population correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span></td>
-</tr>
-<tr class="odd">
 <td align="left"><span class="math inline">\(\sigma\)</span></td>
 <td align="left">sigma</td>
 <td align="left">lower case sigma is the standard deviation; <span class="math inline">\(\sigma_x\)</span> is the standard deviation of <span class="math inline">\(X\)</span></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><span class="math inline">\(\sigma^2\)</span></td>
 <td align="left">sigma squared</td>
 <td align="left">variance</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\rho\)</span></td>
+<td align="left">row</td>
+<td align="left">population correlation; <span class="math inline">\(\rho_{xy}\)</span> is the correlation in the population between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(r\)</span></td>
+<td align="left">row</td>
+<td align="left">sample correlation; r_{xy} is the correlation in the sample between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span></td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\mathbf{\Sigma}\)</span></td>
+<td align="left">sigma</td>
+<td align="left">the capital letter sigma in boldface represents a variance-covariance matrix</td>
 </tr>
 <tr class="odd">
 <td align="left"><span class="math inline">\(\sum\)</span></td>
@@ -324,9 +331,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">upper case sigma is an instruction to add; e.g., <span class="math inline">\(\sum X_i\)</span> is the instruction to sum together all values of X.</td>
 </tr>
 <tr class="even">
-<td align="left"><span class="math inline">\(\mathbf{\Sigma}\)</span></td>
-<td align="left">sigma</td>
-<td align="left">the capital letter sigma in boldface represents a variance-covariance matrix</td>
+<td align="left">$</td>
+<td align="left">beta</td>
+<td align="left">regression coefficient</td>
 </tr>
 </tbody>
 </table>
