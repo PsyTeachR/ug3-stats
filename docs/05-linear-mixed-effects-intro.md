@@ -510,9 +510,6 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
 This is much better than the complete pooling model. If we want to test the null hypothesis that the fixed slope is zero, we could do using a one-sample test.
 
 
-```r
-.np1 <- np_coef %>% pull(slope) %>% t.test()
-```
 
 
 ```r
@@ -866,7 +863,7 @@ sqrt(diag(vcov(pp_mod)))
 ## [1] 8.265896 1.845293
 ```
 
-Note that these \(t\) values do not appear with \(p\) values, as is customary in simpler modeling frameworks. There are multiple approaches for getting \(p\) values from mixed-effects models, with advantages and disadvantages to each (see [Luke, 2017]() for a survey of options). The \(t\) values do not appear with degrees of freedom, because the degrees of freedom in a mixed-effects model are not well-defined. Often people will treat them as Wald \(z\) values, i.e., as observations from the standard normal distribution. Because the \(t\) distribution asymptotes the standard normal distribution as the number of observations goes to infinity, this "t-as-z" practice is legitimate if you have a large enough set of observations.
+Note that these \(t\) values do not appear with \(p\) values, as is customary in simpler modeling frameworks. There are multiple approaches for getting \(p\) values from mixed-effects models, with advantages and disadvantages to each; see @Luke_2017 for a survey of options. The \(t\) values do not appear with degrees of freedom, because the degrees of freedom in a mixed-effects model are not well-defined. Often people will treat them as Wald \(z\) values, i.e., as observations from the standard normal distribution. Because the \(t\) distribution asymptotes the standard normal distribution as the number of observations goes to infinity, this "t-as-z" practice is legitimate if you have a large enough set of observations.
 
 To calculate the Wald \(z\) values, just divide the fixed effect estimate by its standard error:
 
@@ -1115,8 +1112,3 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
 
 [Try out the multi-level web app](http://shiny.psy.gla.ac.uk/Dale/multilevel){target="_blank"} to sharpen your understanding of the three different approaches to multi-level modeling.
 
-## References
-
-Bates, D., Mächler, M., Bolker, B., and Walker, S. (2015). [Fitting Linear Mixed-Effects Models Using lme4](https://www.jstatsoft.org/article/view/v067i01). *Journal of Statistical Software*, *67*, 1–48.
-
-Luke, S. G. (2017). [Evaluating significance in linear mixed-effects models in R](https://link.springer.com/article/10.3758/s13428-016-0809-y). *Behavior Research Methods*, *49*, 1494–1502.
