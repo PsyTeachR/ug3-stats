@@ -44,7 +44,7 @@ In the exercises below, we'll be working with the `sleepstudy` data, a built in 
 
 ## Modeling multi-level data
 
-The `sleepstudy` data is included as a built-in dataset in the `lme4` package for R ([Bates, Mächler, Bolker, & Walker, 2015](https://www.jstatsoft.org/article/view/v067i01/0)). Some of the ideas presented in this section come from Richard McElreath's [Statistical Rethinking](https://xcelab.net/rm/statistical-rethinking/) textbook as well as from Tristan Mahr's [blog post on partial pooling](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/).
+The `sleepstudy` data is included as a built-in dataset in the `lme4` package for R [@Bates_et_al_2015]. Some of the ideas presented in this section come from @McElreath_2020 [Statistical Rethinking](https://xcelab.net/rm/statistical-rethinking/) textbook as well as from Tristan Mahr's [blog post on partial pooling](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/).
 
 Let's start by looking at the documentation for the `sleepstudy` dataset. After loading the **`lme4`** package, you can access the documentation by typing `?sleepstudy` in the console.
 
@@ -148,7 +148,7 @@ Before proceeding, there is one important thing to note. Unfortunately, the desc
 
 > On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night.
 
-However, this is what the [Belenky article](https://doi.org/10.1046/j.1365-2869.2003.00337.x) actually says (p. 2 of the PDF):
+However, this is what @Belenky_et_al_2003 actually say (p. 2 of the PDF):
 
 > The first 3 days (T1, T2 and B) were adaptation and training (T1 and T2) and baseline (B) and subjects were required to be in bed from 23:00 to 07:00 h [8 h required time in bed (TIB)]. On the third day (B), baseline measures were taken. Beginning on the fourth day and continuing for a total of 7 days (E1–E7) subjects were in one of four sleep conditions [9 h required TIB (22:00–07:00 h), 7 h required TIB (24:00–07:00 h), 5 h required TIB (02:00–07:00 h), or 3 h required TIB (04:00–07:00 h)], effectively one sleep augmentation condition, and three sleep restriction conditions.
 

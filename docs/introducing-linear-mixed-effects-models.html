@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-10-15" />
+<meta name="date" content="2020-10-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -283,7 +283,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="modeling-multi-level-data" class="section level2">
 <h2><span class="header-section-number">5.2</span> Modeling multi-level data</h2>
-<p>The <code>sleepstudy</code> data is included as a built-in dataset in the <code>lme4</code> package for R (<a href="https://www.jstatsoft.org/article/view/v067i01/0">Bates, Mächler, Bolker, &amp; Walker, 2015</a>). Some of the ideas presented in this section come from Richard McElreath’s <a href="https://xcelab.net/rm/statistical-rethinking/">Statistical Rethinking</a> textbook as well as from Tristan Mahr’s <a href="https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/">blog post on partial pooling</a>.</p>
+<p>The <code>sleepstudy</code> data is included as a built-in dataset in the <code>lme4</code> package for R <span class="citation">(Bates et al. <a href="#ref-Bates_et_al_2015">2015</a>)</span>. Some of the ideas presented in this section come from <span class="citation">McElreath (<a href="#ref-McElreath_2020">2020</a>)</span> <a href="https://xcelab.net/rm/statistical-rethinking/">Statistical Rethinking</a> textbook as well as from Tristan Mahr’s <a href="https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/">blog post on partial pooling</a>.</p>
 <p>Let’s start by looking at the documentation for the <code>sleepstudy</code> dataset. After loading the <strong><code>lme4</code></strong> package, you can access the documentation by typing <code>?sleepstudy</code> in the console.</p>
 <pre><code>sleepstudy                package:lme4                 R Documentation
 
@@ -373,7 +373,7 @@ Show me
 <blockquote>
 <p>On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night.</p>
 </blockquote>
-<p>However, this is what the <a href="https://doi.org/10.1046/j.1365-2869.2003.00337.x">Belenky article</a> actually says (p. 2 of the PDF):</p>
+<p>However, this is what <span class="citation">Belenky et al. (<a href="#ref-Belenky_et_al_2003">2003</a>)</span> actually say (p. 2 of the PDF):</p>
 <blockquote>
 <p>The first 3 days (T1, T2 and B) were adaptation and training (T1 and T2) and baseline (B) and subjects were required to be in bed from 23:00 to 07:00 h [8 h required time in bed (TIB)]. On the third day (B), baseline measures were taken. Beginning on the fourth day and continuing for a total of 7 days (E1–E7) subjects were in one of four sleep conditions [9 h required TIB (22:00–07:00 h), 7 h required TIB (24:00–07:00 h), 5 h required TIB (02:00–07:00 h), or 3 h required TIB (04:00–07:00 h)], effectively one sleep augmentation condition, and three sleep restriction conditions.</p>
 </blockquote>
@@ -1127,6 +1127,18 @@ Figure 5.7: Data against model with extrapolation.
 <p>Bates, D., Mächler, M., Bolker, B., and Walker, S. (2015). <a href="https://www.jstatsoft.org/article/view/v067i01">Fitting Linear Mixed-Effects Models Using lme4</a>. <em>Journal of Statistical Software</em>, <em>67</em>, 1–48.</p>
 <p>Luke, S. G. (2017). <a href="https://link.springer.com/article/10.3758/s13428-016-0809-y">Evaluating significance in linear mixed-effects models in R</a>. <em>Behavior Research Methods</em>, <em>49</em>, 1494–1502.</p>
 
+</div>
+</div>
+<h3><span class="header-section-number">B</span> Bibliography</h3>
+<div id="refs" class="references">
+<div id="ref-Bates_et_al_2015">
+<p>Bates, DM, M Maechler, BM Bolker, and S Walker. 2015. “Fitting Linear Mixed-Effects Models Using Lme4.” <em>Journal of Statistical Software</em> 67: 1–48.</p>
+</div>
+<div id="ref-Belenky_et_al_2003">
+<p>Belenky, Gregory, Nancy J Wesensten, David R Thorne, Maria L Thomas, Helen C Sing, Daniel P Redmond, Michael B Russo, and Thomas J Balkin. 2003. “Patterns of Performance Degradation and Restoration During Sleep Restriction and Subsequent Recovery: A Sleep Dose-Response Study.” <em>Journal of Sleep Research</em> 12 (1): 1–12.</p>
+</div>
+<div id="ref-McElreath_2020">
+<p>McElreath, Richard. 2020. <em>Statistical Rethinking: A Bayesian course with examples in R and STAN</em>. CRC Press.</p>
 </div>
 </div>
 <div class="psyteachr_footer">
