@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-10-18" />
+<meta name="date" content="2020-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -559,36 +559,36 @@ z = \frac{X - \mu_x}{\sigma_x}
 <a class="sourceLine" id="cb69-3" title="3"></a>
 <a class="sourceLine" id="cb69-4" title="4">fake_data</a></code></pre></div>
 <pre><code>## # A tibble: 10 x 2
-##         Y group
-##     &lt;dbl&gt; &lt;chr&gt;
-##  1 -0.283 A    
-##  2  0.854 A    
-##  3 -1.39  A    
-##  4  1.23  A    
-##  5  0.838 A    
-##  6 -0.525 B    
-##  7 -0.240 B    
-##  8 -0.495 B    
-##  9 -0.397 B    
-## 10 -1.11  B</code></pre>
+##          Y group
+##      &lt;dbl&gt; &lt;chr&gt;
+##  1 -0.258  A    
+##  2  2.41   A    
+##  3 -0.864  A    
+##  4 -0.593  A    
+##  5 -1.76   A    
+##  6 -0.0864 B    
+##  7 -1.57   B    
+##  8  0.741  B    
+##  9 -0.150  B    
+## 10  0.825  B</code></pre>
 <p>Now let’s add a new variable, <code>group_d</code>, which is the dummy coded group variable. We will use the <code>dplyr::if_else()</code> function to define the new column.</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1">fake_data2 &lt;-<span class="st"> </span>fake_data <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb71-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group_d =</span> <span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> &quot;B&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
 <a class="sourceLine" id="cb71-3" title="3"></a>
 <a class="sourceLine" id="cb71-4" title="4">fake_data2</a></code></pre></div>
 <pre><code>## # A tibble: 10 x 3
-##         Y group group_d
-##     &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
-##  1 -0.283 A           0
-##  2  0.854 A           0
-##  3 -1.39  A           0
-##  4  1.23  A           0
-##  5  0.838 A           0
-##  6 -0.525 B           1
-##  7 -0.240 B           1
-##  8 -0.495 B           1
-##  9 -0.397 B           1
-## 10 -1.11  B           1</code></pre>
+##          Y group group_d
+##      &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
+##  1 -0.258  A           0
+##  2  2.41   A           0
+##  3 -0.864  A           0
+##  4 -0.593  A           0
+##  5 -1.76   A           0
+##  6 -0.0864 B           1
+##  7 -1.57   B           1
+##  8  0.741  B           1
+##  9 -0.150  B           1
+## 10  0.825  B           1</code></pre>
 <p>Now we just run it as a regular regression model.</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="kw">summary</span>(<span class="kw">lm</span>(Y <span class="op">~</span><span class="st"> </span>group_d, fake_data2))</a></code></pre></div>
 <pre><code>## 
@@ -596,17 +596,17 @@ z = \frac{X - \mu_x}{\sigma_x}
 ## lm(formula = Y ~ group_d, data = fake_data2)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.6442 -0.3927  0.1073  0.5196  0.9847 
+##      Min       1Q   Median       3Q      Max 
+## -1.54377 -0.58337 -0.07286  0.58304  2.62042 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   0.2498     0.3572   0.699    0.504
-## group_d      -0.8034     0.5052  -1.590    0.150
+## (Intercept)  -0.2127     0.5820  -0.365    0.724
+## group_d       0.1637     0.8230   0.199    0.847
 ## 
-## Residual standard error: 0.7988 on 8 degrees of freedom
-## Multiple R-squared:  0.2402,	Adjusted R-squared:  0.1452 
-## F-statistic: 2.529 on 1 and 8 DF,  p-value: 0.1504</code></pre>
+## Residual standard error: 1.301 on 8 degrees of freedom
+## Multiple R-squared:  0.00492,	Adjusted R-squared:  -0.1195 
+## F-statistic: 0.03956 on 1 and 8 DF,  p-value: 0.8473</code></pre>
 <p>Note that if we reverse the coding we get the same result, just the sign is different.</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" title="1">fake_data3 &lt;-<span class="st"> </span>fake_data <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb75-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group_d =</span> <span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> &quot;A&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
@@ -617,17 +617,17 @@ z = \frac{X - \mu_x}{\sigma_x}
 ## lm(formula = Y ~ group_d, data = fake_data3)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.6442 -0.3927  0.1073  0.5196  0.9847 
+##      Min       1Q   Median       3Q      Max 
+## -1.54377 -0.58337 -0.07286  0.58304  2.62042 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)  -0.5536     0.3572   -1.55     0.16
-## group_d       0.8034     0.5052    1.59     0.15
+## (Intercept) -0.04902    0.58196  -0.084    0.935
+## group_d     -0.16369    0.82302  -0.199    0.847
 ## 
-## Residual standard error: 0.7988 on 8 degrees of freedom
-## Multiple R-squared:  0.2402,	Adjusted R-squared:  0.1452 
-## F-statistic: 2.529 on 1 and 8 DF,  p-value: 0.1504</code></pre>
+## Residual standard error: 1.301 on 8 degrees of freedom
+## Multiple R-squared:  0.00492,	Adjusted R-squared:  -0.1195 
+## F-statistic: 0.03956 on 1 and 8 DF,  p-value: 0.8473</code></pre>
 <p>The interpretation of the intercept is the estimated mean for the group coded as zero. You can see by plugging in zero for X in the prediction formula below. Thus, <span class="math inline">\(\beta_1\)</span> can be interpreted as the difference between the mean for the baseline group and the group coded as 1.</p>
 <p><span class="math display">\[\hat{Y_i} = \hat{\beta}_0 + \hat{\beta}_1 X_i \]</span></p>
 <!--
@@ -651,26 +651,26 @@ Why not just use **factors** as your predictors?
 <pre><code>## # A tibble: 20 x 2
 ##    season bodyweight_kg
 ##    &lt;chr&gt;          &lt;dbl&gt;
-##  1 winter         102. 
-##  2 winter         101. 
-##  3 winter         107. 
-##  4 winter         102. 
-##  5 winter         106. 
-##  6 spring          99.0
-##  7 spring         101. 
-##  8 spring         105. 
-##  9 spring          99.5
-## 10 spring          97.4
-## 11 summer         104. 
-## 12 summer          97.9
-## 13 summer         106. 
-## 14 summer         100. 
-## 15 summer          99.6
-## 16 fall           106. 
+##  1 winter         105. 
+##  2 winter         105. 
+##  3 winter         106. 
+##  4 winter         106. 
+##  5 winter         105. 
+##  6 spring         105. 
+##  7 spring         106. 
+##  8 spring         107. 
+##  9 spring         104. 
+## 10 spring         101. 
+## 11 summer         102. 
+## 12 summer         104. 
+## 13 summer          99.3
+## 14 summer          96.3
+## 15 summer          99.5
+## 16 fall           105. 
 ## 17 fall           100. 
-## 18 fall           101. 
-## 19 fall           103. 
-## 20 fall           102.</code></pre>
+## 18 fall           104. 
+## 19 fall           100. 
+## 20 fall           100.</code></pre>
 <p>Now let’s add three predictors to code the variable <code>season</code>.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="co">## baseline value is &#39;winter&#39;</span></a>
 <a class="sourceLine" id="cb79-2" title="2">mydata2 &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span></a>
@@ -682,26 +682,26 @@ Why not just use **factors** as your predictors?
 <pre><code>## # A tibble: 20 x 5
 ##    season bodyweight_kg    V1    V2    V3
 ##    &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 winter         102.      0     0     0
-##  2 winter         101.      0     0     0
-##  3 winter         107.      0     0     0
-##  4 winter         102.      0     0     0
-##  5 winter         106.      0     0     0
-##  6 spring          99.0     1     0     0
-##  7 spring         101.      1     0     0
-##  8 spring         105.      1     0     0
-##  9 spring          99.5     1     0     0
-## 10 spring          97.4     1     0     0
-## 11 summer         104.      0     1     0
-## 12 summer          97.9     0     1     0
-## 13 summer         106.      0     1     0
-## 14 summer         100.      0     1     0
-## 15 summer          99.6     0     1     0
-## 16 fall           106.      0     0     1
+##  1 winter         105.      0     0     0
+##  2 winter         105.      0     0     0
+##  3 winter         106.      0     0     0
+##  4 winter         106.      0     0     0
+##  5 winter         105.      0     0     0
+##  6 spring         105.      1     0     0
+##  7 spring         106.      1     0     0
+##  8 spring         107.      1     0     0
+##  9 spring         104.      1     0     0
+## 10 spring         101.      1     0     0
+## 11 summer         102.      0     1     0
+## 12 summer         104.      0     1     0
+## 13 summer          99.3     0     1     0
+## 14 summer          96.3     0     1     0
+## 15 summer          99.5     0     1     0
+## 16 fall           105.      0     0     1
 ## 17 fall           100.      0     0     1
-## 18 fall           101.      0     0     1
-## 19 fall           103.      0     0     1
-## 20 fall           102.      0     0     1</code></pre>
+## 18 fall           104.      0     0     1
+## 19 fall           100.      0     0     1
+## 20 fall           100.      0     0     1</code></pre>
 </div>
 </div>
 <div id="equivalence-between-multiple-regression-and-one-way-anova" class="section level2">
@@ -713,9 +713,11 @@ Why not just use **factors** as your predictors?
 <a class="sourceLine" id="cb81-4" title="4"></a>
 <a class="sourceLine" id="cb81-5" title="5">my_anova &lt;-<span class="st"> </span><span class="kw">aov</span>(bodyweight_kg <span class="op">~</span><span class="st"> </span>season, mydata3)</a>
 <a class="sourceLine" id="cb81-6" title="6"><span class="kw">summary</span>(my_anova)</a></code></pre></div>
-<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)
-## season       3  33.54  11.180   1.349  0.294
-## Residuals   16 132.61   8.288</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## season       3  79.16  26.387   5.286   0.01 *
+## Residuals   16  79.88   4.992                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>OK, now can we replicate that result using the regression model below?</p>
 <p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{3i} + e_i\]</span></p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1"><span class="kw">summary</span>(<span class="kw">lm</span>(bodyweight_kg <span class="op">~</span><span class="st"> </span>V1 <span class="op">+</span><span class="st"> </span>V2 <span class="op">+</span><span class="st"> </span>V3, mydata3))</a></code></pre></div>
@@ -724,21 +726,21 @@ Why not just use **factors** as your predictors?
 ## lm(formula = bodyweight_kg ~ V1 + V2 + V3, data = mydata3)
 ## 
 ## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -3.622 -1.732 -1.016  2.410  4.802 
+##     Min      1Q  Median      3Q     Max 
+## -3.9969 -1.0949 -0.5802  1.7901  3.9636 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  104.025      1.287  80.798   &lt;2e-16 ***
-## V1            -3.497      1.821  -1.920   0.0728 .  
-## V2            -2.522      1.821  -1.385   0.1850    
-## V3            -1.496      1.821  -0.822   0.4234    
+## (Intercept) 105.2009     0.9992 105.283  &lt; 2e-16 ***
+## V1           -0.6050     1.4131  -0.428  0.67426    
+## V2           -4.8653     1.4131  -3.443  0.00334 ** 
+## V3           -3.3597     1.4131  -2.378  0.03024 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.879 on 16 degrees of freedom
-## Multiple R-squared:  0.2019,	Adjusted R-squared:  0.05223 
-## F-statistic: 1.349 on 3 and 16 DF,  p-value: 0.2939</code></pre>
+## Residual standard error: 2.234 on 16 degrees of freedom
+## Multiple R-squared:  0.4978,	Adjusted R-squared:  0.4036 
+## F-statistic: 5.286 on 3 and 16 DF,  p-value: 0.01005</code></pre>
 <p>Note that the <span class="math inline">\(F\)</span> values and <span class="math inline">\(p\)</span> values are identical for the two methods!</p>
 </div>
 <div id="solution-to-partial-effect-plot" class="section level2">

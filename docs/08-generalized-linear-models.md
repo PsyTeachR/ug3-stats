@@ -75,8 +75,8 @@ rainy_days %>%
 ## # A tibble: 2 x 2
 ##   city         sd
 ##   <chr>     <dbl>
-## 1 Barcelona  6.77
-## 2 Glasgow    9.35
+## 1 Barcelona  6.40
+## 2 Glasgow    9.07
 ```
 
 
@@ -158,8 +158,8 @@ $$np(1 - p)$$.
 The app below allows you to manipulate the intercept and slope of a line in log odds space and to see the projection of the line back into response space. Note the S-shaped ("sigmoidal") shape of the function in the response shape.
 
 <div class="figure" style="text-align: center">
-<iframe src="http://shiny.psy.gla.ac.uk/Dale/logit?showcase=0" width="100%" height="500px"></iframe>
-<p class="caption">(\#fig:logit-app)**Logistic regression web app** <http://shiny.psy.gla.ac.uk/Dale/logit></p>
+<iframe src="https://shiny.psy.gla.ac.uk/Dale/logit?showcase=0" width="100%" height="500px"></iframe>
+<p class="caption">(\#fig:logit-app)**Logistic regression web app** <https://shiny.psy.gla.ac.uk/Dale/logit></p>
 </div>
 
 ### Estimating logistic regression models in R

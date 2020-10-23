@@ -8,7 +8,7 @@
 
 ## Web app
 
-- [Demo of crossed random effects](http://shiny.psy.gla.ac.uk/Dale/crossed)
+- [Demo of crossed random effects](https://shiny.psy.gla.ac.uk/Dale/crossed)
 
 ## Replacing t-test and ANOVA with linear mixed-effects regression
 
@@ -33,7 +33,7 @@ Let's consider a situation where you are testing the effect of alcohol consumpti
 The web app below presents simulated data from such a study. Subjects P01-P07 are from the placebo condition, while subjects T01-T07 are from the treatment condition.
 
 <div class="figure" style="text-align: center">
-<iframe src="http://shiny.psy.gla.ac.uk/Dale/icc?showcase=0" width="100%" height="620px"></iframe>
+<iframe src="https://shiny.psy.gla.ac.uk/Dale/icc?showcase=0" width="100%" height="620px"></iframe>
 <p class="caption">(\#fig:icc-app)Multi-level data from an independent samples design.</p>
 </div>
 
@@ -417,10 +417,10 @@ ds4 %>% count(item_id, A, B) %>% filter(item_id == 1L)
 
 ## Simulating data with crossed random factors
 
-For this first set of exercises, we will generate simulated data corresponding to an experiment with a single, two-level factor (independent variable) that is within-subjects and between-items.  Let's imagine that the experiment involves lexical decisions to a set of words (e.g., is "PINT" a word or nonword?), and the dependent variable is response time (in milliseconds), and the independent variable is word type (noun vs verb).  We want to treat both subjects and words as random factors (so that we can generalize to the population of events where subjects encounter words).  You can play around with the web app below (or [click here to open it in a new window](http://shiny.psy.gla.ac.uk/Dale/crossed){target="_blank"}), which allows you to manipulate the data-generating parameters and see their effect on the data.
+For this first set of exercises, we will generate simulated data corresponding to an experiment with a single, two-level factor (independent variable) that is within-subjects and between-items.  Let's imagine that the experiment involves lexical decisions to a set of words (e.g., is "PINT" a word or nonword?), and the dependent variable is response time (in milliseconds), and the independent variable is word type (noun vs verb).  We want to treat both subjects and words as random factors (so that we can generalize to the population of events where subjects encounter words).  You can play around with the web app below (or [click here to open it in a new window](https://shiny.psy.gla.ac.uk/Dale/crossed){target="_blank"}), which allows you to manipulate the data-generating parameters and see their effect on the data.
 
 <div class="figure" style="text-align: center">
-<iframe src="http://shiny.psy.gla.ac.uk/Dale/crossed?showcase=0" width="100%" height="600px"></iframe>
+<iframe src="https://shiny.psy.gla.ac.uk/Dale/crossed?showcase=0" width="100%" height="600px"></iframe>
 <p class="caption">(\#fig:webapp)*Web app for crossed random effects.*</p>
 </div>
 
