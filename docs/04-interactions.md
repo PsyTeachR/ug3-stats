@@ -627,7 +627,7 @@ Note that the $Y$ variable with the dots in the subscripts are means of $Y$, tak
 
 ![](images/04-interactions_factorial_app.png)
 
-[Launch this web application](http://shiny.psy.gla.ac.uk/Dale/factorial2){target="_blank"} and experiment with factorial designs until you understand the key concepts of main effects and interactions in a factorial design.
+[Launch this web application](https://shiny.psy.gla.ac.uk/Dale/factorial2){target="_blank"} and experiment with factorial designs until you understand the key concepts of main effects and interactions in a factorial design.
 
 ## Code your own categorical predictors in factorial designs
 
@@ -822,7 +822,7 @@ Generally, the choice of a coding scheme impacts the interpretation of:
 1. the intercept term; and
 2. the interpretation of the tests for all but the highest-order effects and interactions in a factorial design.
 
-It also can influence the interpretation/estimation of random effects in a mixed-effects model (see [this blog post](http://talklab.psy.gla.ac.uk/simgen/rsonly.html) for further discussion).  If you have a design with only a single two-level factor, and are using a [maximal random-effects structure](https://www.sciencedirect.com/science/article/pii/S0749596X12001180), the choice of coding scheme doesn't really matter.
+It also can influence the interpretation/estimation of random effects in a mixed-effects model (see [this blog post](https://talklab.psy.gla.ac.uk/simgen/rsonly.html) for further discussion).  If you have a design with only a single two-level factor, and are using a [maximal random-effects structure](https://www.sciencedirect.com/science/article/pii/S0749596X12001180), the choice of coding scheme doesn't really matter.
 
 There are many possible coding schemes (see `?contr.treatment` for more information).  The most relevant ones are **treatment**, **sum**, and **deviation**.  Sum and deviation coding can be seen as special cases of **effect** coding; by effect coding, people generally mean codes that sum to zero.
 
