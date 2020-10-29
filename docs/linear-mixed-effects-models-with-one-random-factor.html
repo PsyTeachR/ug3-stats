@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Introduction | Learning Statistical Models Through Simulation in R</title>
+  <title>Chapter 6 Linear mixed-effects models with one random factor | Learning Statistical Models Through Simulation in R</title>
   <meta name="description" content="Textbook on statistical models for social scientists." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Introduction | Learning Statistical Models Through Simulation in R" />
+  <meta property="og:title" content="Chapter 6 Linear mixed-effects models with one random factor | Learning Statistical Models Through Simulation in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Introduction | Learning Statistical Models Through Simulation in R" />
+  <meta name="twitter:title" content="Chapter 6 Linear mixed-effects models with one random factor | Learning Statistical Models Through Simulation in R" />
   
   <meta name="twitter:description" content="Textbook on statistical models for social scientists." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="understanding-correlation-and-regression-through-bivariate-simulation.html"/>
+<link rel="prev" href="introducing-linear-mixed-effects-models.html"/>
+<link rel="next" href="linear-mixed-effects-models-with-crossed-random-factors.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -275,102 +275,285 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<div id="goal-of-this-course" class="section level2">
-<h2><span class="header-section-number">1.1</span> Goal of this course</h2>
-<p>The goal of this course is to teach you how to simulate and analyze the various types of datasets you are likely to encounter as a psychologist. The focus is on behavioral data—e.g., measures of reaction time, perceptual judgments, choices, decision, ratings on a survey, hours of sleep, etc.—usually collected in the context of a study or experiment.</p>
-<p>This course emphasizing approaches that maximize <strong>flexibility</strong>, <strong>generalizability</strong>, and <strong>reproducibility</strong>. You may have heard talk in the media about psychology being in the throes of various ‘crises’. There have been some high-profile replication failures that have contributed to the impression that all is not well. There have also been a number of demonstrations that the standard approaches to data analysis in psychology are flawed, in that they allow researchers to present results as clean-cut and confirmatory while hiding various analyses that have been pursued and discarded while seeking to attain the desired result. But it is not just the field of psychology where such problems can be found—the problem is widespread, encompassing other fields of study as well. And the truth is that a certain level of self-criticism and self-reflection can also be seen positively—as a sign of a healthy discipline. Whatever your take, there is room for improvement, and the purpose of this course is to give you tools to ensure that your own analyses are not only statistically sound, but also as generalizable and reproducible as possible.</p>
-<div id="flexibility" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> Flexibility</h3>
-<p>The approach taken in this course differs from other courses in that it emphasizes learning a flexible regression modeling framework rather than teaching ‘recipes’ for dealing with different types of data, and assumes that the fundamental type of data you will need to analyze will be <a class='glossary' target='_blank' title='(or multi-level) Relating to datasets where there are multiple observations taken on the same variable on the same sampling units (usually subjects or stimuli).' href='https://psyteachr.github.io/glossary/m#multilevel'>multilevel</a> and also that you will need to deal not only with continuous measurements but also ordinal measurements (ratings on a Likert scale), counts (number of times particular event types have taken place), and nominal data (what category something falls into).</p>
-<p>The most flexible approach available is the General Linear Model approach, in which some <a class='glossary' target='_blank' title='A variable (in a regression) whose value is assumed to be influenced by one or more predictor variables.' href='https://psyteachr.github.io/glossary/r#response-variable'>response variable</a> is modeled in terms of a weighted linear sum of <a class='glossary' target='_blank' title='A variable whose value is used (in a model) to predict the value of a response variable.' href='https://psyteachr.github.io/glossary/p#predictor-variable'>predictor variables</a>. A simple mathematical example of one such formula is</p>
-<p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + e_i\]</span></p>
-<p>where <span class="math inline">\(Y_i\)</span> is the measured response for observation <span class="math inline">\(i\)</span>, modeled in terms of an <a class='glossary' target='_blank' title='Also referred to as y-intercept, this is a constant corresponding to the value of the \(y\) variable (in a regression context, the response variable) when all predictor variables are set to zero.' href='https://psyteachr.github.io/glossary/i#intercept'>intercept</a> term plus the effect of <a class='glossary' target='_blank' title='A variable whose value is used (in a model) to predict the value of a response variable.' href='https://psyteachr.github.io/glossary/p#predictor-variable'>predictor</a> <span class="math inline">\(X_i\)</span> weighted by coefficient <span class="math inline">\(\beta_1\)</span> and <a class='glossary' target='_blank' title='That part of an observation that cannot be captured by the statistical model, and thus is assumed to reflect unknown factors.' href='https://psyteachr.github.io/glossary/r#residual-error'>residual error</a> term <span class="math inline">\(e_i\)</span>, which reflects unmodeled variance.</p>
-<p>You might recognize the above equation as representing the equation for a line (<span class="math inline">\(y = mx + b\)</span>), with <span class="math inline">\(\beta_0\)</span> playing the role of the <a class='glossary' target='_blank' title='Also referred to as y-intercept, this is a constant corresponding to the value of the \(y\) variable (in a regression context, the response variable) when all predictor variables are set to zero.' href='https://psyteachr.github.io/glossary/i#intercept'>y-intercept</a> and <span class="math inline">\(\beta_1\)</span> playing the role of the <a class='glossary' target='_blank' title='NA' href='https://psyteachr.github.io/glossary/s#slope'>slope</a>. The <span class="math inline">\(e_i\)</span> term reflects what is left of observation <span class="math inline">\(i\)</span> after accounting for the the intercept and the predictor <span class="math inline">\(X_i\)</span>.</p>
-<p>A terminological convention in this course is that Greek letters (<span class="math inline">\(\beta\)</span>, <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\tau\)</span>) represent unobserved <a class='glossary' target='_blank' title='A quantity representing a property of a population of interest.' href='https://psyteachr.github.io/glossary/p#population-parameter'>population parameters</a> while Latin letters (<span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>) represent observed values.</p>
-<p>This linear formulation is highly general, and we will see how it can be used to model different kinds of relationships between different kinds of variables. One limitation of the current course is that it focuses mainly on <a class='glossary' target='_blank' title='Relating to a single variable.' href='https://psyteachr.github.io/glossary/u#univariate'>univariate</a> data, where a single <a class='glossary' target='_blank' title='A variable (in a regression) whose value is assumed to be influenced by one or more predictor variables.' href='https://psyteachr.github.io/glossary/r#response-variable'>response variable</a> is the focus of analysis. It is often the case that you will be dealing with multiple response variables on the same subjects, but modeling them all simultaneously is technically very difficult and beyond the scope of this course. A simpler approach (and the one adopted here) is to analyze each response variable in a separate univariate analysis.</p>
-</div>
-</div>
-<div id="generalizability" class="section level2">
-<h2><span class="header-section-number">1.2</span> Generalizability</h2>
-<p>The term <a class='glossary' target='_blank' title='A term referring to the degree to which findings can be readily applied to situations beyond the particular context in which the data were collected.' href='https://psyteachr.github.io/glossary/g#generalizability'>generalizability</a> refers to the degree to which findings from a study can be readily applied to situations beyond the particular context (subjects, stimuli, task, etc.) in which the data were collected. At best, our findings would apply to all members of the human species across a wide variety of contexts; at worst, they would apply only to those specific people observed in the specific context of our study. Most studies fall somewhere between these two opposing poles.</p>
-<p>The generalizability of a finding depends on several factors: how the study was designed, what materials were used, how subjects were recruited, the nature of the task given to the subjects, <strong>and the way the data were analyzed</strong>. It is this last point that we will focus on in this course. When analyzing a dataset, if you want to make generalizable claims, you must make decisions about what would count as a replication of your study—about which aspects would remain fixed across replications, and which aspects you would allow to vary. Unfortunately, you will sometimes find that data have been analyzed in a way that does not support generalization in the broadest sense, often because analyses underestimate the influence of ideosyncratic features of stimulus materials or experimental task on the observed result <span class="citation">(Yarkoni <a href="#ref-yarkoni_2019">2019</a>)</span>.</p>
-</div>
-<div id="reproduciblity-and-transparency" class="section level2">
-<h2><span class="header-section-number">1.3</span> Reproduciblity and Transparency</h2>
-<p>The term <a class='glossary' target='_blank' title='The extent to which the findings of a study can be repeated in some other context, either with new samples from the same population (replicability) or with the same raw data but analyzed by different researchers or by the same researchers on a different occasion (computational or analytical reproducibility).' href='https://psyteachr.github.io/glossary/r#reproducibility'>reproducibility</a> refers to the degree to which it is possible to reproduce the pattern of findings in a study under various circumstances.</p>
-<p>We say a finding is <em>analytically</em> or <em>computationally</em> reproducible if, given the raw data, we can obtain the same pattern of results. Note that this is different from saying a finding is <strong>replicable</strong>, which refers to being able to reproduce the finding in <strong>new samples.</strong> There is not widespread agreement about these terms, but it is convenient to view analytic reproducibility and replicability as two different but related types of reproducibility, with the former capturing reproducibility across analysts (or among the same analysts over time) and the latter reflecting reproducibility across participants.</p>
-<p>Ensuring that analyses are reproducible is a hard problem. If you fail to properly document your own analyses, or the software that you used gets modified or goes out of date and becomes unavailable, you may have trouble reproducing your own findings!</p>
-<p>Another important property of analyses is <a class='glossary' target='_blank' title='The degree to which all the steps and decisions in a study have been documented and made available for verification.' href='https://psyteachr.github.io/glossary/t#transparency'>transparency</a>: the extent to which all the steps in some research study have been made available. A study may be transparent but not reproducible, and vice versa. It is important to use a workflow that promotes transparency. This makes the ‘edit-and-execute’ workflow of script programming ideal for data analysis, far superior to the ‘point-and-click’ workflow of most commercial statistical programs. By writing code, you make the logic and decision process explicit to others and easy to reconstruct.</p>
-</div>
-<div id="a-simulation-based-approach" class="section level2">
-<h2><span class="header-section-number">1.4</span> A simulation-based approach</h2>
-<p>A final characteristic that distinguishes this course is that it uses a <strong>simulation-based approach</strong> to learning about statistical models. By data simulation we mean specifying a model to characterize a population of interest and then using the computer’s random number generator to simulate the process of sampling data from that population. We will look at a simple example of this below.</p>
-<p>The typical problem that you will face when you analyze data is that you won’t know the ‘ground truth’ about the population you are studying. You take a sample from that population, make some assumptions about how the observed data have been generated, and then use the observed data to estimate unknown population parameters and the uncertainty around these parameters.</p>
-<p>Data simulation inverts this process. You to define the parameters of a model representing the ground truth about a (hypothetical) population and then generate data from it. You can then analyze the resulting data in the way that you normally would, and see how well your parameter estimates correspond to the true values.</p>
-<p>Let’s look at an example. Let’s assume you are interested in the question of whether being a parent of a toddler ‘sharpens’ your reflexes. If you’ve ever taken care of a toddler, you know that physical danger always seems imminent—they could fall of the chair they just climbed on, slam their finger in a door, bang their head on the corner of a table, etc.—so you need to be attentive and ready to act fast. You hypothesize that this vigilance will translate into faster response times in other situations where a toddler is not around, such as in a psychological laboratory. So you recruit a set of parents of toddlers to come into the lab. You give each parent the task of pressing a button as quickly as possible in response to a flashing light, and measure their response time (in milliseconds). For each parent, you calculate their mean response time over all trials. We can simulate the mean response time for each of say, 50 parents using the <code>rnorm()</code> function in R. But before we do that, we will load in the packages that we need (tidyverse) and set the <a class='glossary' target='_blank' title='A value used to set the initial state of a random number generator.' href='https://psyteachr.github.io/glossary/r#random-seed'>random seed</a> to make sure that you (the reader) get the same random values as me (the author).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
-<a class="sourceLine" id="cb1-2" title="2"></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">set.seed</span>(<span class="dv">2020</span>)  <span class="co"># can be any arbitrary integer</span></a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">parents &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">mean =</span> <span class="dv">480</span>, <span class="dt">sd =</span> <span class="dv">40</span>)</a>
-<a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3">parents</a></code></pre></div>
-<pre><code>##  [1] 495.0789 492.0619 436.0791 434.7838 368.1386 508.8229 517.5648 470.8249
-##  [9] 550.3653 484.6947 445.8751 516.3704 527.8549 465.1366 475.0696 552.0017
-## [17] 548.1598 358.4494 388.4410 482.3321 566.9746 523.9273 492.7288 477.0741
-## [25] 513.3707 487.9500 531.9137 517.4687 474.1027 484.4173 447.4998 450.2519
-## [33] 523.8138 577.4149 495.5247 491.6251 468.5761 483.0406 457.5881 497.8875
-## [41] 516.3400 459.7976 467.9598 450.9586 432.7969 490.1230 465.1715 480.8872
-## [49] 506.4018 499.5517</code></pre>
-<p>We chose to generate the data using <code>rnorm()</code>—a function that generates random numbers from a normal distribution—reflecting our assumption that mean response time is normally distributed in the population. A normal distribution is defined by two parameters, a mean (usually notated with the Greek letter <span class="math inline">\(\mu\)</span>, pronounced “myoo”), and a standard deviation (usually notated with the Greek letter <span class="math inline">\(\sigma\)</span>, pronounced “sigma”). Since we have generated the data ourselves, both <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are known, and in the call to <code>rnorm()</code>, we set them to the values 480 and 40 respectively.</p>
-<p>But of course, to test our hypothesis, we need a comparison group, so we define a control group of non-parents. We generate data from this control group in the same way as above, but changing the mean.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">control &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">mean =</span> <span class="dv">500</span>, <span class="dt">sd =</span> <span class="dv">40</span>)</a></code></pre></div>
-<p>Let’s put them into a <a class='glossary' target='_blank' title='A container for tabular data with some different properties to a data frame' href='https://psyteachr.github.io/glossary/t#tibble'>tibble</a> to make it easier to plot and analyze the data. Each row from this table represents the mean response time from a particular subject.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">dat &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">group =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;parent&quot;</span>, <span class="st">&quot;control&quot;</span>), <span class="kw">c</span>(<span class="kw">length</span>(parents), <span class="kw">length</span>(control))),</a>
-<a class="sourceLine" id="cb5-2" title="2">              <span class="dt">rt =</span> <span class="kw">c</span>(parents, control))</a>
-<a class="sourceLine" id="cb5-3" title="3"></a>
-<a class="sourceLine" id="cb5-4" title="4">dat</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
-##    group     rt
-##    &lt;chr&gt;  &lt;dbl&gt;
-##  1 parent  495.
-##  2 parent  492.
-##  3 parent  436.
-##  4 parent  435.
-##  5 parent  368.
-##  6 parent  509.
-##  7 parent  518.
-##  8 parent  471.
-##  9 parent  550.
-## 10 parent  485.
-## # … with 90 more rows</code></pre>
-<p>Here are some things to try with this simulated data.</p>
-<ol style="list-style-type: decimal">
-<li>Plot the data in some sensible way.</li>
-<li>Calculate means and standard deviations. How do they compare with the population parameters?</li>
-<li>Run a t-test on these data. Is the effect of group significant?</li>
-</ol>
-<p>Once you have done these things, do them again, but changing the sample size, population parameters or both.</p>
-</div>
-<div id="what-you-will-learn" class="section level2">
-<h2><span class="header-section-number">1.5</span> What you will learn</h2>
-<p>By the end of this course, you should be able to:</p>
+<div id="linear-mixed-effects-models-with-one-random-factor" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Linear mixed-effects models with one random factor</h1>
+<div id="learning-objectives" class="section level2">
+<h2><span class="header-section-number">6.1</span> Learning objectives</h2>
 <ul>
-<li>simulate bivariate data</li>
-<li>understand the relationship between correlation and regression</li>
-<li>specify regression models to reflect various study designs</li>
-<li>specify and interpret various types of interactions</li>
-<li>simulate data from these models, including multilevel data</li>
-<li>handle continuous, count, or nominal dependent variables.</li>
+<li>understand how linear mixed-effects models can replace conventional analyses, and when they are appropriate</li>
+<li>express various types of common designs in a regression framework</li>
+<li>use model comparison (<code>anova()</code>) for testing effects</li>
+<li>express various study designs using the R regression formula syntax</li>
 </ul>
+</div>
+<div id="when-and-why-would-you-want-to-replace-conventional-analyses-with-linear-mixed-effects-modeling" class="section level2">
+<h2><span class="header-section-number">6.2</span> When, and why, would you want to replace conventional analyses with linear mixed-effects modeling?</h2>
+<p>We have repeatedly emphasized how many common techniques in psychology can be seen as special cases of the general linear model. This implies that it would be possible to replace these techniques with regression. In fact, you could analyze almost any conceivable dataset in psychology using one of the four functions below:</p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="31%" />
+<col width="15%" />
+<col width="37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">sampling design</th>
+<th align="left">type of data</th>
+<th align="left">function</th>
+<th align="left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">single level</td>
+<td align="left">continuous, normally distributed</td>
+<td align="left"><code>base::lm()</code></td>
+<td align="left">simple linear model</td>
+</tr>
+<tr class="even">
+<td align="left">single level</td>
+<td align="left">count or categorical</td>
+<td align="left"><code>base::glm()</code></td>
+<td align="left">generalized linear model</td>
+</tr>
+<tr class="odd">
+<td align="left">multilevel</td>
+<td align="left">continuous, normally distributed</td>
+<td align="left"><code>lme4::lmer()</code></td>
+<td align="left">linear mixed-effects model</td>
+</tr>
+<tr class="even">
+<td align="left">multilevel</td>
+<td align="left">count or categorical</td>
+<td align="left"><code>lme4::glmer()</code></td>
+<td align="left">generalized linear mixed-effects model</td>
+</tr>
+</tbody>
+</table>
+<p>To decide which function to use, you need to know the type of data you’re working with (continuous and normally distributed, or not) and how the data have been sampled (single-level or <a class='glossary' target='_blank' title='(or multi-level) Relating to datasets where there are multiple observations taken on the same variable on the same sampling units (usually subjects or stimuli).' href='https://psyteachr.github.io/glossary/m#multilevel'>multilevel</a>). Arguments to these functions are highly similar across all four versions. We will learn about analyzing count and categorical data later in this course. For now, we will focus on continuous data, but many of the principles are identical.</p>
+<p>Here is a comparison chart for single-level data (data where you don’t have <a class='glossary' target='_blank' title='A dataset has repeated measures if there are multiple measurements taken on the same variable for individual sampling units.' href='https://psyteachr.github.io/glossary/r#repeated-measures'>repeated-measures</a>):</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="left">conventional approach</th>
+<th align="left">regression approach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">one-sample t-test</td>
+<td align="left"><code>t.test(y, mu = c)</code></td>
+<td align="left"><code>lm(y ~ 1, offset = c)</code></td>
+</tr>
+<tr class="even">
+<td align="left">independent samples t-test</td>
+<td align="left"><code>t.test(x, y)</code></td>
+<td align="left"><code>lm(y ~ x)</code></td>
+</tr>
+<tr class="odd">
+<td align="left">one factor ANOVA</td>
+<td align="left"><code>aov(y ~ x)</code></td>
+<td align="left"><code>lm(y ~ x)</code></td>
+</tr>
+<tr class="even">
+<td align="left">factorial ANOVA</td>
+<td align="left"><code>aov(y ~ a * b)</code></td>
+<td align="left"><code>lm(y ~ a * b)</code></td>
+</tr>
+</tbody>
+</table>
+<p>All of above designs are <em>between-subjects</em> designs without repeated measures. (Note that in the factorial case, we would probably replace <code>a</code> and <code>b</code> with our own deviation-coded numerical predictors, for reasons already discussed in <a href="interactions.html">the chapter on interactions</a>).</p>
+<p>Where mixed-effects models come into play is with multilevel data. Data is usually multilevel for one of the three reasons below (multiple reasons could simultaneously apply):</p>
+<ol style="list-style-type: decimal">
+<li>you have a within-subject factor, and/or</li>
+<li>you have <strong>pseudoreplications</strong>, and/or</li>
+<li>you have multiple stimulus items (which we will discuss in the <a href="linear-mixed-effects-models-with-crossed-random-factors.html">next chapter</a>).</li>
+</ol>
+<p>(At this point, it would be a good idea to refresh your memory on the meaning of between- versus within- subject factors). In the <code>sleepstudy</code> data, you had the within-subject factor of <code>Day</code> (which is more a numeric variable, actually, than a factor; but it has multiple values varying within each participant).</p>
+<p><strong>Pseudoreplications</strong> occur when you take multiple measurements within the same condition. For instance, imagine a study where you randomly assign participants to consume one of two beverages—alcohol or water—before administering a simple response time task where they press a button as fast as possible when a light flashes. You would probably take more than one measurement of response time for each participant; let’s assume that you measured it over 100 trials. You’d have one between-subject factor (beverage) and 100 observations per subject, for say, 20 subjects in each group. One common mistake novices make when analyzing such data is to try to run a t-test. <strong>You can’t directly use the conventional a t-test when you have pseudoreplications (or multiple stimuli).</strong> You must first calculate means for each subject, and then run your analysis <strong>on the means, not on the raw data.</strong> There are versions of ANOVA that can deal with pseudoreplications, but you are probably better off using a linear-mixed effects model, which can better handle the complex dependency structure.</p>
+<p>Here is a comparison chart for multi-level data:</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="34%" />
+<col width="32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="left">conventional approach</th>
+<th align="left">regression approach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">one-sample t-test with pseudoreplications</td>
+<td align="left">calculate means and use <code>t.test(x_mean)</code></td>
+<td align="left"><code>lmer(y ~ (1 &amp;#124; subject), offset = c)</code></td>
+</tr>
+<tr class="even">
+<td align="left">paired samples t-test</td>
+<td align="left"><code>t.test(x, y, paired = TRUE)</code></td>
+<td align="left"><code>lmer(y ~ x + (1 &amp;#124; subject))</code></td>
+</tr>
+<tr class="odd">
+<td align="left">paired samples t-test with pseudoreplications</td>
+<td align="left">calculate means and use <code>t.test(x_mean, y_mean)</code></td>
+<td align="left"><code>lm(y ~ x + (1 + x &amp;#124; subject))</code></td>
+</tr>
+<tr class="even">
+<td align="left">repeated-measures ANOVA</td>
+<td align="left"><code>aov(y ~ x + Error(subject))</code></td>
+<td align="left"><code>lmer(y ~ x + (1 &amp;#124; subject))</code></td>
+</tr>
+<tr class="odd">
+<td align="left">repeated-measures ANOVA with pseudoreplications</td>
+<td align="left"><code>aov(y ~ x + Error(x / subject))</code></td>
+<td align="left"><code>lmer(y ~ x + (1 + x &amp;#124; subject))</code></td>
+</tr>
+<tr class="even">
+<td align="left">factorial ANOVA</td>
+<td align="left"><code>aov(y ~ a * b)</code></td>
+<td align="left"><code>lm(y ~ a * b)</code></td>
+</tr>
+<tr class="odd">
+<td align="left">factorial ANOVA with pseudoreplications</td>
+<td align="left"><code>aov(y ~ a * b + Error((a * b) / subject)</code></td>
+<td align="left"><code>lmer(y ~ a * b + (1 + a * b &amp;#124; subject)</code></td>
+</tr>
+</tbody>
+</table>
+<p>One of the main selling points of the general linear models / regression framework over t-test and ANOVA is its flexibility. We saw this in the last chapter with the <code>sleepstudy</code> data, which could only be properly handled within a linear mixed-effects modelling framework. Despite the many advantages of regression, if you are in a situation where you have balanced data and can reasonably apply t-test or ANOVA without violating any of the assumptions behind the test, it makes sense to do so; these approaches have a long history in psychology and are more widely understood.</p>
+</div>
+<div id="example-independent-samples-t-test-on-multi-level-data" class="section level2">
+<h2><span class="header-section-number">6.3</span> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</h2>
+<p>Let’s consider a situation where you are testing the effect of alcohol consumption on simple reaction time (e.g., press a button as fast as you can after a light appears). To keep it simple, let’s assume that you have collected data from 14 participants randomly assigned to perform a set of 10 simple RT trials after one of two interventions: drinking a pint of alcohol (treatment condition) or a placebo drink (placebo condition). You have 7 participants in each of the two groups. Note that you would need more than this for a real study.</p>
+<p>This <a href="https://shiny.psy.gla.ac.uk/Dale/icc" target="_blank">web app</a> presents simulated data from such a study. Subjects P01-P07 are from the placebo condition, while subjects T01-T07 are from the treatment condition. Please stop and have a look!</p>
+<p>If we were going to run a t-test on these data, we would first need to calculate subject means, because otherwise the observations are not independent. You could do this as follows. (If you want to run the code below, you can download sample data from the web app above and save it as <code>independent_samples.csv</code>).</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" title="1"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
+<a class="sourceLine" id="cb178-2" title="2"></a>
+<a class="sourceLine" id="cb178-3" title="3">dat &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/independent_samples.csv&quot;</span>, <span class="dt">col_types =</span> <span class="st">&quot;cci&quot;</span>)</a>
+<a class="sourceLine" id="cb178-4" title="4"></a>
+<a class="sourceLine" id="cb178-5" title="5">subj_means &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb178-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(subject, cond) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb178-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_rt =</span> <span class="kw">mean</span>(RT)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb178-8" title="8"><span class="st">  </span><span class="kw">ungroup</span>()</a>
+<a class="sourceLine" id="cb178-9" title="9"></a>
+<a class="sourceLine" id="cb178-10" title="10">subj_means</a></code></pre></div>
+<pre><code>## # A tibble: 14 x 3
+##    subject cond  mean_rt
+##    &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
+##  1 P01     P        354 
+##  2 P02     P        384.
+##  3 P03     P        391.
+##  4 P04     P        404.
+##  5 P05     P        421.
+##  6 P06     P        392 
+##  7 P07     P        400.
+##  8 T08     T        430.
+##  9 T09     T        432.
+## 10 T10     T        410.
+## 11 T11     T        455.
+## 12 T12     T        450.
+## 13 T13     T        418.
+## 14 T14     T        489.</code></pre>
+<p>Then, the <span class="math inline">\(t\)</span>-test can be run using the “formula” version of <code>t.test()</code>.</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb180-1" title="1"><span class="kw">t.test</span>(mean_rt <span class="op">~</span><span class="st"> </span>cond, subj_means)</a></code></pre></div>
+<pre><code>## 
+## 	Welch Two Sample t-test
+## 
+## data:  mean_rt by cond
+## t = -3.7985, df = 11.32, p-value = 0.002807
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -76.32580 -20.44563
+## sample estimates:
+## mean in group P mean in group T 
+##        392.3143        440.7000</code></pre>
+<p>While there is nothing wrong with this analysis, aggregating the data throws away information. we can see in the above web app that there are actually two different sources of variability: trial-by-trial variability in simple RT (represented by <span class="math inline">\(\sigma\)</span>) and variability across subjects in terms of their how slow or fast they are relative to the population mean (<span class="math inline">\(\gamma_{00}\)</span>). The Data Generating Process for response time (<span class="math inline">\(Y_{st}\)</span>) for subject <span class="math inline">\(s\)</span> on trial <span class="math inline">\(t\)</span> is shown below.</p>
+<p><em>Level 1:</em></p>
+<p><span class="math display">\[\begin{equation}
+Y_{st} = \beta_{0s} + \beta_{1} X_{s} + e_{st}
+\end{equation}\]</span></p>
+<p><em>Level 2:</em></p>
+<p><span class="math display">\[\begin{equation}
+\beta_{0s} = \gamma_{00} + S_{0s}
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\beta_{1} = \gamma_{10}
+\end{equation}\]</span></p>
+<p><em>Variance Components:</em></p>
+<p><span class="math display">\[\begin{equation}
+S_{0s} \sim N\left(0, {\tau_{00}}^2\right) 
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+e_{st} \sim N\left(0, \sigma^2\right)
+\end{equation}\]</span></p>
+<p>In the above equation, <span class="math inline">\(X_s\)</span> is a numerical predictor coding which condition the subject <span class="math inline">\(s\)</span> is in; e.g., 0 for placebo, 1 for treatment.</p>
+<p>The multi-level equations are somewhat cumbersome for such a simple model; we could just reduce levels 1 and 2 to</p>
+<p><span class="math display">\[\begin{equation}
+Y_{st} = \gamma_{00} + S_{0s} + \gamma_{10} X_s + e_{st},
+\end{equation}\]</span></p>
+<p>but it is worth becoming familiar with the multi-level format for when we encounter more complex designs.</p>
+<p>Unlike the <code>sleepstudy</code> data seen in the last chapter, we only have one random effect for each subject, <span class="math inline">\(S_{0s}\)</span>. There is no random slope. Each subject appears in only one of the two treatment conditions, so it would not be possible to estimate how the effect of placebo versus alcohol varies over subjects. The mixed-effects model that we would fit to these data, with random intercepts but no random slopes, is known as a <strong>random intercepts model</strong>.</p>
+<p>A random-intercepts model would adequately capture the two sources of variability mentioned above: the inter-subject variability in overall mean RT in the parameter <span class="math inline">\({\tau_{00}}^2\)</span>, and the trial-by-trial variability in the parameter <span class="math inline">\(\sigma^2\)</span>. We can calculate the proportion of the total variability attributable to individual differences among subjects using the formula below.</p>
+<p><span class="math display">\[ICC = \frac{{\tau_{00}}^2}{{\tau_{00}}^2 + \sigma^2}\]</span></p>
+<p>This quantity, known as the <strong>intra-class correlation coefficient</strong>, and tells you how much clustering there is in your data. It ranges from 0 to 1, with 0 indicating that all the variability is due to residual variance, and 1 indicating that all the variability is due to individual differences among subjects.</p>
+<p>The lmer syntax for fitting a random intercepts model to the data is <code>lmer(RT ~ cond + (1 | subject), dat, REML=FALSE)</code>. Let’s create our own numerical predictor first, to make it explicit that we are using dummy coding.</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" title="1">dat2 &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb182-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cond_d =</span> <span class="kw">if_else</span>(cond <span class="op">==</span><span class="st"> &quot;T&quot;</span>, 1L, 0L))</a>
+<a class="sourceLine" id="cb182-3" title="3"></a>
+<a class="sourceLine" id="cb182-4" title="4"><span class="kw">distinct</span>(dat2, cond, cond_d)  <span class="co">## double check</span></a></code></pre></div>
+<pre><code>## # A tibble: 2 x 2
+##   cond  cond_d
+##   &lt;chr&gt;  &lt;int&gt;
+## 1 P          0
+## 2 T          1</code></pre>
+<p>And now, estimate the model.</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" title="1"><span class="kw">library</span>(<span class="st">&quot;lme4&quot;</span>)</a>
+<a class="sourceLine" id="cb184-2" title="2"></a>
+<a class="sourceLine" id="cb184-3" title="3">mod &lt;-<span class="st"> </span><span class="kw">lmer</span>(RT <span class="op">~</span><span class="st"> </span>cond_d <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>subject), dat2, <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb184-4" title="4"></a>
+<a class="sourceLine" id="cb184-5" title="5"><span class="kw">summary</span>(mod)</a></code></pre></div>
+<pre><code>## Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]
+## Formula: RT ~ cond_d + (1 | subject)
+##    Data: dat2
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1451.8   1463.5   -721.9   1443.8      136 
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.67117 -0.66677  0.01656  0.75361  2.58447 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  subject  (Intercept)  329.3   18.15   
+##  Residual             1574.7   39.68   
+## Number of obs: 140, groups:  subject, 14
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  392.314      8.339  47.045
+## cond_d        48.386     11.793   4.103
+## 
+## Correlation of Fixed Effects:
+##        (Intr)
+## cond_d -0.707</code></pre>
+<p>Play around with the sliders in the app above and check the lmer output panel until you understand how the output maps onto the model parameters.</p>
+<div id="when-is-a-random-intercepts-model-appropriate" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> When is a random-intercepts model appropriate?</h3>
+<p>Of course, a mixed-effects model is only appropriate when you have multilevel data. The random-intercepts model is appropriate for any one-sample or between-subjects data with pseudoreplications (if you don’t have pseudoreplications in this situation, you don’t have multilevel data, and you can just use vanilla regression, e.g., <code>lm()</code>).</p>
+<p>The “random-intercepts-only” model is also appropriate when you have within-subject factors in your design, but <strong>only if you don’t also have pseudoreplications</strong>; that is, it is <strong>only</strong> appropriate when you have a single observation per subject per level of the within-subject factor. If you have more than one observation per subject per level/cell, you need to enrich your random effects structure with random slopes, as described in the next section. If the reason you have multiple observations per subject per level is because you have each subject reacting to the same set of stimuli, then you might want to consider a mixed-effects model with crossed random effects for subjects and stimuli, as described in the <a href="linear-mixed-effects-models-with-crossed-random-factors.html">next chapter</a>.</p>
+<p>The same logic goes for factorial designs in which there is more than one within-subjects factor. In factorial designs, the random-intercepts model is appropriate if you have one observation per subject per <strong>cell</strong> formed by each combination of the within-subjects factors. For instance, if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are two two-level within-subject factors, you need to check that you have only one observation for each subject in <span class="math inline">\(A_1B_1\)</span>, <span class="math inline">\(A_1B_2\)</span>, <span class="math inline">\(A_2B_1\)</span>, and <span class="math inline">\(A_2B_2\)</span>. If you have more than one observation, you will need to consider including a random slope in your model.</p>
+</div>
+</div>
+<div id="expressing-the-study-design-and-performing-tests-in-regression" class="section level2">
+<h2><span class="header-section-number">6.4</span> Expressing the study design and performing tests in regression</h2>
+<p>(section under construction! coming soon)</p>
 
-</div>
-</div>
-<h3><span class="header-section-number">B</span> Bibliography</h3>
-<div id="refs" class="references">
-<div id="ref-yarkoni_2019">
-<p>Yarkoni, Tal. 2019. “The Generalizability Crisis.” <a href="https://doi.org/10.31234/osf.io/jqw35">https://doi.org/10.31234/osf.io/jqw35</a>.</p>
 </div>
 </div>
 <div class="psyteachr_footer">
@@ -483,8 +666,8 @@ window.onload = function() {
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="understanding-correlation-and-regression-through-bivariate-simulation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introducing-linear-mixed-effects-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-mixed-effects-models-with-crossed-random-factors.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

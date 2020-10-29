@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Modeling experimental data with linear mixed-effects models | Learning Statistical Models Through Simulation in R</title>
+  <title>Chapter 7 Linear mixed-effects models with crossed random factors | Learning Statistical Models Through Simulation in R</title>
   <meta name="description" content="Textbook on statistical models for social scientists." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Modeling experimental data with linear mixed-effects models | Learning Statistical Models Through Simulation in R" />
+  <meta property="og:title" content="Chapter 7 Linear mixed-effects models with crossed random factors | Learning Statistical Models Through Simulation in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Modeling experimental data with linear mixed-effects models | Learning Statistical Models Through Simulation in R" />
+  <meta name="twitter:title" content="Chapter 7 Linear mixed-effects models with crossed random factors | Learning Statistical Models Through Simulation in R" />
   
   <meta name="twitter:description" content="Textbook on statistical models for social scientists." />
   
@@ -24,14 +24,14 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-10-23" />
+<meta name="date" content="2020-10-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="introducing-linear-mixed-effects-models.html"/>
+<link rel="prev" href="linear-mixed-effects-models-with-one-random-factor.html"/>
 <link rel="next" href="generalized-linear-mixed-effects-models.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,6 +51,7 @@
 
 
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -208,35 +209,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5.6" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#multi-level-app"><i class="fa fa-check"></i><b>5.6</b> Multi-level app</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>6</b> Modeling experimental data with linear mixed-effects models</a><ul>
+<li class="chapter" data-level="6" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html"><i class="fa fa-check"></i><b>6</b> Linear mixed-effects models with one random factor</a><ul>
 <li class="chapter" data-level="6.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="6.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#web-app"><i class="fa fa-check"></i><b>6.2</b> Web app</a></li>
-<li class="chapter" data-level="6.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#replacing-t-test-and-anova-with-linear-mixed-effects-regression"><i class="fa fa-check"></i><b>6.3</b> Replacing t-test and ANOVA with linear mixed-effects regression</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#example-independent-samples-t-test-on-multi-level-data"><i class="fa fa-check"></i><b>6.3.1</b> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</a></li>
-<li class="chapter" data-level="6.3.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#when-is-a-random-intercepts-model-appropriate"><i class="fa fa-check"></i><b>6.3.2</b> When is a random-intercepts model appropriate?</a></li>
-<li class="chapter" data-level="6.3.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#rules-for-choosing-random-effects"><i class="fa fa-check"></i><b>6.3.3</b> Rules for choosing random effects</a></li>
+<li class="chapter" data-level="6.2" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html#when-and-why-would-you-want-to-replace-conventional-analyses-with-linear-mixed-effects-modeling"><i class="fa fa-check"></i><b>6.2</b> When, and why, would you want to replace conventional analyses with linear mixed-effects modeling?</a></li>
+<li class="chapter" data-level="6.3" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html#example-independent-samples-t-test-on-multi-level-data"><i class="fa fa-check"></i><b>6.3</b> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html#when-is-a-random-intercepts-model-appropriate"><i class="fa fa-check"></i><b>6.3.1</b> When is a random-intercepts model appropriate?</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#specifying-random-effects"><i class="fa fa-check"></i><b>6.4</b> Specifying random effects</a></li>
-<li class="chapter" data-level="6.5" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#simulating-data-with-crossed-random-factors"><i class="fa fa-check"></i><b>6.5</b> Simulating data with crossed random factors</a><ul>
-<li class="chapter" data-level="6.5.1" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#set-up-the-environment-and-define-the-parameters-for-the-dgp"><i class="fa fa-check"></i><b>6.5.1</b> Set up the environment and define the parameters for the DGP</a></li>
-<li class="chapter" data-level="6.5.2" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#generate-a-sample-of-subjects"><i class="fa fa-check"></i><b>6.5.2</b> Generate a sample of subjects</a></li>
-<li class="chapter" data-level="6.5.3" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#generate-a-sample-of-encounters-trials"><i class="fa fa-check"></i><b>6.5.3</b> Generate a sample of encounters (trials)</a></li>
-<li class="chapter" data-level="6.5.4" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#join-subjects-items-and-trials"><i class="fa fa-check"></i><b>6.5.4</b> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></a></li>
-<li class="chapter" data-level="6.5.5" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#create-the-response-variable"><i class="fa fa-check"></i><b>6.5.5</b> Create the response variable</a></li>
+<li class="chapter" data-level="6.4" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html#expressing-the-study-design-and-performing-tests-in-regression"><i class="fa fa-check"></i><b>6.4</b> Expressing the study design and performing tests in regression</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="modeling-experimental-data-with-linear-mixed-effects-models.html"><a href="modeling-experimental-data-with-linear-mixed-effects-models.html#fitting-the-model"><i class="fa fa-check"></i><b>6.6</b> Fitting the model</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>7</b> Generalized linear mixed-effects models</a><ul>
+<li class="chapter" data-level="7" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html"><i class="fa fa-check"></i><b>7</b> Linear mixed-effects models with crossed random factors</a><ul>
 <li class="chapter" data-level="7.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="7.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#discrete-versus-continuous-data"><i class="fa fa-check"></i><b>7.2</b> Discrete versus continuous data</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#why-not-model-discrete-data-as-continuous"><i class="fa fa-check"></i><b>7.2.1</b> Why not model discrete data as continuous?</a></li>
+<li class="chapter" data-level="7.2" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#web-app"><i class="fa fa-check"></i><b>7.2</b> Web app</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#rules-for-choosing-random-effects"><i class="fa fa-check"></i><b>7.2.1</b> Rules for choosing random effects</a></li>
 </ul></li>
-<li class="chapter" data-level="7.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#generalized-linear-models"><i class="fa fa-check"></i><b>7.3</b> Generalized Linear Models</a></li>
-<li class="chapter" data-level="7.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#logistic-regression"><i class="fa fa-check"></i><b>7.4</b> Logistic regression</a><ul>
-<li class="chapter" data-level="7.4.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#terminology"><i class="fa fa-check"></i><b>7.4.1</b> Terminology</a></li>
-<li class="chapter" data-level="7.4.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#properties-of-log-odds"><i class="fa fa-check"></i><b>7.4.2</b> Properties of log odds</a></li>
-<li class="chapter" data-level="7.4.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#link-and-variance-functions"><i class="fa fa-check"></i><b>7.4.3</b> Link and variance functions</a></li>
-<li class="chapter" data-level="7.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>7.4.4</b> Estimating logistic regression models in R</a></li>
+<li class="chapter" data-level="7.3" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#specifying-random-effects"><i class="fa fa-check"></i><b>7.3</b> Specifying random effects</a></li>
+<li class="chapter" data-level="7.4" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#simulating-data-with-crossed-random-factors"><i class="fa fa-check"></i><b>7.4</b> Simulating data with crossed random factors</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#set-up-the-environment-and-define-the-parameters-for-the-dgp"><i class="fa fa-check"></i><b>7.4.1</b> Set up the environment and define the parameters for the DGP</a></li>
+<li class="chapter" data-level="7.4.2" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#generate-a-sample-of-subjects"><i class="fa fa-check"></i><b>7.4.2</b> Generate a sample of subjects</a></li>
+<li class="chapter" data-level="7.4.3" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#generate-a-sample-of-encounters-trials"><i class="fa fa-check"></i><b>7.4.3</b> Generate a sample of encounters (trials)</a></li>
+<li class="chapter" data-level="7.4.4" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#join-subjects-items-and-trials"><i class="fa fa-check"></i><b>7.4.4</b> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></a></li>
+<li class="chapter" data-level="7.4.5" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#create-the-response-variable"><i class="fa fa-check"></i><b>7.4.5</b> Create the response variable</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#fitting-the-model"><i class="fa fa-check"></i><b>7.5</b> Fitting the model</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed-effects models</a><ul>
+<li class="chapter" data-level="8.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#discrete-versus-continuous-data"><i class="fa fa-check"></i><b>8.2</b> Discrete versus continuous data</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#why-not-model-discrete-data-as-continuous"><i class="fa fa-check"></i><b>8.2.1</b> Why not model discrete data as continuous?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#generalized-linear-models"><i class="fa fa-check"></i><b>8.3</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="8.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Logistic regression</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#terminology"><i class="fa fa-check"></i><b>8.4.1</b> Terminology</a></li>
+<li class="chapter" data-level="8.4.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#properties-of-log-odds"><i class="fa fa-check"></i><b>8.4.2</b> Properties of log odds</a></li>
+<li class="chapter" data-level="8.4.3" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#link-and-variance-functions"><i class="fa fa-check"></i><b>8.4.3</b> Link and variance functions</a></li>
+<li class="chapter" data-level="8.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>8.4.4</b> Estimating logistic regression models in R</a></li>
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
@@ -269,174 +275,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="modeling-experimental-data-with-linear-mixed-effects-models" class="section level1">
-<h1><span class="header-section-number">Chapter 6</span> Modeling experimental data with linear mixed-effects models</h1>
+<div id="linear-mixed-effects-models-with-crossed-random-factors" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Linear mixed-effects models with crossed random factors</h1>
 <div id="learning-objectives" class="section level2">
-<h2><span class="header-section-number">6.1</span> Learning objectives</h2>
+<h2><span class="header-section-number">7.1</span> Learning objectives</h2>
 <ul>
-<li>specify linear mixed-effects models for experimental designs</li>
 <li>simulate data for a design with crossed random factors of subjects and stimuli</li>
 <li>estimate parameters for linear mixed-effects models with crossed random factors</li>
 </ul>
 </div>
 <div id="web-app" class="section level2">
-<h2><span class="header-section-number">6.2</span> Web app</h2>
+<h2><span class="header-section-number">7.2</span> Web app</h2>
 <ul>
 <li><a href="https://shiny.psy.gla.ac.uk/Dale/crossed">Demo of crossed random effects</a></li>
 </ul>
-</div>
-<div id="replacing-t-test-and-anova-with-linear-mixed-effects-regression" class="section level2">
-<h2><span class="header-section-number">6.3</span> Replacing t-test and ANOVA with linear mixed-effects regression</h2>
-<p>As we have been emphasizing throughout this course, most data in psychology is multi-level—there are multiple observations on the DV for each subject.</p>
-<p>In the last chapter, we saw how to perform multilevel linear regression with a continuous predictor. In this section, we’ll see how a mixed-effects model can be used to replace a wide variety of standard techniques used in psychology for multi-level data with categorical predictors. Indeed, a very simple model with random intercepts can replace the following techniques, if they are used on <strong>multi-level data</strong>:</p>
-<ul>
-<li>one sample t-test</li>
-<li>between-subjects designs
-<ul>
-<li>independent samples t-test</li>
-<li>one factor or factorial ANOVA</li>
-</ul></li>
-<li>within-subjects designs
-<ul>
-<li>paired samples t-tests</li>
-<li>one factor repeated measures ANOVA</li>
-<li>mixed-design ANOVA</li>
-<li>within-subjects factorial ANOVA</li>
-</ul></li>
-</ul>
-<div id="example-independent-samples-t-test-on-multi-level-data" class="section level3">
-<h3><span class="header-section-number">6.3.1</span> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</h3>
-<p>Let’s consider a situation where you are testing the effect of alcohol consumption on simple reaction time (e.g., press a button as fast as you can after a light appears). To keep it simple, let’s assume that you have collected data from 14 participants randomly assigned to perform a set of 10 simple RT trials after one of two interventions: drinking a pint of alcohol (treatment condition) or a placebo drink (placebo condition). You have 7 participants in each of the two groups. Note that you would need more than this for a real study.</p>
-<p>The web app below presents simulated data from such a study. Subjects P01-P07 are from the placebo condition, while subjects T01-T07 are from the treatment condition.</p>
-<div class="figure" style="text-align: center"><span id="fig:icc-app"></span>
-<iframe src="https://shiny.psy.gla.ac.uk/Dale/icc?showcase=0" width="100%" height="620px">
-</iframe>
-<p class="caption">
-Figure 6.1: Multi-level data from an independent samples design.
-</p>
-</div>
-<p>If we were going to run a t-test on these data, we would first need to calculate subject means, because otherwise the observations are not independent. You could do this as follows. (If you want to run the code below, you can download sample data from the web app above and save it as <code>independent_samples.csv</code>).</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" title="1"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
-<a class="sourceLine" id="cb178-2" title="2"></a>
-<a class="sourceLine" id="cb178-3" title="3">dat &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/independent_samples.csv&quot;</span>, <span class="dt">col_types =</span> <span class="st">&quot;cci&quot;</span>)</a>
-<a class="sourceLine" id="cb178-4" title="4"></a>
-<a class="sourceLine" id="cb178-5" title="5">subj_means &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb178-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(subject, cond) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb178-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_rt =</span> <span class="kw">mean</span>(RT)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb178-8" title="8"><span class="st">  </span><span class="kw">ungroup</span>()</a>
-<a class="sourceLine" id="cb178-9" title="9"></a>
-<a class="sourceLine" id="cb178-10" title="10">subj_means</a></code></pre></div>
-<pre><code>## # A tibble: 14 x 3
-##    subject cond  mean_rt
-##    &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
-##  1 P01     P        354 
-##  2 P02     P        384.
-##  3 P03     P        391.
-##  4 P04     P        404.
-##  5 P05     P        421.
-##  6 P06     P        392 
-##  7 P07     P        400.
-##  8 T08     T        430.
-##  9 T09     T        432.
-## 10 T10     T        410.
-## 11 T11     T        455.
-## 12 T12     T        450.
-## 13 T13     T        418.
-## 14 T14     T        489.</code></pre>
-<p>Then, the <span class="math inline">\(t\)</span>-test can be run using the “formula” version of <code>t.test()</code>.</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb180-1" title="1"><span class="kw">t.test</span>(mean_rt <span class="op">~</span><span class="st"> </span>cond, subj_means)</a></code></pre></div>
-<pre><code>## 
-## 	Welch Two Sample t-test
-## 
-## data:  mean_rt by cond
-## t = -3.7985, df = 11.32, p-value = 0.002807
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -76.32580 -20.44563
-## sample estimates:
-## mean in group P mean in group T 
-##        392.3143        440.7000</code></pre>
-<p>While there is nothing wrong with this analysis, aggregating the data throws away information. we can see in the above web app that there are actually two different sources of variability: trial-by-trial variability in simple RT (represented by <span class="math inline">\(\sigma\)</span>) and variability across subjects in terms of their how slow or fast they are relative to the population mean (<span class="math inline">\(\gamma_{00}\)</span>). The Data Generating Process for response time (<span class="math inline">\(Y_{st}\)</span>) for subject <span class="math inline">\(s\)</span> on trial <span class="math inline">\(t\)</span> is shown below.</p>
-<p><em>Level 1:</em></p>
-<p><span class="math display">\[\begin{equation}
-Y_{st} = \beta_{0s} + \beta_{1} X_{s} + e_{st}
-\end{equation}\]</span></p>
-<p><em>Level 2:</em></p>
-<p><span class="math display">\[\begin{equation}
-\beta_{0s} = \gamma_{00} + S_{0s}
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation}
-\beta_{1} = \gamma_{10}
-\end{equation}\]</span></p>
-<p><em>Variance Components:</em></p>
-<p><span class="math display">\[\begin{equation}
-S_{0s} \sim N\left(0, {\tau_{00}}^2\right) 
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation}
-e_{st} \sim N\left(0, \sigma^2\right)
-\end{equation}\]</span></p>
-<p>In the above equation, <span class="math inline">\(X_s\)</span> is a numerical predictor coding which condition the subject <span class="math inline">\(s\)</span> is in; e.g., 0 for placebo, 1 for treatment.</p>
-<p>The multi-level equations are somewhat cumbersome for such a simple model; we could just reduce levels 1 and 2 to</p>
-<p><span class="math display">\[\begin{equation}
-Y_{st} = \gamma_{00} + S_{0s} + \gamma_{10} X_s + e_{st},
-\end{equation}\]</span></p>
-<p>but it is worth becoming familiar with the multi-level format for when we encounter more complex designs.</p>
-<p>Unlike the <code>sleepstudy</code> data seen in the last chapter, we only have one random effect for each subject, <span class="math inline">\(S_{0s}\)</span>. There is no random slope. Each subject appears in only one of the two treatment conditions, so it would not be possible to estimate how the effect of placebo versus alcohol varies over subjects. The mixed-effects model that we would fit to these data, with random intercepts but no random slopes, is known as a <strong>random intercepts model</strong>.</p>
-<p>A random-intercepts model would adequately capture the two sources of variability mentioned above: the inter-subject variability in overall mean RT in the parameter <span class="math inline">\({\tau_{00}}^2\)</span>, and the trial-by-trial variability in the parameter <span class="math inline">\(\sigma^2\)</span>. We can calculate the proportion of the total variability attributable to individual differences among subjects using the formula below.</p>
-<p><span class="math display">\[ICC = \frac{{\tau_{00}}^2}{{\tau_{00}}^2 + \sigma^2}\]</span></p>
-<p>This quantity, known as the <strong>intra-class correlation coefficient</strong>, and tells you how much clustering there is in your data. It ranges from 0 to 1, with 0 indicating that all the variability is due to residual variance, and 1 indicating that all the variability is due to individual differences among subjects.</p>
-<p>The lmer syntax for fitting a random intercepts model to the data is <code>lmer(RT ~ cond + (1 | subject), dat, REML=FALSE)</code>. Let’s create our own numerical predictor first, to make it explicit that we are using dummy coding.</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" title="1">dat2 &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb182-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cond_d =</span> <span class="kw">if_else</span>(cond <span class="op">==</span><span class="st"> &quot;T&quot;</span>, 1L, 0L))</a>
-<a class="sourceLine" id="cb182-3" title="3"></a>
-<a class="sourceLine" id="cb182-4" title="4"><span class="kw">distinct</span>(dat2, cond, cond_d)  <span class="co">## double check</span></a></code></pre></div>
-<pre><code>## # A tibble: 2 x 2
-##   cond  cond_d
-##   &lt;chr&gt;  &lt;int&gt;
-## 1 P          0
-## 2 T          1</code></pre>
-<p>And now, estimate the model.</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" title="1"><span class="kw">library</span>(<span class="st">&quot;lme4&quot;</span>)</a>
-<a class="sourceLine" id="cb184-2" title="2"></a>
-<a class="sourceLine" id="cb184-3" title="3">mod &lt;-<span class="st"> </span><span class="kw">lmer</span>(RT <span class="op">~</span><span class="st"> </span>cond_d <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>subject), dat2, <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb184-4" title="4"></a>
-<a class="sourceLine" id="cb184-5" title="5"><span class="kw">summary</span>(mod)</a></code></pre></div>
-<pre><code>## Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]
-## Formula: RT ~ cond_d + (1 | subject)
-##    Data: dat2
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##   1451.8   1463.5   -721.9   1443.8      136 
-## 
-## Scaled residuals: 
-##      Min       1Q   Median       3Q      Max 
-## -2.67117 -0.66677  0.01656  0.75361  2.58447 
-## 
-## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  subject  (Intercept)  329.3   18.15   
-##  Residual             1574.7   39.68   
-## Number of obs: 140, groups:  subject, 14
-## 
-## Fixed effects:
-##             Estimate Std. Error t value
-## (Intercept)  392.314      8.339  47.045
-## cond_d        48.386     11.793   4.103
-## 
-## Correlation of Fixed Effects:
-##        (Intr)
-## cond_d -0.707</code></pre>
-<p>Play around with the sliders in the app above and check the lmer output panel until you understand how the output maps onto the model parameters.</p>
-</div>
-<div id="when-is-a-random-intercepts-model-appropriate" class="section level3">
-<h3><span class="header-section-number">6.3.2</span> When is a random-intercepts model appropriate?</h3>
-<p>The random-intercepts model is appropriate for any one-sample or between-subjects data where you have multiple observations per participant. The data <strong>must</strong> be multi-level, because in single-level designs the subject variability is perfectly confounded with residual variability, making it impossible for the estimation algorithm to distinguish the two sources.</p>
-<p>A random-intercepts model is <strong>sometimes</strong> appropriate for within-subjects or mixed-design data. For designs where there is at least one within-subjects factor, and where you are performing analyses on subject means, it is generally the case that a random-intercepts model is appropriate.</p>
-<p>In a design with a single within-subjects factor, it is <strong>only</strong> appropriate when you have a single observation per subject per level of the within-subject factor. If you have more than one observation per subject per level, you need to enrich your random effects structure with random slopes, as described in the next section. If the reason you have multiple observations per subject per level is because you have each subject reacting to the same set of stimuli, then you might want to consider a mixed-effects model with crossed random effects for subjects and stimuli, as described in the next chapter. If you have sets of individual subject means on which you would normally perform a paired-samples t-test or repeated measures ANOVA, that would be data for which the random-intercepts model would be appropriate.</p>
-<p>The same logic goes for factorial designs in which there is more than one within-subjects factor. In factorial designs, the random-intercepts model is appropriate if you have one observation per subject per <strong>cell</strong> formed by each combination of the within-subjects factors. For instance, if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are two two-level within-subject factors, you need to check that you have only one observation for each subject in <span class="math inline">\(A_1B_1\)</span>, <span class="math inline">\(A_1B_2\)</span>, <span class="math inline">\(A_2B_1\)</span>, and <span class="math inline">\(A_2B_2\)</span>. If you have more than one observation, you will need to consider including a random slope in your model.</p>
-</div>
 <div id="rules-for-choosing-random-effects" class="section level3">
-<h3><span class="header-section-number">6.3.3</span> Rules for choosing random effects</h3>
+<h3><span class="header-section-number">7.2.1</span> Rules for choosing random effects</h3>
 <p>For designs having at least one within-subject factor, it is typically the case that you need to also consider including random slopes for certain factors. We will go into this in more detail in the next chapter, where we will consider more complex designs, but here are the basic guidelines.</p>
 <p>For categorical factor <span class="math inline">\(A\)</span>, you need to consider a random slope for <span class="math inline">\(A\)</span> in the model if <strong>both</strong> of the following criteria are met:</p>
 <ol style="list-style-type: decimal">
@@ -455,7 +309,7 @@ Y_{st} = \gamma_{00} + S_{0s} + \gamma_{10} X_s + e_{st},
 </div>
 </div>
 <div id="specifying-random-effects" class="section level2">
-<h2><span class="header-section-number">6.4</span> Specifying random effects</h2>
+<h2><span class="header-section-number">7.3</span> Specifying random effects</h2>
 <p>We’ll start out with some interactive tasks where you are given data to examine and asked to specify the maximal random effects structure. The data are stored in <a href="data/rfx_data.zip">this zip file</a>. The archive includes four R binary files (<code>.rds</code>), which you can load in using the <code>readRDS()</code> function. Extract it and set your working directory to where the resulting subdirectory <code>rfx_data/</code> is located.</p>
 <p>Use the code below to load them in.</p>
 <div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" title="1">ds1 &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;rfx_data/dataset1.rds&quot;</span>)</a>
@@ -503,7 +357,7 @@ Y_{st} = \gamma_{00} + S_{0s} + \gamma_{10} X_s + e_{st},
 <div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" title="1">ss_form &lt;-<span class="st"> </span>Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(Days <span class="op">|</span><span class="st"> </span>Subject)</a></code></pre></div>
 <p>In other words: <strong>all you need is the formula, NOT the call to <code>lme4::lmer()</code>; you are not actually fitting any model to the data.</strong></p>
 <div id="dataset-1" class="section level4">
-<h4><span class="header-section-number">6.4.0.1</span> Dataset 1</h4>
+<h4><span class="header-section-number">7.3.0.1</span> Dataset 1</h4>
 <p>Investigate the experimental design for <code>dataset1</code> and type the appropriate model formula.</p>
 <div class="solution">
 <button>
@@ -521,7 +375,7 @@ Solution
 </div>
 </div>
 <div id="dataset-2" class="section level4">
-<h4><span class="header-section-number">6.4.0.2</span> Dataset 2</h4>
+<h4><span class="header-section-number">7.3.0.2</span> Dataset 2</h4>
 <p>Investigate the experimental design for <code>dataset2</code> and type the appropriate model formula.</p>
 <div class='solution'>
 <button>
@@ -543,7 +397,7 @@ Solution
 ## 8       1 A2    B2    C2        1</code></pre>
 </div>
 <div id="dataset-3" class="section level4">
-<h4><span class="header-section-number">6.4.0.3</span> Dataset 3</h4>
+<h4><span class="header-section-number">7.3.0.3</span> Dataset 3</h4>
 <p>Investigate the experimental design for <code>dataset3</code> and type the appropriate model formula.</p>
 <div class="solution">
 <button>
@@ -565,7 +419,7 @@ Solution
 </div>
 </div>
 <div id="dataset-4" class="section level4">
-<h4><span class="header-section-number">6.4.0.4</span> Dataset 4</h4>
+<h4><span class="header-section-number">7.3.0.4</span> Dataset 4</h4>
 <p>Investigate the experimental design for <code>dataset4</code> and type the appropriate model formula.</p>
 <div class="solution">
 <button>
@@ -589,13 +443,13 @@ Solution
 </div>
 </div>
 <div id="simulating-data-with-crossed-random-factors" class="section level2">
-<h2><span class="header-section-number">6.5</span> Simulating data with crossed random factors</h2>
+<h2><span class="header-section-number">7.4</span> Simulating data with crossed random factors</h2>
 <p>For this first set of exercises, we will generate simulated data corresponding to an experiment with a single, two-level factor (independent variable) that is within-subjects and between-items. Let’s imagine that the experiment involves lexical decisions to a set of words (e.g., is “PINT” a word or nonword?), and the dependent variable is response time (in milliseconds), and the independent variable is word type (noun vs verb). We want to treat both subjects and words as random factors (so that we can generalize to the population of events where subjects encounter words). You can play around with the web app below (or <a href="https://shiny.psy.gla.ac.uk/Dale/crossed" target="_blank">click here to open it in a new window</a>), which allows you to manipulate the data-generating parameters and see their effect on the data.</p>
 <div class="figure" style="text-align: center"><span id="fig:webapp"></span>
 <iframe src="https://shiny.psy.gla.ac.uk/Dale/crossed?showcase=0" width="100%" height="600px">
 </iframe>
 <p class="caption">
-Figure 6.2: <em>Web app for crossed random effects.</em>
+Figure 7.1: <em>Web app for crossed random effects.</em>
 </p>
 </div>
 <p>Here is the DGP for response time <span class="math inline">\(Y_{si}\)</span> for subject <span class="math inline">\(s\)</span> and item <span class="math inline">\(i\)</span>:</p>
@@ -706,7 +560,7 @@ e_{si} \sim N\left(0, \sigma^2\right)
 </tbody>
 </table>
 <div id="set-up-the-environment-and-define-the-parameters-for-the-dgp" class="section level3">
-<h3><span class="header-section-number">6.5.1</span> Set up the environment and define the parameters for the DGP</h3>
+<h3><span class="header-section-number">7.4.1</span> Set up the environment and define the parameters for the DGP</h3>
 <p>If you want to get the same results as everyone else for this exercise, then we all should seed the random number generator with the same value. While we’re at it, let’s load in the packages we need.</p>
 <div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb201-1" title="1"><span class="kw">library</span>(<span class="st">&quot;lme4&quot;</span>)</a>
 <a class="sourceLine" id="cb201-2" title="2"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
@@ -814,7 +668,7 @@ Solution
 </div>
 </div>
 <div id="generate-a-sample-of-subjects" class="section level3">
-<h3><span class="header-section-number">6.5.2</span> Generate a sample of subjects</h3>
+<h3><span class="header-section-number">7.4.2</span> Generate a sample of subjects</h3>
 <p>To generate the by-subject random effects, you will need to generate data from a <em>bivariate normal distribution</em>. To do this, we will use the function <code>MASS::mvrnorm</code>.</p>
 <div class="warning">
 <p>REMEMBER: do not run <code>library("MASS")</code> just to get this one function, because <code>MASS</code> has a function <code>select()</code> that will overwrite the tidyverse version. Since all we want from MASS is the <code>mvrnorm()</code> function, we can just access it directly by the <code>pkgname::function</code> syntax, i.e., <code>MASS::mvrnorm()</code>.</p>
@@ -1082,7 +936,7 @@ Solution
 </div>
 </div>
 <div id="generate-a-sample-of-encounters-trials" class="section level3">
-<h3><span class="header-section-number">6.5.3</span> Generate a sample of encounters (trials)</h3>
+<h3><span class="header-section-number">7.4.3</span> Generate a sample of encounters (trials)</h3>
 <p>Each trial is an <em>encounter</em> between a particular subject and stimulus. In this experiment, each subject will see each stimulus. Generate a table <code>trials</code> that lists the encounters in the experiments. Note: each participant encounters each stimulus item once. Use the <code>crossing()</code> function to create all possible encounters.</p>
 <p>Now apply this example to generate the table below, where <code>err</code> is the residual term, drawn from <span class="math inline">\(N \sim \left(0, \sigma^2\right)\)</span>, where <span class="math inline">\(\sigma\)</span> is <code>err_sd</code>.</p>
 <pre><code>## # A tibble: 5,000 x 3
@@ -1123,7 +977,7 @@ Solution
 </div>
 </div>
 <div id="join-subjects-items-and-trials" class="section level3">
-<h3><span class="header-section-number">6.5.4</span> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></h3>
+<h3><span class="header-section-number">7.4.4</span> Join <code>subjects</code>, <code>items</code>, and <code>trials</code></h3>
 <p>Merge the information in <code>subjects</code>, <code>items</code>, and <code>trials</code> to create the full dataset <code>dat_sim</code>, which looks like this:</p>
 <pre><code>## # A tibble: 5,000 x 7
 ##    subj_id item_id  S_0s  I_0i   S_1s  cond    err
@@ -1167,7 +1021,7 @@ Solution
 </div>
 </div>
 <div id="create-the-response-variable" class="section level3">
-<h3><span class="header-section-number">6.5.5</span> Create the response variable</h3>
+<h3><span class="header-section-number">7.4.5</span> Create the response variable</h3>
 <p>Add the response variable <code>Y</code> to dat according to the model formula:</p>
 <p><span class="math display">\[Y_{si} = \beta_0 + S_{0s} + I_{0i} + (\beta_1 + S_{1s})X_{i} + e_{si}\]</span></p>
 <p>so that the resulting table (<code>dat_sim2</code>) looks like this:</p>
@@ -1213,7 +1067,7 @@ Solution
 </div>
 </div>
 <div id="fitting-the-model" class="section level2">
-<h2><span class="header-section-number">6.6</span> Fitting the model</h2>
+<h2><span class="header-section-number">7.5</span> Fitting the model</h2>
 <p>Now that you have created simulated data, estimate the model using <code>lme4::lmer()</code>, and run <code>summary()</code>.</p>
 <div class="solution">
 <button>
@@ -1511,7 +1365,7 @@ window.onload = function() {
           </div>
         </div>
       </div>
-<a href="introducing-linear-mixed-effects-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-mixed-effects-models-with-one-random-factor.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="generalized-linear-mixed-effects-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

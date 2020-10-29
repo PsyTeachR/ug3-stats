@@ -418,10 +418,10 @@ What this model has done is take one subject to be the baseline (specifically, s
 
 Answer these questions (to three decimal places):
 
-* What is the intercept for subject 308? <input class='solveme nospaces' data-tol='0.001' size='8' data-answer='["288.217466666666"]'/>
-* What is the slope for subject 308? <input class='solveme nospaces' data-tol='0.001' size='8' data-answer='["21.6904952380953"]'/>
-* What is the intercept for subject 335? <input class='solveme nospaces' data-tol='0.001' size='8' data-answer='["262.874583333333"]'/>
-* What is the slope for subject 335? <input class='solveme nospaces' data-tol='0.001' size='8' data-answer='["-4.20899166666667"]'/>
+* What is the intercept for subject 308? <input name='q_1'class='solveme nospaces' data-tol='0.001' size='8' data-answer='["288.217466666666"]'/>
+* What is the slope for subject 308? <input name='q_2'class='solveme nospaces' data-tol='0.001' size='8' data-answer='["21.6904952380953"]'/>
+* What is the intercept for subject 335? <input name='q_3'class='solveme nospaces' data-tol='0.001' size='8' data-answer='["262.874583333333"]'/>
+* What is the slope for subject 335? <input name='q_4'class='solveme nospaces' data-tol='0.001' size='8' data-answer='["-4.20899166666667"]'/>
 
 
 <div class='solution'><button>Answers and Explanation</button>
