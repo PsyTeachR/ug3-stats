@@ -1,0 +1,168 @@
+# Linear mixed-effects models with one random factor
+
+## Learning objectives
+
+* understand how linear mixed-effects models can replace conventional analyses, and when they are appropriate
+* express various types of common designs in a regression framework
+* use model comparison (`anova()`) for testing effects
+* express various study designs using the R regression formula syntax
+
+## When, and why, would you want to replace conventional analyses with linear mixed-effects modeling?
+
+We have repeatedly emphasized how many common techniques in psychology can be seen as special cases of the general linear model. This implies that it would be possible to replace these techniques with regression. In fact, you could analyze almost any conceivable dataset in psychology using one of the four functions below:
+
+```{r lm-table, echo=FALSE}
+tribble(~`sampling design`, ~`type of data`, ~`function`, ~description,
+        "single level", "continuous, normally distributed", "`base::lm()`", "simple linear model",
+        "single level", "count or categorical", "`base::glm()`", "generalized linear model",
+        "multilevel", "continuous, normally distributed", "`lme4::lmer()`", "linear mixed-effects model",
+        "multilevel", "count or categorical", "`lme4::glmer()`", "generalized linear mixed-effects model") %>%
+  knitr::kable(escape = FALSE)
+```
+
+To decide which function to use, you need to know the type of data you're working with (continuous and normally distributed, or not) and how the data have been sampled (single-level or `r glossary("multilevel")`). Arguments to these functions are highly similar across all four versions.  We will learn about analyzing count and categorical data later in this course. For now, we will focus on continuous data, but many of the principles are identical.
+
+Here is a comparison chart for single-level data (data where you don't have `r glossary("repeated-measures")`):
+
+```{r comparison-chart, echo=FALSE}
+tribble(~test, ~`conventional approach`, ~`regression approach`,
+        "one-sample t-test", "`t.test(y, mu = c)`", "`lm(y ~ 1, offset = c)`",
+        "independent samples t-test", "`t.test(x, y)`", "`lm(y ~ x)`",
+        "one factor ANOVA", "`aov(y ~ x)`", "`lm(y ~ x)`",
+        "factorial ANOVA", "`aov(y ~ a * b)`", "`lm(y ~ a * b)`") %>%
+  knitr::kable(escape = FALSE)
+```
+
+All of above designs are *between-subjects* designs without repeated measures. (Note that in the factorial case, we would probably replace `a` and `b` with our own deviation-coded numerical predictors, for reasons already discussed in [the chapter on interactions](interactions.html)).
+
+Where mixed-effects models come into play is with multilevel data. Data is usually multilevel for one of the three reasons below (multiple reasons could simultaneously apply):
+
+1. you have a within-subject factor, and/or
+2. you have **pseudoreplications**, and/or
+3. you have multiple stimulus items (which we will discuss in the [next chapter](linear-mixed-effects-models-with-crossed-random-factors.html)).
+
+(At this point, it would be a good idea to refresh your memory on the meaning of between- versus within- subject factors). In the `sleepstudy` data, you had the within-subject factor of `Day` (which is more a numeric variable, actually, than a factor; but it has multiple values varying within each participant).
+
+**Pseudoreplications** occur when you take multiple measurements within the same condition. For instance, imagine a study where you randomly assign participants to consume one of two beverages---alcohol or water---before administering a simple response time task where they press a button as fast as possible when a light flashes. You would probably take more than one measurement of response time for each participant; let's assume that you measured it over 100 trials. You'd have one between-subject factor (beverage) and 100 observations per subject, for say, 20 subjects in each group. One common mistake novices make when analyzing such data is to try to run a t-test. **You can't directly use the conventional a t-test when you have pseudoreplications (or multiple stimuli).** You must first calculate means for each subject, and then run your analysis **on the means, not on the raw data.** There are versions of ANOVA that can deal with pseudoreplications, but you are probably better off using a linear-mixed effects model, which can better handle the complex dependency structure.
+
+Here is a comparison chart for multi-level data:
+
+```{r comparison-chart-lmer, echo=FALSE}
+tribble(~test, ~`conventional approach`, ~`regression approach`,
+        "one-sample t-test with pseudoreplications", "calculate means and use `t.test(x_mean)`", "`lmer(y ~ (1 | subject), offset = c)`",
+        "paired samples t-test", "`t.test(x, y, paired = TRUE)`", "`lmer(y ~ x + (1 | subject))`",
+        "paired samples t-test with pseudoreplications", "calculate means and use `t.test(x_mean, y_mean)`", "`lm(y ~ x + (1 + x | subject))`",        
+        "repeated-measures ANOVA", "`aov(y ~ x + Error(subject))`", "`lmer(y ~ x + (1 | subject))`",
+        "repeated-measures ANOVA with pseudoreplications", "`aov(y ~ x + Error(x / subject))`", "`lmer(y ~ x + (1 + x | subject))`",
+        "factorial ANOVA", "`aov(y ~ a * b)`", "`lm(y ~ a * b)`",
+        "factorial ANOVA with pseudoreplications", "`aov(y ~ a * b + Error((a * b) / subject)`", "`lmer(y ~ a * b + (1 + a * b | subject)`") %>%
+  knitr::kable(escape = FALSE)
+```
+
+One of the main selling points of the general linear models / regression framework over t-test and ANOVA is its flexibility. We saw this in the last chapter with the `sleepstudy` data, which could only be properly handled within a linear mixed-effects modelling framework. Despite the many advantages of regression, if you are in a situation where you have balanced data and can reasonably apply t-test or ANOVA without violating any of the assumptions behind the test, it makes sense to do so; these approaches have a long history in psychology and are more widely understood.
+
+## Example: Independent-samples $t$-test on multi-level data
+
+Let's consider a situation where you are testing the effect of alcohol consumption on simple reaction time (e.g., press a button as fast as you can after a light appears). To keep it simple, let's assume that you have collected data from 14 participants randomly assigned to perform a set of 10 simple RT trials after one of two interventions: drinking a pint of alcohol (treatment condition) or a placebo drink (placebo condition).  You have 7 participants in each of the two groups. Note that you would need more than this for a real study.
+
+This [web app](https://shiny.psy.gla.ac.uk/Dale/icc){target="_blank"} presents simulated data from such a study. Subjects P01-P07 are from the placebo condition, while subjects T01-T07 are from the treatment condition. Please stop and have a look!
+
+If we were going to run a t-test on these data, we would first need to calculate subject means, because otherwise the observations are not independent. You could do this as follows. (If you want to run the code below, you can download sample data from the web app above and save it as `independent_samples.csv`).
+
+```{r subj-means, message = FALSE}
+library("tidyverse")
+
+dat <- read_csv("data/independent_samples.csv", col_types = "cci")
+
+subj_means <- dat %>%
+  group_by(subject, cond) %>%
+  summarise(mean_rt = mean(RT)) %>%
+  ungroup()
+
+subj_means
+```
+
+Then, the $t$-test can be run using the "formula" version of `t.test()`.
+
+```{r run-t}
+t.test(mean_rt ~ cond, subj_means)
+```
+
+While there is nothing wrong with this analysis, aggregating the data throws away information. we can see in the above web app that there are actually two different sources of variability: trial-by-trial variability in simple RT (represented by $\sigma$) and variability across subjects in terms of their how slow or fast they are relative to the population mean ($\gamma_{00}$).  The Data Generating Process for response time ($Y_{st}$) for subject $s$ on trial $t$ is shown below.
+
+*Level 1:*
+
+\begin{equation}
+Y_{st} = \beta_{0s} + \beta_{1} X_{s} + e_{st}
+\end{equation}
+
+*Level 2:*
+
+\begin{equation}
+\beta_{0s} = \gamma_{00} + S_{0s}
+\end{equation}
+
+\begin{equation}
+\beta_{1} = \gamma_{10}
+\end{equation}
+
+*Variance Components:*
+
+\begin{equation}
+S_{0s} \sim N\left(0, {\tau_{00}}^2\right) 
+\end{equation}
+
+\begin{equation}
+e_{st} \sim N\left(0, \sigma^2\right)
+\end{equation}
+
+In the above equation, $X_s$ is a numerical predictor coding which condition the subject $s$ is in; e.g., 0 for placebo, 1 for treatment.
+
+The multi-level equations are somewhat cumbersome for such a simple model; we could just reduce levels 1 and 2 to 
+
+\begin{equation}
+Y_{st} = \gamma_{00} + S_{0s} + \gamma_{10} X_s + e_{st},
+\end{equation}
+
+but it is worth becoming familiar with the multi-level format for when we encounter more complex designs.
+
+Unlike the `sleepstudy` data seen in the last chapter, we only have one random effect for each subject, $S_{0s}$. There is no random slope. Each subject appears in only one of the two treatment conditions, so it would not be possible to estimate how the effect of placebo versus alcohol varies over subjects.  The mixed-effects model that we would fit to these data, with random intercepts but no random slopes, is known as a **random intercepts model**.
+
+A random-intercepts model would adequately capture the two sources of variability mentioned above: the inter-subject variability in overall mean RT in the parameter ${\tau_{00}}^2$, and the trial-by-trial variability in the parameter $\sigma^2$. We can calculate the proportion of the total variability attributable to individual differences among subjects using the formula below.
+
+$$ICC = \frac{{\tau_{00}}^2}{{\tau_{00}}^2 + \sigma^2}$$
+
+This quantity, known as the **intra-class correlation coefficient**, and tells you how much clustering there is in your data. It ranges from 0 to 1, with 0 indicating that all the variability is due to residual variance, and 1 indicating that all the variability is due to individual differences among subjects.
+
+The lmer syntax for fitting a random intercepts model to the data is `lmer(RT ~ cond + (1 | subject), dat, REML=FALSE)`. Let's create our own numerical predictor first, to make it explicit that we are using dummy coding.
+
+```{r dat2}
+dat2 <- dat %>%
+  mutate(cond_d = if_else(cond == "T", 1L, 0L))
+
+distinct(dat2, cond, cond_d)  ## double check
+```
+
+And now, estimate the model.
+
+```{r mod-estimate, message = FALSE}
+library("lme4")
+
+mod <- lmer(RT ~ cond_d + (1 | subject), dat2, REML = FALSE)
+
+summary(mod)
+```
+
+Play around with the sliders in the app above and check the lmer output panel until you understand how the output maps onto the model parameters.
+
+### When is a random-intercepts model appropriate?
+
+Of course, a mixed-effects model is only appropriate when you have multilevel data. The random-intercepts model is appropriate for any one-sample or between-subjects data with pseudoreplications (if you don't have pseudoreplications in this situation, you don't have multilevel data, and you can just use vanilla regression, e.g., `lm()`).
+
+The "random-intercepts-only" model is also appropriate when you have within-subject factors in your design, but **only if you don't also have pseudoreplications**; that is, it is **only** appropriate when you have a single observation per subject per level of the within-subject factor. If you have more than one observation per subject per level/cell, you need to enrich your random effects structure with random slopes, as described in the next section. If the reason you have multiple observations per subject per level is because you have each subject reacting to the same set of stimuli, then you might want to consider a mixed-effects model with crossed random effects for subjects and stimuli, as described in the [next chapter](linear-mixed-effects-models-with-crossed-random-factors.html).
+
+The same logic goes for factorial designs in which there is more than one within-subjects factor. In factorial designs, the random-intercepts model is appropriate if you have one observation per subject per **cell** formed by each combination of the within-subjects factors. For instance, if $A$ and $B$ are two two-level within-subject factors, you need to check that you have only one observation for each subject in $A_1B_1$, $A_1B_2$, $A_2B_1$, and $A_2B_2$. If you have more than one observation, you will need to consider including a random slope in your model.
+
+## Expressing the study design and performing tests in regression
+
+(section under construction! coming soon)
