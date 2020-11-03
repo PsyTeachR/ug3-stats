@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-10-29" />
+<meta name="date" content="2020-11-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -380,8 +380,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <table>
 <colgroup>
 <col width="33%" />
-<col width="34%" />
-<col width="32%" />
+<col width="30%" />
+<col width="35%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -394,37 +394,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">one-sample t-test with pseudoreplications</td>
 <td align="left">calculate means and use <code>t.test(x_mean)</code></td>
-<td align="left"><code>lmer(y ~ (1 &amp;#124; subject), offset = c)</code></td>
+<td align="left"><code>lmer(y ~ (1 | subject), offset = c)</code></td>
 </tr>
 <tr class="even">
-<td align="left">paired samples t-test</td>
+<td align="left">paired samples t-test, no pseudoreplications</td>
 <td align="left"><code>t.test(x, y, paired = TRUE)</code></td>
-<td align="left"><code>lmer(y ~ x + (1 &amp;#124; subject))</code></td>
+<td align="left"><code>lmer(y ~ x + (1 | subject))</code></td>
 </tr>
 <tr class="odd">
 <td align="left">paired samples t-test with pseudoreplications</td>
 <td align="left">calculate means and use <code>t.test(x_mean, y_mean)</code></td>
-<td align="left"><code>lm(y ~ x + (1 + x &amp;#124; subject))</code></td>
+<td align="left"><code>lm(y ~ x + (1 + x | subject))</code></td>
 </tr>
 <tr class="even">
-<td align="left">repeated-measures ANOVA</td>
+<td align="left">repeated-measures ANOVA no pseudoreplications</td>
 <td align="left"><code>aov(y ~ x + Error(subject))</code></td>
-<td align="left"><code>lmer(y ~ x + (1 &amp;#124; subject))</code></td>
+<td align="left"><code>lmer(y ~ x + (1 | subject))</code></td>
 </tr>
 <tr class="odd">
 <td align="left">repeated-measures ANOVA with pseudoreplications</td>
-<td align="left"><code>aov(y ~ x + Error(x / subject))</code></td>
-<td align="left"><code>lmer(y ~ x + (1 + x &amp;#124; subject))</code></td>
+<td align="left"><code>aov(y ~ x + Error(subject/x))</code></td>
+<td align="left"><code>lmer(y ~ x + (1 + x | subject))</code></td>
 </tr>
 <tr class="even">
-<td align="left">factorial ANOVA</td>
-<td align="left"><code>aov(y ~ a * b)</code></td>
-<td align="left"><code>lm(y ~ a * b)</code></td>
+<td align="left">factorial ANOVA, a &amp; b within, no pseudoreplications</td>
+<td align="left"><code>aov(y ~ a * b + Error(subject))</code></td>
+<td align="left"><code>lmer(y ~ a * b + (1 | subject))</code></td>
 </tr>
 <tr class="odd">
 <td align="left">factorial ANOVA with pseudoreplications</td>
-<td align="left"><code>aov(y ~ a * b + Error((a * b) / subject)</code></td>
-<td align="left"><code>lmer(y ~ a * b + (1 + a * b &amp;#124; subject)</code></td>
+<td align="left"><code>aov(y ~ a * b + Error(subject/(a * b))</code></td>
+<td align="left"><code>lmer(y ~ a * b + (1 + a * b | subject)</code></td>
 </tr>
 </tbody>
 </table>
@@ -558,7 +558,7 @@ Y_{st} = \gamma_{00} + S_{0s} + \gamma_{10} X_s + e_{st},
 <p>In order to reproduce all of the t-test/ANOVA-style analyses in linear mixed-effects models, you’ll need to better understand two things: (1) how to express your study design in a regression formula, and (2) how to get p-values for any tests you perform. The latter part is not obvious within the linear mixed-effects approach, since in many circumstances, the output of <code>lme4::lmer()</code> does not give you p-values by default, reflecting the fact that there are multiple options for deriving them <span class="citation">(Luke <a href="#ref-Luke_2017">2017</a>)</span>. Or, you might get p-values for individual regression coefficients, but the test you want to perform is a composite one where you need to test multiple parameters simultaneously.</p>
 <p>First, let’s take a closer look at the regression formula syntax in R and <strong><code>lme4</code></strong>. For the regression model <span class="math inline">\(y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_m x_m + e\)</span> with by-subject random effects you’d have:</p>
 <p><code>y ~ 1 + x1 + x2 + ... + xm + (1 + x1 + ... | subject)</code></p>
-<p>The residual term is implied and so not mentioned; only the predictors. The left side (before the tilde <code>~</code>) specifies the response variable, the right side has the predictor variables. The term in brackets, <code>(... | ...)</code>, is specific to <strong><code>lme4</code></strong>. The right side of the vertical bar <code>|</code> specifies the name of a variable (in this case, <code>subject</code>) that codes the levels of the random factor. The left side specifies what regression coefficients you want to allow to vary over those levels. The <code>1</code> at the start of the formula specifies <code>1</code> that you want an intercept, which is included by default anyway, and so can be omitted. The <code>1</code> within the bracket specifies a <strong>random intercept</strong>, which is also included by default; the predictor variables mentioned inside the brackets specify <strong>random slopes</strong>. So you could write the above formula equivalently as:</p>
+<p>The residual term is implied and so not mentioned; only the predictors. The left side (before the tilde <code>~</code>) specifies the response variable, the right side has the predictor variables. The term in brackets, <code>(... | ...)</code>, is specific to <strong><code>lme4</code></strong>. The right side of the vertical bar <code>|</code> specifies the name of a variable (in this case, <code>subject</code>) that codes the levels of the random factor. The left side specifies what regression coefficients you want to allow to vary over those levels. The <code>1</code> at the start of the formula specifies that you want an intercept, which is included by default anyway, and so can be omitted. The <code>1</code> within the bracket specifies a <strong>random intercept</strong>, which is also included by default; the predictor variables mentioned inside the brackets specify <strong>random slopes</strong>. So you could write the above formula equivalently as:</p>
 <p><code>y ~ x1 + x2 + ... + xm + (x1 + ... | subject)</code>.</p>
 <p>There is another important type of shortcut in R formulas, which we already saw in the <a href="interactions.html">chapter on interactions</a>; namely the “star syntax” <code>a * b</code> for specifying interactions. If you have two factors, <code>a</code> and <code>b</code> in your design, and you want all main effects and interactions in the model, you can use:</p>
 <p><code>y ~ a * b</code></p>
