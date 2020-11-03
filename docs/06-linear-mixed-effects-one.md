@@ -50,7 +50,7 @@ Here is a comparison chart for multi-level data:
 |:----------------------------------------------------|:------------------------------------------------|:--------------------------------------------------------|
 |one-sample t-test with pseudoreplications            |calculate means and use `t.test(x_mean)`         |<code>lmer(y ~ (1 &#124; subject), offset = c)</code>    |
 |paired samples t-test, no pseudoreplications         |`t.test(x, y, paired = TRUE)`                    |<code>lmer(y ~ x + (1 &#124; subject))</code>            |
-|paired samples t-test with pseudoreplications        |calculate means and use `t.test(x_mean, y_mean)` |<code>lm(y ~ x + (1 + x &#124; subject))</code>          |
+|paired samples t-test with pseudoreplications        |calculate means and use `t.test(x_mean, y_mean)` |<code>lmer(y ~ x + (1 + x &#124; subject))</code>        |
 |repeated-measures ANOVA no pseudoreplications        |`aov(y ~ x + Error(subject))`                    |<code>lmer(y ~ x + (1 &#124; subject))</code>            |
 |repeated-measures ANOVA with pseudoreplications      |`aov(y ~ x + Error(subject/x))`                  |<code>lmer(y ~ x + (1 + x &#124; subject))</code>        |
 |factorial ANOVA, a & b within, no pseudoreplications |`aov(y ~ a * b + Error(subject))`                |<code>lmer(y ~ a * b + (1 &#124; subject))</code>        |

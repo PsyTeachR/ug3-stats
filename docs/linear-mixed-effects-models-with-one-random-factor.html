@@ -404,7 +404,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">paired samples t-test with pseudoreplications</td>
 <td align="left">calculate means and use <code>t.test(x_mean, y_mean)</code></td>
-<td align="left"><code>lm(y ~ x + (1 + x | subject))</code></td>
+<td align="left"><code>lmer(y ~ x + (1 + x | subject))</code></td>
 </tr>
 <tr class="even">
 <td align="left">repeated-measures ANOVA no pseudoreplications</td>
