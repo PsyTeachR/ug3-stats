@@ -46,15 +46,15 @@ Where mixed-effects models come into play is with multilevel data. Data is usual
 Here is a comparison chart for multi-level data:
 
 
-|test                                            |conventional approach                            |regression approach                           |
-|:-----------------------------------------------|:------------------------------------------------|:---------------------------------------------|
-|one-sample t-test with pseudoreplications       |calculate means and use `t.test(x_mean)`         |`lmer(y ~ (1 &#124; subject), offset = c)`    |
-|paired samples t-test                           |`t.test(x, y, paired = TRUE)`                    |`lmer(y ~ x + (1 &#124; subject))`            |
-|paired samples t-test with pseudoreplications   |calculate means and use `t.test(x_mean, y_mean)` |`lm(y ~ x + (1 + x &#124; subject))`          |
-|repeated-measures ANOVA                         |`aov(y ~ x + Error(subject))`                    |`lmer(y ~ x + (1 &#124; subject))`            |
-|repeated-measures ANOVA with pseudoreplications |`aov(y ~ x + Error(x / subject))`                |`lmer(y ~ x + (1 + x &#124; subject))`        |
-|factorial ANOVA                                 |`aov(y ~ a * b)`                                 |`lm(y ~ a * b)`                               |
-|factorial ANOVA with pseudoreplications         |`aov(y ~ a * b + Error((a * b) / subject)`       |`lmer(y ~ a * b + (1 + a * b &#124; subject)` |
+|test                                                 |conventional approach                            |regression approach                                      |
+|:----------------------------------------------------|:------------------------------------------------|:--------------------------------------------------------|
+|one-sample t-test with pseudoreplications            |calculate means and use `t.test(x_mean)`         |<code>lmer(y ~ (1 &#124; subject), offset = c)</code>    |
+|paired samples t-test, no pseudoreplications         |`t.test(x, y, paired = TRUE)`                    |<code>lmer(y ~ x + (1 &#124; subject))</code>            |
+|paired samples t-test with pseudoreplications        |calculate means and use `t.test(x_mean, y_mean)` |<code>lm(y ~ x + (1 + x &#124; subject))</code>          |
+|repeated-measures ANOVA no pseudoreplications        |`aov(y ~ x + Error(subject))`                    |<code>lmer(y ~ x + (1 &#124; subject))</code>            |
+|repeated-measures ANOVA with pseudoreplications      |`aov(y ~ x + Error(subject/x))`                  |<code>lmer(y ~ x + (1 + x &#124; subject))</code>        |
+|factorial ANOVA, a & b within, no pseudoreplications |`aov(y ~ a * b + Error(subject))`                |<code>lmer(y ~ a * b + (1 &#124; subject))</code>        |
+|factorial ANOVA with pseudoreplications              |`aov(y ~ a * b + Error(subject/(a * b))`         |<code>lmer(y ~ a * b + (1 + a * b &#124; subject)</code> |
 
 One of the main selling points of the general linear models / regression framework over t-test and ANOVA is its flexibility. We saw this in the last chapter with the `sleepstudy` data, which could only be properly handled within a linear mixed-effects modelling framework. Despite the many advantages of regression, if you are in a situation where you have balanced data and can reasonably apply t-test or ANOVA without violating any of the assumptions behind the test, it makes sense to do so; these approaches have a long history in psychology and are more widely understood.
 
@@ -242,7 +242,7 @@ First, let's take a closer look at the regression formula syntax in R and **`lme
 
 `y ~ 1 + x1 + x2 + ... + xm + (1 + x1 + ... | subject)`
 
-The residual term is implied and so not mentioned; only the predictors. The left side (before the tilde `~`) specifies the response variable, the right side has the predictor variables. The term in brackets, `(... | ...)`, is specific to **`lme4`**. The right side of the vertical bar `|` specifies the name of a variable (in this case, `subject`) that codes the levels of the random factor. The left side specifies what regression coefficients you want to allow to vary over those levels. The `1` at the start of the formula specifies `1` that you want an intercept, which is included by default anyway, and so can be omitted. The `1` within the bracket specifies a **random intercept**, which is also included by default; the predictor variables mentioned inside the brackets specify **random slopes**. So you could write the above formula equivalently as:
+The residual term is implied and so not mentioned; only the predictors. The left side (before the tilde `~`) specifies the response variable, the right side has the predictor variables. The term in brackets, `(... | ...)`, is specific to **`lme4`**. The right side of the vertical bar `|` specifies the name of a variable (in this case, `subject`) that codes the levels of the random factor. The left side specifies what regression coefficients you want to allow to vary over those levels. The `1` at the start of the formula specifies that you want an intercept, which is included by default anyway, and so can be omitted. The `1` within the bracket specifies a **random intercept**, which is also included by default; the predictor variables mentioned inside the brackets specify **random slopes**. So you could write the above formula equivalently as:
 
 `y ~ x1 + x2 + ... + xm + (x1 + ... | subject)`.
 
