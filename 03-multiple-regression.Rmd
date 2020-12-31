@@ -98,11 +98,11 @@ If we want to predict response values for new predictor values, we can use the `
 
 `predict()` takes two main arguments. The first argument is a fitted model object (i.e., `my_model` from above) and the second is a data frame (or tibble) containing new values for the predictors.
 
-<div class="warning">
+```{block, type="warning"}
 
 You need to include **all** of the predictor variables in the new table. You'll get an error message if your tibble is missing any predictors. You also need to make sure that the variable names in the new table **exactly** match the variable names in the model.
 
-</div>
+```
 
 Let's create a tibble with new values and try it out.
 

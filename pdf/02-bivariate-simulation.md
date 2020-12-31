@@ -34,15 +34,16 @@ Recall that a correlation coefficient quantifies the **strength** and **directio
 
 If you have $n$ measures, how many pairwise correlations can you compute? You can figure this out either by the formula in the info box below, or more easily you can computed it directly through the `choose(n, 2)` function in R. For instance, to get the number of possible pairwise correlations between 6 measures, you'd type `choose(6, 2)`, which tells you that you have 15 combinations.
 
-<div class="info">
+\begin{info}
+For any \(n\) measures, you can calculate \(\frac{n!}{2(n - 2)!}\)
+pairwise correlations between measures. The \(!\) symbol is called the
+\textbf{factorial} operator, defined as the product of all numbers from
+1 to \(n\). So, if you have six measurements, you have
 
-For any $n$ measures, you can calculate $\frac{n!}{2(n - 2)!}$ pairwise correlations between measures. The $!$ symbol is called the **factorial** operator, defined as the product of all numbers from 1 to $n$. So, if you have six measurements, you have
-
-$$
+\[
 \frac{6!}{2(6-2)!} = \frac{1 \times 2 \times 3 \times 4 \times 5 \times 6}{2\left(1 \times 2 \times 3 \times 4\right)} = \frac{720}{2(24)} = 15
-$$
-
-</div>
+\]
+\end{info}
 
 You can create a correlation matrix in R using `base::cor()` or `corrr::correlate()`. We prefer the latter function because `cor()` requires that your data is stored in a matrix, whereas most of the data we will be working with is stored in a data frame. The `corrr::correlate()` function also takes a data frame as the first argument, so it works better with pipes (`%>%`).
 
@@ -296,11 +297,22 @@ It should be clear that you can't just run `rnorm()` twice and combine the varia
 
 The package **`MASS`** provides a function `mvrnorm()` which is the 'multivariate' version of rnorm (hence the function name, `mv` + `rnorm`, which makes it easy to remember.
 
-<div class="danger">
-
-The **`MASS`** package comes pre-installed with R. But the only function you'll probably ever want to use from **`MASS`** is `mvrnorm()`, so rather than load in the package using `library("MASS")`, it is preferable to use `MASS::mvrnorm()`, especially as **`MASS`** and the **`dplyr`** package from **`tidyverse`** [don't play well together](https://twitter.com/dalejbarr/status/516986671129452544?s=20), due to both packages having the function `select()`. So if you load in **`MASS`** after you load in **`tidyverse`**, you'll end up getting the **`MASS`** version of `select()` instead of the **`dplyr`** version. It will do your head in trying to figure out what is wrong with your code, so always `MASS::mvrnorm` and never `library("MASS")`.
-
-</div>
+\begin{watchout}
+The \textbf{\texttt{MASS}} package comes pre-installed with R. But the
+only function you'll probably ever want to use from
+\textbf{\texttt{MASS}} is \texttt{mvrnorm()}, so rather than load in the
+package using \texttt{library("MASS")}, it is preferable to use
+\texttt{MASS::mvrnorm()}, especially as \textbf{\texttt{MASS}} and the
+\textbf{\texttt{dplyr}} package from \textbf{\texttt{tidyverse}}
+\href{https://twitter.com/dalejbarr/status/516986671129452544?s=20}{don't
+play well together}, due to both packages having the function
+\texttt{select()}. So if you load in \textbf{\texttt{MASS}} after you
+load in \textbf{\texttt{tidyverse}}, you'll end up getting the
+\textbf{\texttt{MASS}} version of \texttt{select()} instead of the
+\textbf{\texttt{dplyr}} version. It will do your head in trying to
+figure out what is wrong with your code, so always
+\texttt{MASS::mvrnorm} and never \texttt{library("MASS")}.
+\end{watchout}
 
 Have a look at the documentation for the `mvrnorm()` function (type `?MASS::mvrnorm` in the console).
 
@@ -318,37 +330,49 @@ When you have multivariate data, the **covariance matrix** (also known as the **
 
 You can think of a covariance matrix as something like the correlation matrix that you saw above; indeed, with a few calculations you can turn a covariance matrix into a correlation matrix.
 
-<div class="info">
+\begin{info}
+What's all this talk about the Matrix? Wasn't that a sci-fi film series
+from the 1990s?
 
-What's all this talk about the Matrix? Wasn't that a sci-fi film series from the 1990s?
-
-In mathematics, matrices are just generalizations of the concept of a vector: a vector can be thought of as having one dimension, whereas a matrix can have any number of dimensions.
+In mathematics, matrices are just generalizations of the concept of a
+vector: a vector can be thought of as having one dimension, whereas a
+matrix can have any number of dimensions.
 
 So the matrix
 
-$$
+\[
 \begin{pmatrix}
 1 & 4 & 7 \\
 2 & 5 & 8 \\
 3 & 6 & 9 \\
 \end{pmatrix}
-$$
+\]
 
-is a 3 (row) by 3 (column) matrix containing the column vectors $\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}$, $\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}$, and $\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}$. Conventionally, we refer to matrices in $i$ by $j$ format, with $i$ being the number of rows and $j$ being the number of columns.  So a 3x2 matrix has 3 rows and 2 columns, like so.
+is a 3 (row) by 3 (column) matrix containing the column vectors
+\(\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}\),
+\(\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}\), and
+\(\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}\). Conventionally, we
+refer to matrices in \(i\) by \(j\) format, with \(i\) being the number
+of rows and \(j\) being the number of columns. So a 3x2 matrix has 3
+rows and 2 columns, like so.
 
-$$
+\[
 \begin{pmatrix}
 a & d \\
 b & e \\
 c & f \\
 \end{pmatrix}
-$$
+\]
 
-A **square matrix** is a matrix where the number of rows is equal to the number of columns.
+A \textbf{square matrix} is a matrix where the number of rows is equal
+to the number of columns.
 
-You can create the above matrix in R using the `matrix()` function (see below) or by binding together vectors column-wise, using the base R `cbind()` function. Try `cbind(1:3, 4:6, 7:9)` in your console. You can also bind vectors together row-wise using `rbind()`.
-
-</div>
+You can create the above matrix in R using the \texttt{matrix()}
+function (see below) or by binding together vectors column-wise, using
+the base R \texttt{cbind()} function. Try
+\texttt{cbind(1:3,\ 4:6,\ 7:9)} in your console. You can also bind
+vectors together row-wise using \texttt{rbind()}.
+\end{info}
 
 Now what is all this about the matrix being "positive-definite" and "symmetric"? These are mathematical requirements about the kinds of matrices that can represent possible multivariate normal distributions. In other words, the covariance matrix you supply must be represent a legal multivariate normal distribution. At this point, you don't really need to know much more about this than that.
 

@@ -162,11 +162,16 @@ If we want to predict response values for new predictor values, we can use the `
 
 `predict()` takes two main arguments. The first argument is a fitted model object (i.e., `my_model` from above) and the second is a data frame (or tibble) containing new values for the predictors.
 
-<div class="warning">
+\begin{warning}
+You need to include \textbf{all} of the predictor variables in the new
+table. You'll get an error message if your tibble is missing any
+predictors. You also need to make sure that the variable names in the
+new table \textbf{exactly} match the variable names in the model.
+\end{warning}
 
-You need to include **all** of the predictor variables in the new table. You'll get an error message if your tibble is missing any predictors. You also need to make sure that the variable names in the new table **exactly** match the variable names in the model.
-
-</div>
+\begin{watchout}
+this is just a test
+\end{watchout}
 
 Let's create a tibble with new values and try it out.
 
@@ -459,16 +464,16 @@ fake_data
 ## # A tibble: 10 x 2
 ##          Y group
 ##      <dbl> <chr>
-##  1  0.847  A    
-##  2 -1.36   A    
-##  3  0.280  A    
-##  4 -0.459  A    
-##  5  0.0105 A    
-##  6  0.975  B    
-##  7 -0.568  B    
-##  8  0.707  B    
-##  9  0.728  B    
-## 10  0.311  B
+##  1  1.32   A    
+##  2  0.471  A    
+##  3 -1.20   A    
+##  4  1.96   A    
+##  5 -1.15   A    
+##  6 -0.0465 B    
+##  7 -0.918  B    
+##  8  0.808  B    
+##  9  1.38   B    
+## 10  0.175  B
 ```
 
 Now let's add a new variable, `group_d`, which is the dummy coded group variable. We will use the `dplyr::if_else()` function to define the new column.
@@ -485,16 +490,16 @@ fake_data2
 ## # A tibble: 10 x 3
 ##          Y group group_d
 ##      <dbl> <chr>   <dbl>
-##  1  0.847  A           0
-##  2 -1.36   A           0
-##  3  0.280  A           0
-##  4 -0.459  A           0
-##  5  0.0105 A           0
-##  6  0.975  B           1
-##  7 -0.568  B           1
-##  8  0.707  B           1
-##  9  0.728  B           1
-## 10  0.311  B           1
+##  1  1.32   A           0
+##  2  0.471  A           0
+##  3 -1.20   A           0
+##  4  1.96   A           0
+##  5 -1.15   A           0
+##  6 -0.0465 B           1
+##  7 -0.918  B           1
+##  8  0.808  B           1
+##  9  1.38   B           1
+## 10  0.175  B           1
 ```
 
 Now we just run it as a regular regression model.
@@ -510,17 +515,17 @@ summary(lm(Y ~ group_d, fake_data2))
 ## lm(formula = Y ~ group_d, data = fake_data2)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.2222 -0.2724  0.2113  0.3863  0.9834 
+##      Min       1Q   Median       3Q      Max 
+## -1.47929 -0.97916  0.04294  0.91025  1.68209 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)  -0.1360     0.3253  -0.418    0.687
-## group_d       0.5665     0.4600   1.232    0.253
+##              Estimate Std. Error t value Pr(>|t|)
+## (Intercept)  0.280742   0.529374   0.530    0.610
+## group_d     -0.001728   0.748647  -0.002    0.998
 ## 
-## Residual standard error: 0.7273 on 8 degrees of freedom
-## Multiple R-squared:  0.1594,	Adjusted R-squared:  0.05429 
-## F-statistic: 1.517 on 1 and 8 DF,  p-value: 0.2531
+## Residual standard error: 1.184 on 8 degrees of freedom
+## Multiple R-squared:  6.663e-07,	Adjusted R-squared:  -0.125 
+## F-statistic: 5.33e-06 on 1 and 8 DF,  p-value: 0.9982
 ```
 
 Note that if we reverse the coding we get the same result, just the sign is different.
@@ -539,17 +544,17 @@ summary(lm(Y ~ group_d, fake_data3))
 ## lm(formula = Y ~ group_d, data = fake_data3)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.2222 -0.2724  0.2113  0.3863  0.9834 
+##      Min       1Q   Median       3Q      Max 
+## -1.47929 -0.97916  0.04294  0.91025  1.68209 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)   0.4306     0.3253   1.324    0.222
-## group_d      -0.5665     0.4600  -1.232    0.253
+## (Intercept) 0.279013   0.529374   0.527    0.612
+## group_d     0.001728   0.748647   0.002    0.998
 ## 
-## Residual standard error: 0.7273 on 8 degrees of freedom
-## Multiple R-squared:  0.1594,	Adjusted R-squared:  0.05429 
-## F-statistic: 1.517 on 1 and 8 DF,  p-value: 0.2531
+## Residual standard error: 1.184 on 8 degrees of freedom
+## Multiple R-squared:  6.663e-07,	Adjusted R-squared:  -0.125 
+## F-statistic: 5.33e-06 on 1 and 8 DF,  p-value: 0.9982
 ```
 
 The interpretation of the intercept is the estimated mean for the group coded as zero. You can see by plugging in zero for X in the prediction formula below. Thus, $\beta_1$ can be interpreted as the difference between the mean for the baseline group and the group coded as 1.
@@ -583,26 +588,26 @@ mydata
 ## # A tibble: 20 x 2
 ##    season bodyweight_kg
 ##    <chr>          <dbl>
-##  1 winter         105. 
-##  2 winter         106. 
-##  3 winter         104. 
-##  4 winter         107. 
-##  5 winter         104. 
-##  6 spring         106. 
-##  7 spring          98.8
-##  8 spring          97.6
-##  9 spring         105. 
-## 10 spring          98.0
-## 11 summer         104. 
-## 12 summer         106. 
-## 13 summer         103. 
-## 14 summer          95.0
-## 15 summer         101. 
-## 16 fall           104. 
-## 17 fall           107. 
-## 18 fall           101. 
-## 19 fall            99.5
-## 20 fall           105.
+##  1 winter         107. 
+##  2 winter         102. 
+##  3 winter         105. 
+##  4 winter         105. 
+##  5 winter         103. 
+##  6 spring         104. 
+##  7 spring         101. 
+##  8 spring         105. 
+##  9 spring         108. 
+## 10 spring         102. 
+## 11 summer         101. 
+## 12 summer         100. 
+## 13 summer          98.8
+## 14 summer         101. 
+## 15 summer         104. 
+## 16 fall            99.5
+## 17 fall           102. 
+## 18 fall           102. 
+## 19 fall           101. 
+## 20 fall            99.0
 ```
 
 Now let's add three predictors to code the variable `season`.
@@ -622,26 +627,26 @@ mydata2
 ## # A tibble: 20 x 5
 ##    season bodyweight_kg    V1    V2    V3
 ##    <chr>          <dbl> <dbl> <dbl> <dbl>
-##  1 winter         105.      0     0     0
-##  2 winter         106.      0     0     0
-##  3 winter         104.      0     0     0
-##  4 winter         107.      0     0     0
-##  5 winter         104.      0     0     0
-##  6 spring         106.      1     0     0
-##  7 spring          98.8     1     0     0
-##  8 spring          97.6     1     0     0
-##  9 spring         105.      1     0     0
-## 10 spring          98.0     1     0     0
-## 11 summer         104.      0     1     0
-## 12 summer         106.      0     1     0
-## 13 summer         103.      0     1     0
-## 14 summer          95.0     0     1     0
-## 15 summer         101.      0     1     0
-## 16 fall           104.      0     0     1
-## 17 fall           107.      0     0     1
-## 18 fall           101.      0     0     1
-## 19 fall            99.5     0     0     1
-## 20 fall           105.      0     0     1
+##  1 winter         107.      0     0     0
+##  2 winter         102.      0     0     0
+##  3 winter         105.      0     0     0
+##  4 winter         105.      0     0     0
+##  5 winter         103.      0     0     0
+##  6 spring         104.      1     0     0
+##  7 spring         101.      1     0     0
+##  8 spring         105.      1     0     0
+##  9 spring         108.      1     0     0
+## 10 spring         102.      1     0     0
+## 11 summer         101.      0     1     0
+## 12 summer         100.      0     1     0
+## 13 summer          98.8     0     1     0
+## 14 summer         101.      0     1     0
+## 15 summer         104.      0     1     0
+## 16 fall            99.5     0     0     1
+## 17 fall           102.      0     0     1
+## 18 fall           102.      0     0     1
+## 19 fall           101.      0     0     1
+## 20 fall            99.0     0     0     1
 ```
 
 ## Equivalence between multiple regression and one-way ANOVA
@@ -659,9 +664,11 @@ summary(my_anova)
 ```
 
 ```
-##             Df Sum Sq Mean Sq F value Pr(>F)
-## season       3   47.9   15.97   1.413  0.276
-## Residuals   16  180.9   11.30
+##             Df Sum Sq Mean Sq F value Pr(>F)  
+## season       3  59.14  19.714   5.155  0.011 *
+## Residuals   16  61.19   3.824                 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 OK, now can we replicate that result using the regression model below?
@@ -680,20 +687,20 @@ summary(lm(bodyweight_kg ~ V1 + V2 + V3, mydata3))
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -6.9150 -2.2612  0.0746  2.2577  4.6067 
+## -2.6048 -1.4881  0.0902  0.9071  3.5717 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  105.129      1.504  69.917   <2e-16 ***
-## V1            -4.084      2.126  -1.920   0.0728 .  
-## V2            -3.250      2.126  -1.529   0.1459    
-## V3            -1.846      2.126  -0.868   0.3982    
+## (Intercept) 104.5803     0.8746 119.582  < 2e-16 ***
+## V1           -0.5034     1.2368  -0.407  0.68936    
+## V2           -3.4053     1.2368  -2.753  0.01414 *  
+## V3           -3.9033     1.2368  -3.156  0.00612 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 3.362 on 16 degrees of freedom
-## Multiple R-squared:  0.2094,	Adjusted R-squared:  0.06116 
-## F-statistic: 1.413 on 3 and 16 DF,  p-value: 0.2757
+## Residual standard error: 1.956 on 16 degrees of freedom
+## Multiple R-squared:  0.4915,	Adjusted R-squared:  0.3962 
+## F-statistic: 5.155 on 3 and 16 DF,  p-value: 0.01104
 ```
 
 Note that the $F$ values and $p$ values are identical for the two methods!

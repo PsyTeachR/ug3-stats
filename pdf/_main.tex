@@ -107,14 +107,44 @@
 
 \usepackage{booktabs}
 \usepackage{multicol}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{xcolor}
 
-\newenvironment{danger}{\hrule}{\hrule}
-    
-\newenvironment{warning}{\hrule}{\hrule}
-    
-\newenvironment{info}{\hrule}{\hrule}
-    
-\newenvironment{try}{\hrule}{\hrule}
+\newmdenv[%
+        backgroundcolor=red!8,
+        linecolor=red,
+        outerlinewidth=1pt,
+        roundcorner=5mm,
+        skipabove=\baselineskip,
+        skipbelow=\baselineskip
+]{watchout}
+
+\newmdenv[%
+        backgroundcolor=yellow!8,
+        linecolor=yellow,
+        outerlinewidth=1pt,
+        roundcorner=5mm,
+        skipabove=\baselineskip,
+        skipbelow=\baselineskip
+]{warning}
+
+\newmdenv[%
+        backgroundcolor=blue!8,
+        linecolor=blue,
+        outerlinewidth=1pt,
+        roundcorner=5mm,
+        skipabove=\baselineskip,
+        skipbelow=\baselineskip
+]{info}
+
+\newmdenv[%
+        backgroundcolor=green!8,
+        linecolor=green,
+        outerlinewidth=1pt,
+        roundcorner=5mm,
+        skipabove=\baselineskip,
+        skipbelow=\baselineskip
+]{try}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -193,7 +223,7 @@ The book was built using the R \href{https://bookdown.org}{\textbf{\texttt{bookd
 
 The goal of this course is to teach you how to simulate and analyze the various types of datasets you are likely to encounter as a psychologist. The focus is on behavioral data---e.g., measures of reaction time, perceptual judgments, choices, decision, ratings on a survey, hours of sleep, etc.---usually collected in the context of a study or experiment.
 
-This course emphasizing approaches that maximize \textbf{flexibility}, \textbf{generalizability}, and \textbf{reproducibility}. You may have heard talk in the media about psychology being in the throes of various `crises'. There have been some high-profile replication failures that have contributed to the impression that all is not well. There have also been a number of demonstrations that the standard approaches to data analysis in psychology are flawed, in that they allow researchers to present results as clean-cut and confirmatory while hiding various analyses that have been pursued and discarded while seeking to attain the desired result. But it is not just the field of psychology where such problems can be found---the problem is widespread, encompassing other fields of study as well. And the truth is that a certain level of self-criticism and self-reflection can also be seen positively---as a sign of a healthy discipline. Whatever your take, there is room for improvement, and the purpose of this course is to give you tools to ensure that your own analyses are not only statistically sound, but also as generalizable and reproducible as possible.
+In its approach to statistical analysis, this course attempts to maximize \textbf{flexibility}, \textbf{generalizability}, and \textbf{reproducibility}. You may have heard talk in the media about psychology being in the throes of various `crises'. There have been some high-profile replication failures that have contributed to the impression that all is not well. There have also been a number of demonstrations that the standard approaches to data analysis in psychology are flawed, in that they allow researchers to present results as clean-cut and confirmatory while hiding various analyses that have been pursued and discarded while seeking to attain the desired result. But it is not just the field of psychology where such problems can be found---the problem is widespread, encompassing other fields of study as well. And the truth is that a certain level of self-criticism and self-reflection can also be seen positively---as a sign of a healthy discipline. Whatever your take, there is room for improvement, and the purpose of this course is to give you tools to ensure that your own analyses are not only statistically sound, but also as generalizable and reproducible as possible.
 
 \hypertarget{flexibility}{%
 \subsection{Flexibility}\label{flexibility}}
@@ -404,11 +434,16 @@ Recall that a correlation coefficient quantifies the \textbf{strength} and \text
 
 If you have \(n\) measures, how many pairwise correlations can you compute? You can figure this out either by the formula in the info box below, or more easily you can computed it directly through the \texttt{choose(n,\ 2)} function in R. For instance, to get the number of possible pairwise correlations between 6 measures, you'd type \texttt{choose(6,\ 2)}, which tells you that you have 15 combinations.
 
-For any \(n\) measures, you can calculate \(\frac{n!}{2(n - 2)!}\) pairwise correlations between measures. The \(!\) symbol is called the \textbf{factorial} operator, defined as the product of all numbers from 1 to \(n\). So, if you have six measurements, you have
+\begin{info}
+For any \(n\) measures, you can calculate \(\frac{n!}{2(n - 2)!}\)
+pairwise correlations between measures. The \(!\) symbol is called the
+\textbf{factorial} operator, defined as the product of all numbers from
+1 to \(n\). So, if you have six measurements, you have
 
 \[
 \frac{6!}{2(6-2)!} = \frac{1 \times 2 \times 3 \times 4 \times 5 \times 6}{2\left(1 \times 2 \times 3 \times 4\right)} = \frac{720}{2(24)} = 15
 \]
+\end{info}
 
 You can create a correlation matrix in R using \texttt{base::cor()} or \texttt{corrr::correlate()}. We prefer the latter function because \texttt{cor()} requires that your data is stored in a matrix, whereas most of the data we will be working with is stored in a data frame. The \texttt{corrr::correlate()} function also takes a data frame as the first argument, so it works better with pipes (\texttt{\%\textgreater{}\%}).
 
@@ -674,7 +709,22 @@ It should be clear that you can't just run \texttt{rnorm()} twice and combine th
 
 The package \textbf{\texttt{MASS}} provides a function \texttt{mvrnorm()} which is the `multivariate' version of rnorm (hence the function name, \texttt{mv} + \texttt{rnorm}, which makes it easy to remember.
 
-The \textbf{\texttt{MASS}} package comes pre-installed with R. But the only function you'll probably ever want to use from \textbf{\texttt{MASS}} is \texttt{mvrnorm()}, so rather than load in the package using \texttt{library("MASS")}, it is preferable to use \texttt{MASS::mvrnorm()}, especially as \textbf{\texttt{MASS}} and the \textbf{\texttt{dplyr}} package from \textbf{\texttt{tidyverse}} \href{https://twitter.com/dalejbarr/status/516986671129452544?s=20}{don't play well together}, due to both packages having the function \texttt{select()}. So if you load in \textbf{\texttt{MASS}} after you load in \textbf{\texttt{tidyverse}}, you'll end up getting the \textbf{\texttt{MASS}} version of \texttt{select()} instead of the \textbf{\texttt{dplyr}} version. It will do your head in trying to figure out what is wrong with your code, so always \texttt{MASS::mvrnorm} and never \texttt{library("MASS")}.
+\begin{watchout}
+The \textbf{\texttt{MASS}} package comes pre-installed with R. But the
+only function you'll probably ever want to use from
+\textbf{\texttt{MASS}} is \texttt{mvrnorm()}, so rather than load in the
+package using \texttt{library("MASS")}, it is preferable to use
+\texttt{MASS::mvrnorm()}, especially as \textbf{\texttt{MASS}} and the
+\textbf{\texttt{dplyr}} package from \textbf{\texttt{tidyverse}}
+\href{https://twitter.com/dalejbarr/status/516986671129452544?s=20}{don't
+play well together}, due to both packages having the function
+\texttt{select()}. So if you load in \textbf{\texttt{MASS}} after you
+load in \textbf{\texttt{tidyverse}}, you'll end up getting the
+\textbf{\texttt{MASS}} version of \texttt{select()} instead of the
+\textbf{\texttt{dplyr}} version. It will do your head in trying to
+figure out what is wrong with your code, so always
+\texttt{MASS::mvrnorm} and never \texttt{library("MASS")}.
+\end{watchout}
 
 Have a look at the documentation for the \texttt{mvrnorm()} function (type \texttt{?MASS::mvrnorm} in the console).
 
@@ -713,9 +763,13 @@ When you have multivariate data, the \textbf{covariance matrix} (also known as t
 
 You can think of a covariance matrix as something like the correlation matrix that you saw above; indeed, with a few calculations you can turn a covariance matrix into a correlation matrix.
 
-What's all this talk about the Matrix? Wasn't that a sci-fi film series from the 1990s?
+\begin{info}
+What's all this talk about the Matrix? Wasn't that a sci-fi film series
+from the 1990s?
 
-In mathematics, matrices are just generalizations of the concept of a vector: a vector can be thought of as having one dimension, whereas a matrix can have any number of dimensions.
+In mathematics, matrices are just generalizations of the concept of a
+vector: a vector can be thought of as having one dimension, whereas a
+matrix can have any number of dimensions.
 
 So the matrix
 
@@ -727,7 +781,13 @@ So the matrix
 \end{pmatrix}
 \]
 
-is a 3 (row) by 3 (column) matrix containing the column vectors \(\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}\), \(\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}\), and \(\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}\). Conventionally, we refer to matrices in \(i\) by \(j\) format, with \(i\) being the number of rows and \(j\) being the number of columns. So a 3x2 matrix has 3 rows and 2 columns, like so.
+is a 3 (row) by 3 (column) matrix containing the column vectors
+\(\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}\),
+\(\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}\), and
+\(\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}\). Conventionally, we
+refer to matrices in \(i\) by \(j\) format, with \(i\) being the number
+of rows and \(j\) being the number of columns. So a 3x2 matrix has 3
+rows and 2 columns, like so.
 
 \[
 \begin{pmatrix}
@@ -737,9 +797,15 @@ c & f \\
 \end{pmatrix}
 \]
 
-A \textbf{square matrix} is a matrix where the number of rows is equal to the number of columns.
+A \textbf{square matrix} is a matrix where the number of rows is equal
+to the number of columns.
 
-You can create the above matrix in R using the \texttt{matrix()} function (see below) or by binding together vectors column-wise, using the base R \texttt{cbind()} function. Try \texttt{cbind(1:3,\ 4:6,\ 7:9)} in your console. You can also bind vectors together row-wise using \texttt{rbind()}.
+You can create the above matrix in R using the \texttt{matrix()}
+function (see below) or by binding together vectors column-wise, using
+the base R \texttt{cbind()} function. Try
+\texttt{cbind(1:3,\ 4:6,\ 7:9)} in your console. You can also bind
+vectors together row-wise using \texttt{rbind()}.
+\end{info}
 
 Now what is all this about the matrix being ``positive-definite'' and ``symmetric''? These are mathematical requirements about the kinds of matrices that can represent possible multivariate normal distributions. In other words, the covariance matrix you supply must be represent a legal multivariate normal distribution. At this point, you don't really need to know much more about this than that.
 
@@ -1235,7 +1301,16 @@ If we want to predict response values for new predictor values, we can use the \
 
 \texttt{predict()} takes two main arguments. The first argument is a fitted model object (i.e., \texttt{my\_model} from above) and the second is a data frame (or tibble) containing new values for the predictors.
 
-You need to include \textbf{all} of the predictor variables in the new table. You'll get an error message if your tibble is missing any predictors. You also need to make sure that the variable names in the new table \textbf{exactly} match the variable names in the model.
+\begin{warning}
+You need to include \textbf{all} of the predictor variables in the new
+table. You'll get an error message if your tibble is missing any
+predictors. You also need to make sure that the variable names in the
+new table \textbf{exactly} match the variable names in the model.
+\end{warning}
+
+\begin{watchout}
+this is just a test
+\end{watchout}
 
 Let's create a tibble with new values and try it out.
 
@@ -1524,16 +1599,16 @@ First, we gin up some fake data to use in our analysis.
 ## # A tibble: 10 x 2
 ##          Y group
 ##      <dbl> <chr>
-##  1  0.847  A    
-##  2 -1.36   A    
-##  3  0.280  A    
-##  4 -0.459  A    
-##  5  0.0105 A    
-##  6  0.975  B    
-##  7 -0.568  B    
-##  8  0.707  B    
-##  9  0.728  B    
-## 10  0.311  B
+##  1  1.32   A    
+##  2  0.471  A    
+##  3 -1.20   A    
+##  4  1.96   A    
+##  5 -1.15   A    
+##  6 -0.0465 B    
+##  7 -0.918  B    
+##  8  0.808  B    
+##  9  1.38   B    
+## 10  0.175  B
 \end{verbatim}
 
 Now let's add a new variable, \texttt{group\_d}, which is the dummy coded group variable. We will use the \texttt{dplyr::if\_else()} function to define the new column.
@@ -1551,16 +1626,16 @@ Now let's add a new variable, \texttt{group\_d}, which is the dummy coded group 
 ## # A tibble: 10 x 3
 ##          Y group group_d
 ##      <dbl> <chr>   <dbl>
-##  1  0.847  A           0
-##  2 -1.36   A           0
-##  3  0.280  A           0
-##  4 -0.459  A           0
-##  5  0.0105 A           0
-##  6  0.975  B           1
-##  7 -0.568  B           1
-##  8  0.707  B           1
-##  9  0.728  B           1
-## 10  0.311  B           1
+##  1  1.32   A           0
+##  2  0.471  A           0
+##  3 -1.20   A           0
+##  4  1.96   A           0
+##  5 -1.15   A           0
+##  6 -0.0465 B           1
+##  7 -0.918  B           1
+##  8  0.808  B           1
+##  9  1.38   B           1
+## 10  0.175  B           1
 \end{verbatim}
 
 Now we just run it as a regular regression model.
@@ -1577,17 +1652,17 @@ Now we just run it as a regular regression model.
 ## lm(formula = Y ~ group_d, data = fake_data2)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.2222 -0.2724  0.2113  0.3863  0.9834 
+##      Min       1Q   Median       3Q      Max 
+## -1.47929 -0.97916  0.04294  0.91025  1.68209 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)  -0.1360     0.3253  -0.418    0.687
-## group_d       0.5665     0.4600   1.232    0.253
+##              Estimate Std. Error t value Pr(>|t|)
+## (Intercept)  0.280742   0.529374   0.530    0.610
+## group_d     -0.001728   0.748647  -0.002    0.998
 ## 
-## Residual standard error: 0.7273 on 8 degrees of freedom
-## Multiple R-squared:  0.1594,	Adjusted R-squared:  0.05429 
-## F-statistic: 1.517 on 1 and 8 DF,  p-value: 0.2531
+## Residual standard error: 1.184 on 8 degrees of freedom
+## Multiple R-squared:  6.663e-07,	Adjusted R-squared:  -0.125 
+## F-statistic: 5.33e-06 on 1 and 8 DF,  p-value: 0.9982
 \end{verbatim}
 
 Note that if we reverse the coding we get the same result, just the sign is different.
@@ -1607,17 +1682,17 @@ Note that if we reverse the coding we get the same result, just the sign is diff
 ## lm(formula = Y ~ group_d, data = fake_data3)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.2222 -0.2724  0.2113  0.3863  0.9834 
+##      Min       1Q   Median       3Q      Max 
+## -1.47929 -0.97916  0.04294  0.91025  1.68209 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)   0.4306     0.3253   1.324    0.222
-## group_d      -0.5665     0.4600  -1.232    0.253
+## (Intercept) 0.279013   0.529374   0.527    0.612
+## group_d     0.001728   0.748647   0.002    0.998
 ## 
-## Residual standard error: 0.7273 on 8 degrees of freedom
-## Multiple R-squared:  0.1594,	Adjusted R-squared:  0.05429 
-## F-statistic: 1.517 on 1 and 8 DF,  p-value: 0.2531
+## Residual standard error: 1.184 on 8 degrees of freedom
+## Multiple R-squared:  6.663e-07,	Adjusted R-squared:  -0.125 
+## F-statistic: 5.33e-06 on 1 and 8 DF,  p-value: 0.9982
 \end{verbatim}
 
 The interpretation of the intercept is the estimated mean for the group coded as zero. You can see by plugging in zero for X in the prediction formula below. Thus, \(\beta_1\) can be interpreted as the difference between the mean for the baseline group and the group coded as 1.
@@ -1645,26 +1720,26 @@ When the predictor variable is a factor with \(k\) levels where \(k>2\), we need
 ## # A tibble: 20 x 2
 ##    season bodyweight_kg
 ##    <chr>          <dbl>
-##  1 winter         105. 
-##  2 winter         106. 
-##  3 winter         104. 
-##  4 winter         107. 
-##  5 winter         104. 
-##  6 spring         106. 
-##  7 spring          98.8
-##  8 spring          97.6
-##  9 spring         105. 
-## 10 spring          98.0
-## 11 summer         104. 
-## 12 summer         106. 
-## 13 summer         103. 
-## 14 summer          95.0
-## 15 summer         101. 
-## 16 fall           104. 
-## 17 fall           107. 
-## 18 fall           101. 
-## 19 fall            99.5
-## 20 fall           105.
+##  1 winter         107. 
+##  2 winter         102. 
+##  3 winter         105. 
+##  4 winter         105. 
+##  5 winter         103. 
+##  6 spring         104. 
+##  7 spring         101. 
+##  8 spring         105. 
+##  9 spring         108. 
+## 10 spring         102. 
+## 11 summer         101. 
+## 12 summer         100. 
+## 13 summer          98.8
+## 14 summer         101. 
+## 15 summer         104. 
+## 16 fall            99.5
+## 17 fall           102. 
+## 18 fall           102. 
+## 19 fall           101. 
+## 20 fall            99.0
 \end{verbatim}
 
 Now let's add three predictors to code the variable \texttt{season}.
@@ -1685,26 +1760,26 @@ Now let's add three predictors to code the variable \texttt{season}.
 ## # A tibble: 20 x 5
 ##    season bodyweight_kg    V1    V2    V3
 ##    <chr>          <dbl> <dbl> <dbl> <dbl>
-##  1 winter         105.      0     0     0
-##  2 winter         106.      0     0     0
-##  3 winter         104.      0     0     0
-##  4 winter         107.      0     0     0
-##  5 winter         104.      0     0     0
-##  6 spring         106.      1     0     0
-##  7 spring          98.8     1     0     0
-##  8 spring          97.6     1     0     0
-##  9 spring         105.      1     0     0
-## 10 spring          98.0     1     0     0
-## 11 summer         104.      0     1     0
-## 12 summer         106.      0     1     0
-## 13 summer         103.      0     1     0
-## 14 summer          95.0     0     1     0
-## 15 summer         101.      0     1     0
-## 16 fall           104.      0     0     1
-## 17 fall           107.      0     0     1
-## 18 fall           101.      0     0     1
-## 19 fall            99.5     0     0     1
-## 20 fall           105.      0     0     1
+##  1 winter         107.      0     0     0
+##  2 winter         102.      0     0     0
+##  3 winter         105.      0     0     0
+##  4 winter         105.      0     0     0
+##  5 winter         103.      0     0     0
+##  6 spring         104.      1     0     0
+##  7 spring         101.      1     0     0
+##  8 spring         105.      1     0     0
+##  9 spring         108.      1     0     0
+## 10 spring         102.      1     0     0
+## 11 summer         101.      0     1     0
+## 12 summer         100.      0     1     0
+## 13 summer          98.8     0     1     0
+## 14 summer         101.      0     1     0
+## 15 summer         104.      0     1     0
+## 16 fall            99.5     0     0     1
+## 17 fall           102.      0     0     1
+## 18 fall           102.      0     0     1
+## 19 fall           101.      0     0     1
+## 20 fall            99.0     0     0     1
 \end{verbatim}
 
 \hypertarget{equivalence-between-multiple-regression-and-one-way-anova}{%
@@ -1724,9 +1799,11 @@ If we wanted to see whether our bodyweight varies over season, we could do a one
 \end{Shaded}
 
 \begin{verbatim}
-##             Df Sum Sq Mean Sq F value Pr(>F)
-## season       3   47.9   15.97   1.413  0.276
-## Residuals   16  180.9   11.30
+##             Df Sum Sq Mean Sq F value Pr(>F)  
+## season       3  59.14  19.714   5.155  0.011 *
+## Residuals   16  61.19   3.824                 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
 
 OK, now can we replicate that result using the regression model below?
@@ -1746,20 +1823,20 @@ OK, now can we replicate that result using the regression model below?
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -6.9150 -2.2612  0.0746  2.2577  4.6067 
+## -2.6048 -1.4881  0.0902  0.9071  3.5717 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  105.129      1.504  69.917   <2e-16 ***
-## V1            -4.084      2.126  -1.920   0.0728 .  
-## V2            -3.250      2.126  -1.529   0.1459    
-## V3            -1.846      2.126  -0.868   0.3982    
+## (Intercept) 104.5803     0.8746 119.582  < 2e-16 ***
+## V1           -0.5034     1.2368  -0.407  0.68936    
+## V2           -3.4053     1.2368  -2.753  0.01414 *  
+## V3           -3.9033     1.2368  -3.156  0.00612 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 3.362 on 16 degrees of freedom
-## Multiple R-squared:  0.2094,	Adjusted R-squared:  0.06116 
-## F-statistic: 1.413 on 3 and 16 DF,  p-value: 0.2757
+## Residual standard error: 1.956 on 16 degrees of freedom
+## Multiple R-squared:  0.4915,	Adjusted R-squared:  0.3962 
+## F-statistic: 5.155 on 3 and 16 DF,  p-value: 0.01104
 \end{verbatim}
 
 Note that the \(F\) values and \(p\) values are identical for the two methods!
@@ -4877,13 +4954,13 @@ Then you sample a set of four participants to perform the soothing ratings. Agai
 \hline
 subject\_id & age & date\\
 \hline
-1 & 54 & 2020-05-02\\
+1 & 67 & 2020-05-01\\
 \hline
-2 & 45 & 2020-05-13\\
+2 & 68 & 2020-05-13\\
 \hline
-3 & 37 & 2020-05-21\\
+3 & 55 & 2020-05-17\\
 \hline
-4 & 49 & 2020-05-27\\
+4 & 24 & 2020-05-26\\
 \hline
 \end{tabular}
 
@@ -5995,8 +6072,8 @@ The distribution for Glasgow is slightly fatter than the distribution for Barcel
 ## # A tibble: 2 x 2
 ##   city         sd
 ##   <chr>     <dbl>
-## 1 Barcelona  6.72
-## 2 Glasgow    9.30
+## 1 Barcelona  6.68
+## 2 Glasgow    9.19
 \end{verbatim}
 
 \hypertarget{spurious-interactions-due-to-scaling-effects}{%
@@ -6095,9 +6172,30 @@ It is perhaps easiest to think about ordinal data by viewing it as a more genera
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(tidyverse)}
+\NormalTok{xx <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DataTypeTok{by =} \FloatTok{.1}\NormalTok{))}
+\NormalTok{x2 <-}\StringTok{ }\NormalTok{xx }\OperatorTok{+}\StringTok{ }\DecValTok{3}
+\NormalTok{yy <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\OperatorTok{-}\DecValTok{3}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DataTypeTok{by =} \FloatTok{.1}\NormalTok{))}
+
+\NormalTok{ras <-}\StringTok{ }\KeywordTok{bind_rows}\NormalTok{(}\KeywordTok{crossing}\NormalTok{(xx, yy) }\OperatorTok{%>%}
+\StringTok{                 }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{zz =}\NormalTok{ yy, }\DataTypeTok{cat =}\NormalTok{ 1L),}
+                 \KeywordTok{crossing}\NormalTok{(xx, yy) }\OperatorTok{%>%}
+\StringTok{                 }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{zz =}\NormalTok{ yy }\OperatorTok{+}\StringTok{ }\FloatTok{1.5}\NormalTok{, }\DataTypeTok{cat =}\NormalTok{ 2L))}
+          
+\KeywordTok{ggplot}\NormalTok{(ras, }\KeywordTok{aes}\NormalTok{(xx, yy)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_raster}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill =}\NormalTok{ zz), }\DataTypeTok{interpolate =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_fill_gradient2}\NormalTok{(}\DataTypeTok{high =} \StringTok{"green"}\NormalTok{, }\DataTypeTok{low =} \StringTok{"red"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{cat)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{09-ordinal_files/figure-latex/start-1} 
+
+}
+
+\caption{TODO}\label{fig:start}
+\end{figure}
 
 \hypertarget{appendix-appendix}{%
 \appendix}

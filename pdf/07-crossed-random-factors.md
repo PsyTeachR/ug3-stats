@@ -61,13 +61,13 @@ Then you sample a set of four participants to perform the soothing ratings. Agai
 \hline
 subject\_id & age & date\\
 \hline
-1 & 54 & 2020-05-02\\
+1 & 67 & 2020-05-01\\
 \hline
-2 & 45 & 2020-05-13\\
+2 & 68 & 2020-05-13\\
 \hline
-3 & 37 & 2020-05-21\\
+3 & 55 & 2020-05-17\\
 \hline
-4 & 49 & 2020-05-27\\
+4 & 24 & 2020-05-26\\
 \hline
 \end{tabular}
 
