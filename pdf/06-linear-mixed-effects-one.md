@@ -11,32 +11,39 @@
 
 We have repeatedly emphasized how many common techniques in psychology can be seen as special cases of the general linear model. This implies that it would be possible to replace these techniques with regression. In fact, you could analyze almost any conceivable dataset in psychology using one of the four functions below:
 
-```{r lm-table, echo=FALSE}
-tribble(~`sampling design`, ~`type of data`, ~`function`, ~description,
-        "single level", "continuous, normally distributed", "`base::lm()`", "simple linear model",
-        "single level", "count or categorical", "`base::glm()`", "generalized linear model",
-        "multilevel", "continuous, normally distributed", "`lme4::lmer()`", "linear mixed-effects model",
-        "multilevel", "count or categorical", "`lme4::glmer()`", "generalized linear mixed-effects model") %>%
-  knitr::kable(escape = FALSE)
-```
 
-To decide which function to use, you need to know the type of data you're working with (continuous and normally distributed, or not) and how the data have been sampled (single-level or `r glossary("multilevel")`). Arguments to these functions are highly similar across all four versions.  We will learn about analyzing count and categorical data later in this course. For now, we will focus on continuous data, but many of the principles are identical.
+\begin{tabular}{l|l|l|l}
+\hline
+sampling design & type of data & function & description\\
+\hline
+single level & continuous, normally distributed & `base::lm()` & simple linear model\\
+\hline
+single level & count or categorical & `base::glm()` & generalized linear model\\
+\hline
+multilevel & continuous, normally distributed & `lme4::lmer()` & linear mixed-effects model\\
+\hline
+multilevel & count or categorical & `lme4::glmer()` & generalized linear mixed-effects model\\
+\hline
+\end{tabular}
 
-Here is a comparison chart for single-level data (data where you don't have `r glossary("repeated-measures")`):
+To decide which function to use, you need to know the type of data you're working with (continuous and normally distributed, or not) and how the data have been sampled (single-level or <a class='glossary' target='_blank' title='(or multi-level) Relating to datasets where there are multiple observations taken on the same variable on the same sampling units (usually subjects or stimuli).' href='https://psyteachr.github.io/glossary/m#multilevel'>multilevel</a>). Arguments to these functions are highly similar across all four versions.  We will learn about analyzing count and categorical data later in this course. For now, we will focus on continuous data, but many of the principles are identical.
 
-```{r comparison-chart, echo=FALSE}
-.sl <- tribble(~test, ~`conventional approach`, ~`regression approach`,
-               "one-sample t-test", "`t.test(y, mu = c)`", "`lm(y ~ 1, offset = c)`",
-               "independent samples t-test", "`t.test(x, y)`", "`lm(y ~ x)`",
-               "one factor ANOVA", "`aov(y ~ x)`", "`lm(y ~ x)`",
-               "factorial ANOVA", "`aov(y ~ a * b)`", "`lm(y ~ a * b)`")
+Here is a comparison chart for single-level data (data where you don't have <a class='glossary' target='_blank' title='A dataset has repeated measures if there are multiple measurements taken on the same variable for individual sampling units.' href='https://psyteachr.github.io/glossary/r#repeated-measures'>repeated-measures</a>):
 
-if (knitr::is_html_output()) {
-  .sl %>% knitr::kable(escape = FALSE)
-} else {
-  .sl %>% knitr::kable()
-}
-```
+
+\begin{tabular}{l|l|l}
+\hline
+test & conventional approach & regression approach\\
+\hline
+one-sample t-test & `t.test(y, mu = c)` & `lm(y \textasciitilde{} 1, offset = c)`\\
+\hline
+independent samples t-test & `t.test(x, y)` & `lm(y \textasciitilde{} x)`\\
+\hline
+one factor ANOVA & `aov(y \textasciitilde{} x)` & `lm(y \textasciitilde{} x)`\\
+\hline
+factorial ANOVA & `aov(y \textasciitilde{} a * b)` & `lm(y \textasciitilde{} a * b)`\\
+\hline
+\end{tabular}
 
 All of above designs are *between-subjects* designs without repeated measures. (Note that in the factorial case, we would probably replace `a` and `b` with our own deviation-coded numerical predictors, for reasons already discussed in [the chapter on interactions](interactions.html)).
 
@@ -52,23 +59,26 @@ Where mixed-effects models come into play is with multilevel data. Data is usual
 
 Here is a comparison chart for multi-level data:
 
-```{r comparison-chart-lmer, echo=FALSE}
-.ml <- tribble(
-  ~test, ~`conventional approach`, ~`regression approach`,
-  "one-sample t-test with pseudoreplications", "calculate means and use `t.test(x_mean)`", "<code>lmer(y ~ (1 | subject), offset = c)</code>",
-  "paired samples t-test, no pseudoreplications", "`t.test(x, y, paired = TRUE)`", "<code>lmer(y ~ x + (1 | subject))</code>",
-  "paired samples t-test with pseudoreplications", "calculate means and use `t.test(x_mean, y_mean)`", "<code>lmer(y ~ x + (1 + x | subject))</code>",        
-  "repeated-measures ANOVA no pseudoreplications", "`aov(y ~ x + Error(subject))`", "<code>lmer(y ~ x + (1 | subject))</code>",
-  "repeated-measures ANOVA with pseudoreplications", "`aov(y ~ x + Error(subject/x))`", "<code>lmer(y ~ x + (1 + x | subject))</code>",
-  "factorial ANOVA, a & b within, no pseudoreplications", "`aov(y ~ a * b + Error(subject))`", "<code>lmer(y ~ a * b + (1 | subject))</code>",
-  "factorial ANOVA with pseudoreplications", "`aov(y ~ a * b + Error(subject/(a * b))`", "<code>lmer(y ~ a * b + (1 + a * b | subject)</code>")
 
-if (knitr::is_html_output()) {
-  .ml %>% knitr::kable(escape = FALSE)
-} else {
-  .ml %>% knitr::kable()
-}
-```
+\begin{tabular}{l|l|l}
+\hline
+test & conventional approach & regression approach\\
+\hline
+one-sample t-test with pseudoreplications & calculate means and use `t.test(x\_mean)` & <code>lmer(y \textasciitilde{} (1 | subject), offset = c)</code>\\
+\hline
+paired samples t-test, no pseudoreplications & `t.test(x, y, paired = TRUE)` & <code>lmer(y \textasciitilde{} x + (1 | subject))</code>\\
+\hline
+paired samples t-test with pseudoreplications & calculate means and use `t.test(x\_mean, y\_mean)` & <code>lmer(y \textasciitilde{} x + (1 + x | subject))</code>\\
+\hline
+repeated-measures ANOVA no pseudoreplications & `aov(y \textasciitilde{} x + Error(subject))` & <code>lmer(y \textasciitilde{} x + (1 | subject))</code>\\
+\hline
+repeated-measures ANOVA with pseudoreplications & `aov(y \textasciitilde{} x + Error(subject/x))` & <code>lmer(y \textasciitilde{} x + (1 + x | subject))</code>\\
+\hline
+factorial ANOVA, a \& b within, no pseudoreplications & `aov(y \textasciitilde{} a * b + Error(subject))` & <code>lmer(y \textasciitilde{} a * b + (1 | subject))</code>\\
+\hline
+factorial ANOVA with pseudoreplications & `aov(y \textasciitilde{} a * b + Error(subject/(a * b))` & <code>lmer(y \textasciitilde{} a * b + (1 + a * b | subject)</code>\\
+\hline
+\end{tabular}
 
 One of the main selling points of the general linear models / regression framework over t-test and ANOVA is its flexibility. We saw this in the last chapter with the `sleepstudy` data, which could only be properly handled within a linear mixed-effects modelling framework. Despite the many advantages of regression, if you are in a situation where you have balanced data and can reasonably apply t-test or ANOVA without violating any of the assumptions behind the test, it makes sense to do so; these approaches have a long history in psychology and are more widely understood.
 
@@ -80,7 +90,8 @@ This [web app](https://shiny.psy.gla.ac.uk/Dale/icc){target="_blank"} presents s
 
 If we were going to run a t-test on these data, we would first need to calculate subject means, because otherwise the observations are not independent. You could do this as follows. (If you want to run the code below, you can download sample data from the web app above and save it as `independent_samples.csv`).
 
-```{r subj-means, message = FALSE}
+
+```r
 library("tidyverse")
 
 dat <- read_csv("data/independent_samples.csv", col_types = "cci")
@@ -93,10 +104,45 @@ subj_means <- dat %>%
 subj_means
 ```
 
+```
+## # A tibble: 14 x 3
+##    subject cond  mean_rt
+##    <chr>   <chr>   <dbl>
+##  1 P01     P        354 
+##  2 P02     P        384.
+##  3 P03     P        391.
+##  4 P04     P        404.
+##  5 P05     P        421.
+##  6 P06     P        392 
+##  7 P07     P        400.
+##  8 T08     T        430.
+##  9 T09     T        432.
+## 10 T10     T        410.
+## 11 T11     T        455.
+## 12 T12     T        450.
+## 13 T13     T        418.
+## 14 T14     T        489.
+```
+
 Then, the $t$-test can be run using the "formula" version of `t.test()`.
 
-```{r run-t}
+
+```r
 t.test(mean_rt ~ cond, subj_means)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  mean_rt by cond
+## t = -3.7985, df = 11.32, p-value = 0.002807
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -76.32580 -20.44563
+## sample estimates:
+## mean in group P mean in group T 
+##        392.3143        440.7000
 ```
 
 While there is nothing wrong with this analysis, aggregating the data throws away information. we can see in the above web app that there are actually two different sources of variability: trial-by-trial variability in simple RT (represented by $\sigma$) and variability across subjects in terms of their how slow or fast they are relative to the population mean ($\gamma_{00}$).  The Data Generating Process for response time ($Y_{st}$) for subject $s$ on trial $t$ is shown below.
@@ -147,21 +193,59 @@ This quantity, known as the **intra-class correlation coefficient**, and tells y
 
 The lmer syntax for fitting a random intercepts model to the data is `lmer(RT ~ cond + (1 | subject), dat, REML=FALSE)`. Let's create our own numerical predictor first, to make it explicit that we are using dummy coding.
 
-```{r dat2}
+
+```r
 dat2 <- dat %>%
   mutate(cond_d = if_else(cond == "T", 1L, 0L))
 
 distinct(dat2, cond, cond_d)  ## double check
 ```
 
+```
+## # A tibble: 2 x 2
+##   cond  cond_d
+##   <chr>  <int>
+## 1 P          0
+## 2 T          1
+```
+
 And now, estimate the model.
 
-```{r mod-estimate, message = FALSE}
+
+```r
 library("lme4")
 
 mod <- lmer(RT ~ cond_d + (1 | subject), dat2, REML = FALSE)
 
 summary(mod)
+```
+
+```
+## Linear mixed model fit by maximum likelihood  ['lmerMod']
+## Formula: RT ~ cond_d + (1 | subject)
+##    Data: dat2
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1451.8   1463.5   -721.9   1443.8      136 
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.67117 -0.66677  0.01656  0.75361  2.58447 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  subject  (Intercept)  329.3   18.15   
+##  Residual             1574.7   39.68   
+## Number of obs: 140, groups:  subject, 14
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  392.314      8.339  47.045
+## cond_d        48.386     11.793   4.103
+## 
+## Correlation of Fixed Effects:
+##        (Intr)
+## cond_d -0.707
 ```
 
 Play around with the sliders in the app above and check the lmer output panel until you understand how the output maps onto the model parameters.
@@ -214,13 +298,18 @@ As noted above, you could conduct a one-factor ANOVA in regression using the for
 
 It is often sensible to code your own numerical predictors, particularly if your goal is to do ANOVA-style tests of main effects and interactions, which can be difficult if any of your variables are of type `factor`. So for a design with one three-level factor called `meal` (`breakfast`, `lunch`, `dinner`) you could create two variables, `lunch_v_breakfast` and `dinner_v_breakfast` following the scheme below.
 
-```{r breakfast, echo=FALSE}
-tribble(~`factor level`, ~lunch_v_breakfast, ~dinner_v_breakfast,
-        "breakfast", "-1/3", "-1/3",
-        "lunch", "+2/3", "-1/3",
-        "dinner", "-1/3", "+2/3") %>%
-  knitr::kable(align = "lrr")
-```
+
+\begin{tabular}{l|r|r}
+\hline
+factor level & lunch\_v\_breakfast & dinner\_v\_breakfast\\
+\hline
+breakfast & -1/3 & -1/3\\
+\hline
+lunch & +2/3 & -1/3\\
+\hline
+dinner & -1/3 & +2/3\\
+\hline
+\end{tabular}
 
 If your dependent variable is `calories`, your model would be:
 
@@ -240,7 +329,8 @@ This is the "regression way" of estimating parameters for a 3x2 factorial design
 
 Whenever you are dealing with designs where all categorical factors have no more than two levels, the test of the regression coefficient associated with a given factor will be equivalent to the test for the effect in the ANOVA framework, provided you use [sum or deviation coding](multiple-regression.html#dealing-with-categorical-predictors). But in the above example, we have a 3x2 design, with two predictor variables coding the main effect of `meal` (`lunch_v_breakfast` and `dinner_v_breakfast`). Let's simulate some data and run a one-factor ANOVA with `aov()`, and then we'll replicate the analysis using the regression function `lm()` (note that the same procedure works for mixed-effects models on multilevel data, just using `lme4::lmer()` instead of `base::lm()`).
 
-```{r meals-aov}
+
+```r
 ## make up some data
 set.seed(62)
 meals <- tibble(meal = factor(rep(c("breakfast", "lunch", "dinner"),
@@ -256,9 +346,18 @@ aov(calories ~ meal * time_of_week, data = meals) %>%
   summary()
 ```
 
+```
+##                   Df Sum Sq Mean Sq F value Pr(>F)
+## meal               2   2164    1082   0.380  0.692
+## time_of_week       1   5084    5084   1.783  0.207
+## meal:time_of_week  2   4767    2384   0.836  0.457
+## Residuals         12  34209    2851
+```
+
 We get three $F$-tests, one for each main effect (`meal` and `time_of_week`) one for the interaction. What happens if we fit a model using `lm()`?
 
-```{r meals-lm}
+
+```r
 ## add our own numeric predictors
 meals2 <- meals %>%
   mutate(lunch_v_breakfast = if_else(meal == "lunch", 2/3, -1/3),
@@ -276,11 +375,47 @@ mod <- lm(calories ~ (lunch_v_breakfast + dinner_v_breakfast) *
 summary(mod)
 ```
 
+```
+## # A tibble: 6 x 5
+##   meal      time_of_week lunch_v_breakfast dinner_v_breakfast time_week
+##   <fct>     <fct>                    <dbl>              <dbl>     <dbl>
+## 1 breakfast weekday                 -0.333             -0.333      -0.5
+## 2 breakfast weekend                 -0.333             -0.333       0.5
+## 3 lunch     weekday                  0.667             -0.333      -0.5
+## 4 lunch     weekend                  0.667             -0.333       0.5
+## 5 dinner    weekday                 -0.333              0.667      -0.5
+## 6 dinner    weekend                 -0.333              0.667       0.5
+## 
+## Call:
+## lm(formula = calories ~ (lunch_v_breakfast + dinner_v_breakfast) * 
+##     time_week, data = meals2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -68.522 -35.895  -4.063  42.061  73.081 
+## 
+## Coefficients:
+##                              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    451.15      12.58  35.848 1.42e-13 ***
+## lunch_v_breakfast              -25.23      30.83  -0.818    0.429    
+## dinner_v_breakfast             -20.59      30.83  -0.668    0.517    
+## time_week                       33.61      25.17   1.335    0.207    
+## lunch_v_breakfast:time_week    -58.31      61.65  -0.946    0.363    
+## dinner_v_breakfast:time_week    17.93      61.65   0.291    0.776    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 53.39 on 12 degrees of freedom
+## Multiple R-squared:  0.2599,	Adjusted R-squared:  -0.04843 
+## F-statistic: 0.843 on 5 and 12 DF,  p-value: 0.5447
+```
+
 OK, this output looks very different! How do you perform ANOVA-like tests in those situations? You have estimates for `lunch_v_breakfast` and `dinner_v_breakfast` but how would you convert this into a single test for the main effect of `meal`? Likewise, you have two interaction terms, `lunch_v_breakfast:tow` and `dinner_v_breakfast:tow`; how do you convert this into a single test for the interaction?
 
 The solution is to perform **multiparameter tests** using model comparison, implemented by the `anova()` function in R. To test for the main effect of `meal`, you'd compare a model containing the two predictor variables coding that factor (`lunch_v_breakfast` and `dinner_v_breakfast`) to a model excluding these two predictors but that is otherwise identical. You can either re-fit the model by writing it out and excluding the terms, or by using the `update()` function and removing the terms (which is a shortcut). Let's write it out first.
 
-```{r test-main-full}
+
+```r
 ## fit the model
 mod_main_eff <- lm(calories ~ time_week +
                      lunch_v_breakfast:time_week + dinner_v_breakfast:time_week,
@@ -290,36 +425,84 @@ mod_main_eff <- lm(calories ~ time_week +
 anova(mod, mod_main_eff)
 ```
 
+```
+## Analysis of Variance Table
+## 
+## Model 1: calories ~ (lunch_v_breakfast + dinner_v_breakfast) * time_week
+## Model 2: calories ~ time_week + lunch_v_breakfast:time_week + dinner_v_breakfast:time_week
+##   Res.Df   RSS Df Sum of Sq      F Pr(>F)
+## 1     12 34209                           
+## 2     14 36373 -2   -2163.9 0.3795 0.6921
+```
+
 OK, now here is an equivalent version using the shortcut `update()` function, which takes the model you want to update as the first argument and then a special syntax for the formula including your changes. For the formula, we use `. ~ . -lunch_v_breakfast -dinner_v_breakfast~` Although this formula seems weird, the dot `.` says "keep everything on this side of the model formula (left of `~`) as it is in the original model." So the formula `. ~ .` would use the same formula as the original model; that is, `update(mod, . ~ .)` would fit the exact same model as above. In contrast, `. ~ . -x -y` means "everything the same on the left side (same DV), but remove variables `x` and `y` from the right side.
 
-```{r test-main-effect-meal}
+
+```r
 mod_main_eff2 <- update(mod, . ~ . -lunch_v_breakfast -dinner_v_breakfast)
 
 anova(mod, mod_main_eff2)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: calories ~ (lunch_v_breakfast + dinner_v_breakfast) * time_week
+## Model 2: calories ~ time_week + lunch_v_breakfast:time_week + dinner_v_breakfast:time_week
+##   Res.Df   RSS Df Sum of Sq      F Pr(>F)
+## 1     12 34209                           
+## 2     14 36373 -2   -2163.9 0.3795 0.6921
 ```
 
 As you can see, this gives us the same result as above.
 
 If we want to test the main effect of `time_of_week`, we remove that predictor.
 
-```{r test-main-effect-time}
+
+```r
 mod_tow <- update(mod, . ~ . -time_week)
 
 anova(mod, mod_tow)
 ```
 
+```
+## Analysis of Variance Table
+## 
+## Model 1: calories ~ (lunch_v_breakfast + dinner_v_breakfast) * time_week
+## Model 2: calories ~ lunch_v_breakfast + dinner_v_breakfast + lunch_v_breakfast:time_week + 
+##     dinner_v_breakfast:time_week
+##   Res.Df   RSS Df Sum of Sq      F Pr(>F)
+## 1     12 34209                           
+## 2     13 39294 -1   -5084.1 1.7834 0.2065
+```
+
 Try to figure out how to test the interaction on your own.
 
-`r hide("Click to see solution")`
 
-```{r test-interact}
+<div class='solution'><button>Click to see solution</button>
+
+
+
+```r
 mod_interact <- update(mod, . ~ . -lunch_v_breakfast:time_week
                        -dinner_v_breakfast:time_week)
 
 anova(mod, mod_interact)
 ```
 
-`r unhide()`
+```
+## Analysis of Variance Table
+## 
+## Model 1: calories ~ (lunch_v_breakfast + dinner_v_breakfast) * time_week
+## Model 2: calories ~ lunch_v_breakfast + dinner_v_breakfast + time_week
+##   Res.Df   RSS Df Sum of Sq      F Pr(>F)
+## 1     12 34209                           
+## 2     14 38977 -2   -4767.4 0.8362 0.4571
+```
+
+
+</div>
+
 
 We got the exact same results doing model comparison with `lm()` as we did using `aov()`. Although this involved more steps, it is worth learning this approach as it will ultimately give you much more flexibility.
 

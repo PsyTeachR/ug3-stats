@@ -1,6 +1,7 @@
 # psyTeachR styles and functions
 # do not edit!!!!!
 
+options(tidyverse.quiet=TRUE)
 library(tidyverse)
 library(webex)
 
