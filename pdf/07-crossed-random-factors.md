@@ -24,30 +24,52 @@ One thing to note about all these claims is that the are of the type, "what happ
 Here is a simple example of a study where you are interested in testing whether people rate pictures of cats, dogs, or sunsets as more soothing images to look at. You want to say something general about the category of cats, dogs, and sunsets and not something about the specific pictures that you happened to sample. Let's say you randomly select four images from each of the three categories from Google Images (you would absolutely need to have more to be able to say something generalizable, but we chose a small number to keep the example simple). So your table of stimuli might look like the following:
 
 
-| stimulus_id|category |file        |
-|-----------:|:--------|:-----------|
-|           1|cat      |cat1.jpg    |
-|           2|cat      |cat2.jpg    |
-|           3|cat      |cat3.jpg    |
-|           4|cat      |cat4.jpg    |
-|           5|dog      |dog1.jpg    |
-|           6|dog      |dog2.jpg    |
-|           7|dog      |dog3.jpg    |
-|           8|dog      |dog4.jpg    |
-|           9|sunset   |sunset1.jpg |
-|          10|sunset   |sunset2.jpg |
-|          11|sunset   |sunset3.jpg |
-|          12|sunset   |sunset4.jpg |
+\begin{tabular}{r|l|l}
+\hline
+stimulus\_id & category & file\\
+\hline
+1 & cat & cat1.jpg\\
+\hline
+2 & cat & cat2.jpg\\
+\hline
+3 & cat & cat3.jpg\\
+\hline
+4 & cat & cat4.jpg\\
+\hline
+5 & dog & dog1.jpg\\
+\hline
+6 & dog & dog2.jpg\\
+\hline
+7 & dog & dog3.jpg\\
+\hline
+8 & dog & dog4.jpg\\
+\hline
+9 & sunset & sunset1.jpg\\
+\hline
+10 & sunset & sunset2.jpg\\
+\hline
+11 & sunset & sunset3.jpg\\
+\hline
+12 & sunset & sunset4.jpg\\
+\hline
+\end{tabular}
 
 Then you sample a set of four participants to perform the soothing ratings. Again, four would be too few for a real study, but we're keeping it small just for expository purposes.
 
 
-| subject_id| age|date       |
-|----------:|---:|:----------|
-|          1|  20|2020-04-30 |
-|          2|  20|2020-05-06 |
-|          3|  23|2020-05-16 |
-|          4|  65|2020-05-28 |
+\begin{tabular}{r|r|l}
+\hline
+subject\_id & age & date\\
+\hline
+1 & 67 & 2020-05-01\\
+\hline
+2 & 68 & 2020-05-13\\
+\hline
+3 & 55 & 2020-05-17\\
+\hline
+4 & 24 & 2020-05-26\\
+\hline
+\end{tabular}
 
 Now, because each subject has given a "soothingness" rating for each picture, you'd have a full dataset consisting of all of the levels of `subject_id` crossed with all of the levels of `stimulus_id`. This is what we mean when we talk about "crossed random factors." You can create the table containing all these combinations with the `crossing()` function from `tidyr` (which is loaded when you load in `tidyverse`).
 
@@ -58,56 +80,107 @@ crossing(subjects %>% select(subject_id),
 ```
 
 
-| subject_id| stimulus_id|file        |
-|----------:|-----------:|:-----------|
-|          1|           1|cat1.jpg    |
-|          1|           2|cat2.jpg    |
-|          1|           3|cat3.jpg    |
-|          1|           4|cat4.jpg    |
-|          1|           5|dog1.jpg    |
-|          1|           6|dog2.jpg    |
-|          1|           7|dog3.jpg    |
-|          1|           8|dog4.jpg    |
-|          1|           9|sunset1.jpg |
-|          1|          10|sunset2.jpg |
-|          1|          11|sunset3.jpg |
-|          1|          12|sunset4.jpg |
-|          2|           1|cat1.jpg    |
-|          2|           2|cat2.jpg    |
-|          2|           3|cat3.jpg    |
-|          2|           4|cat4.jpg    |
-|          2|           5|dog1.jpg    |
-|          2|           6|dog2.jpg    |
-|          2|           7|dog3.jpg    |
-|          2|           8|dog4.jpg    |
-|          2|           9|sunset1.jpg |
-|          2|          10|sunset2.jpg |
-|          2|          11|sunset3.jpg |
-|          2|          12|sunset4.jpg |
-|          3|           1|cat1.jpg    |
-|          3|           2|cat2.jpg    |
-|          3|           3|cat3.jpg    |
-|          3|           4|cat4.jpg    |
-|          3|           5|dog1.jpg    |
-|          3|           6|dog2.jpg    |
-|          3|           7|dog3.jpg    |
-|          3|           8|dog4.jpg    |
-|          3|           9|sunset1.jpg |
-|          3|          10|sunset2.jpg |
-|          3|          11|sunset3.jpg |
-|          3|          12|sunset4.jpg |
-|          4|           1|cat1.jpg    |
-|          4|           2|cat2.jpg    |
-|          4|           3|cat3.jpg    |
-|          4|           4|cat4.jpg    |
-|          4|           5|dog1.jpg    |
-|          4|           6|dog2.jpg    |
-|          4|           7|dog3.jpg    |
-|          4|           8|dog4.jpg    |
-|          4|           9|sunset1.jpg |
-|          4|          10|sunset2.jpg |
-|          4|          11|sunset3.jpg |
-|          4|          12|sunset4.jpg |
+\begin{tabular}{r|r|l}
+\hline
+subject\_id & stimulus\_id & file\\
+\hline
+1 & 1 & cat1.jpg\\
+\hline
+1 & 2 & cat2.jpg\\
+\hline
+1 & 3 & cat3.jpg\\
+\hline
+1 & 4 & cat4.jpg\\
+\hline
+1 & 5 & dog1.jpg\\
+\hline
+1 & 6 & dog2.jpg\\
+\hline
+1 & 7 & dog3.jpg\\
+\hline
+1 & 8 & dog4.jpg\\
+\hline
+1 & 9 & sunset1.jpg\\
+\hline
+1 & 10 & sunset2.jpg\\
+\hline
+1 & 11 & sunset3.jpg\\
+\hline
+1 & 12 & sunset4.jpg\\
+\hline
+2 & 1 & cat1.jpg\\
+\hline
+2 & 2 & cat2.jpg\\
+\hline
+2 & 3 & cat3.jpg\\
+\hline
+2 & 4 & cat4.jpg\\
+\hline
+2 & 5 & dog1.jpg\\
+\hline
+2 & 6 & dog2.jpg\\
+\hline
+2 & 7 & dog3.jpg\\
+\hline
+2 & 8 & dog4.jpg\\
+\hline
+2 & 9 & sunset1.jpg\\
+\hline
+2 & 10 & sunset2.jpg\\
+\hline
+2 & 11 & sunset3.jpg\\
+\hline
+2 & 12 & sunset4.jpg\\
+\hline
+3 & 1 & cat1.jpg\\
+\hline
+3 & 2 & cat2.jpg\\
+\hline
+3 & 3 & cat3.jpg\\
+\hline
+3 & 4 & cat4.jpg\\
+\hline
+3 & 5 & dog1.jpg\\
+\hline
+3 & 6 & dog2.jpg\\
+\hline
+3 & 7 & dog3.jpg\\
+\hline
+3 & 8 & dog4.jpg\\
+\hline
+3 & 9 & sunset1.jpg\\
+\hline
+3 & 10 & sunset2.jpg\\
+\hline
+3 & 11 & sunset3.jpg\\
+\hline
+3 & 12 & sunset4.jpg\\
+\hline
+4 & 1 & cat1.jpg\\
+\hline
+4 & 2 & cat2.jpg\\
+\hline
+4 & 3 & cat3.jpg\\
+\hline
+4 & 4 & cat4.jpg\\
+\hline
+4 & 5 & dog1.jpg\\
+\hline
+4 & 6 & dog2.jpg\\
+\hline
+4 & 7 & dog3.jpg\\
+\hline
+4 & 8 & dog4.jpg\\
+\hline
+4 & 9 & sunset1.jpg\\
+\hline
+4 & 10 & sunset2.jpg\\
+\hline
+4 & 11 & sunset3.jpg\\
+\hline
+4 & 12 & sunset4.jpg\\
+\hline
+\end{tabular}
 
 Because you have 4 subjects responding to 12 stimuli, the resulting table will have 48 rows.
 
@@ -851,7 +924,7 @@ Now apply this example to generate the table below, where `err` is the residual 
 ##  8       1       8 -189. 
 ##  9       1       9 -410. 
 ## 10       1      10  102. 
-## # … with 4,990 more rows
+## # ... with 4,990 more rows
 ```
 
 
@@ -890,7 +963,7 @@ Merge the information in `subjects`, `items`, and `trials` to create the full da
 ##  8       1       8 -80.0 -87.6 -0.763   0.5 -189. 
 ##  9       1       9 -80.0 -97.4 -0.763  -0.5 -410. 
 ## 10       1      10 -80.0 -85.2 -0.763   0.5  102. 
-## # … with 4,990 more rows
+## # ... with 4,990 more rows
 ```
 
 
@@ -945,7 +1018,7 @@ so that the resulting table (`dat_sim2`) looks like this:
 ##  8       1       8  483. -80.0 -87.6 -0.763   0.5 -189. 
 ##  9       1       9  173. -80.0 -97.4 -0.763  -0.5 -410. 
 ## 10       1      10  776. -80.0 -85.2 -0.763   0.5  102. 
-## # … with 4,990 more rows
+## # ... with 4,990 more rows
 ```
 
 Note: this is the full **decomposition table** for this model.
@@ -1036,10 +1109,15 @@ First, try to find \(\beta_0\) and \(\beta_1\).
 
 
 
-|parameter         |variable | input| estimate|
-|:-----------------|:--------|-----:|--------:|
-|\(\hat{\beta}_0\) |`b0`     |   800|  793.293|
-|\(\hat{\beta}_1\) |`b1`     |    80|   77.652|
+\begin{tabular}{l|l|r|r}
+\hline
+parameter & variable & input & estimate\\
+\hline
+\textbackslash{}(\textbackslash{}hat\{\textbackslash{}beta\}\_0\textbackslash{}) & `b0` & 800 & 793.293\\
+\hline
+\textbackslash{}(\textbackslash{}hat\{\textbackslash{}beta\}\_1\textbackslash{}) & `b1` & 80 & 77.652\\
+\hline
+\end{tabular}
 
 
 </div>
@@ -1052,13 +1130,21 @@ Now try to find estimates of random effects parameters \(\tau_{00}\), \(\tau_{11
 
 
 
-|parameter             |variable   | input| estimate|
-|:---------------------|:----------|-----:|--------:|
-|\(\hat{\tau}_{00}\)   |`tau_00`   | 100.0|   97.287|
-|\(\hat{\tau}_{11}\)   |`tau_11`   |  40.0|   24.448|
-|\(\hat{\rho}\)        |`rho`      |   0.2|    0.675|
-|\(\hat{\omega}_{00}\) |`omega_00` |  80.0|   89.928|
-|\(\hat{\sigma}\)      |`sig`      | 200.0|  200.761|
+\begin{tabular}{l|l|r|r}
+\hline
+parameter & variable & input & estimate\\
+\hline
+\textbackslash{}(\textbackslash{}hat\{\textbackslash{}tau\}\_\{00\}\textbackslash{}) & `tau\_00` & 100.0 & 97.287\\
+\hline
+\textbackslash{}(\textbackslash{}hat\{\textbackslash{}tau\}\_\{11\}\textbackslash{}) & `tau\_11` & 40.0 & 24.448\\
+\hline
+\textbackslash{}(\textbackslash{}hat\{\textbackslash{}rho\}\textbackslash{}) & `rho` & 0.2 & 0.675\\
+\hline
+\textbackslash{}(\textbackslash{}hat\{\textbackslash{}omega\}\_\{00\}\textbackslash{}) & `omega\_00` & 80.0 & 89.928\\
+\hline
+\textbackslash{}(\textbackslash{}hat\{\textbackslash{}sigma\}\textbackslash{}) & `sig` & 200.0 & 200.761\\
+\hline
+\end{tabular}
 
 
 </div>

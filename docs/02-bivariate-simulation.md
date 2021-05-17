@@ -31,13 +31,10 @@ Recall that a correlation coefficient quantifies the **strength** and **directio
 If you have $n$ measures, how many pairwise correlations can you compute? You can figure this out either by the formula in the info box below, or more easily you can computed it directly through the `choose(n, 2)` function in R. For instance, to get the number of possible pairwise correlations between 6 measures, you'd type `choose(6, 2)`, which tells you that you have 15 combinations.
 
 <div class="info">
-
-For any $n$ measures, you can calculate $\frac{n!}{2(n - 2)!}$ pairwise correlations between measures. The $!$ symbol is called the **factorial** operator, defined as the product of all numbers from 1 to $n$. So, if you have six measurements, you have
-
-$$
+<p>For any <span class="math inline">\(n\)</span> measures, you can calculate <span class="math inline">\(\frac{n!}{2(n - 2)!}\)</span> pairwise correlations between measures. The <span class="math inline">\(!\)</span> symbol is called the <strong>factorial</strong> operator, defined as the product of all numbers from 1 to <span class="math inline">\(n\)</span>. So, if you have six measurements, you have</p>
+<p><span class="math display">\[
 \frac{6!}{2(6-2)!} = \frac{1 \times 2 \times 3 \times 4 \times 5 \times 6}{2\left(1 \times 2 \times 3 \times 4\right)} = \frac{720}{2(24)} = 15
-$$
-
+\]</span></p>
 </div>
 
 You can create a correlation matrix in R using `base::cor()` or `corrr::correlate()`. We prefer the latter function because `cor()` requires that your data is stored in a matrix, whereas most of the data we will be working with is stored in a data frame. The `corrr::correlate()` function also takes a data frame as the first argument, so it works better with pipes (`%>%`).
@@ -123,7 +120,7 @@ starwars %>%
 ## 3 birth_year   -.40  .48
 ```
 
-Correlations are only provide a good description of the relationship if the relationship is (roughly) linear and there aren't severe outliers that are wielding too strong of an influence on the results. So it is always a good idea to visualize the correlations as well as to quantify them.  The `base::pairs()` function does this. The first argument to `pairs()` is simply of the form `~ v1 + v2 + v3 + ... + vn` where `v1`, `v2`, etc. are the names of the variables you want to correlate.
+Correlations only provide a good description of the relationship if the relationship is (roughly) linear and there aren't severe outliers that are wielding too strong of an influence on the results. So it is always a good idea to visualize the correlations as well as to quantify them.  The `base::pairs()` function does this. The first argument to `pairs()` is simply of the form `~ v1 + v2 + v3 + ... + vn` where `v1`, `v2`, etc. are the names of the variables you want to correlate.
 
 
 ```r
@@ -131,7 +128,7 @@ pairs(~ height + mass + birth_year, starwars)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="02-bivariate-simulation_files/figure-html/pairs-1.png" alt="Pairwise correlations for the starwars dataset" width="400" height="400" />
+<img src="02-bivariate-simulation_files/figure-html/pairs-1.png" alt="Pairwise correlations for the starwars dataset" width="100%" />
 <p class="caption">(\#fig:pairs)Pairwise correlations for the starwars dataset</p>
 </div>
 
@@ -162,7 +159,7 @@ pairs(~height + mass + birth_year, starwars2)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="02-bivariate-simulation_files/figure-html/massive-creature-1.png" alt="Pairwise correlations for the starwars dataset after removing outlying mass value." width="400" height="400" />
+<img src="02-bivariate-simulation_files/figure-html/massive-creature-1.png" alt="Pairwise correlations for the starwars dataset after removing outlying mass value." width="100%" />
 <p class="caption">(\#fig:massive-creature)Pairwise correlations for the starwars dataset after removing outlying mass value.</p>
 </div>
 
@@ -193,8 +190,8 @@ pairs(~height + mass + birth_year, starwars3)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="02-bivariate-simulation_files/figure-html/bye-yoda-1.png" alt="Pairwise correlations for the starwars dataset after removing outlying mass and birth_year values." width="400" height="400" />
-<p class="caption">(\#fig:bye-yoda)Pairwise correlations for the starwars dataset after removing outlying mass and birth_year values.</p>
+<img src="02-bivariate-simulation_files/figure-html/bye-yoda-1.png" alt="Pairwise correlations for the starwars dataset after removing outlying mass and birth\_year values." width="100%" />
+<p class="caption">(\#fig:bye-yoda)Pairwise correlations for the starwars dataset after removing outlying mass and birth\_year values.</p>
 </div>
 
 That looks much better. Let's see how that changes our correlation matrix.
@@ -275,10 +272,8 @@ It should be clear that you can't just run `rnorm()` twice and combine the varia
 
 The package **`MASS`** provides a function `mvrnorm()` which is the 'multivariate' version of rnorm (hence the function name, `mv` + `rnorm`, which makes it easy to remember.
 
-<div class="danger">
-
-The **`MASS`** package comes pre-installed with R. But the only function you'll probably ever want to use from **`MASS`** is `mvrnorm()`, so rather than load in the package using `library("MASS")`, it is preferable to use `MASS::mvrnorm()`, especially as **`MASS`** and the **`dplyr`** package from **`tidyverse`** [don't play well together](https://twitter.com/dalejbarr/status/516986671129452544?s=20), due to both packages having the function `select()`. So if you load in **`MASS`** after you load in **`tidyverse`**, you'll end up getting the **`MASS`** version of `select()` instead of the **`dplyr`** version. It will do your head in trying to figure out what is wrong with your code, so always `MASS::mvrnorm` and never `library("MASS")`.
-
+<div class="watchout">
+<p>The <strong><code>MASS</code></strong> package comes pre-installed with R. But the only function you’ll probably ever want to use from <strong><code>MASS</code></strong> is <code>mvrnorm()</code>, so rather than load in the package using <code>library("MASS")</code>, it is preferable to use <code>MASS::mvrnorm()</code>, especially as <strong><code>MASS</code></strong> and the <strong><code>dplyr</code></strong> package from <strong><code>tidyverse</code></strong> <a href="https://twitter.com/dalejbarr/status/516986671129452544?s=20">don’t play well together</a>, due to both packages having the function <code>select()</code>. So if you load in <strong><code>MASS</code></strong> after you load in <strong><code>tidyverse</code></strong>, you’ll end up getting the <strong><code>MASS</code></strong> version of <code>select()</code> instead of the <strong><code>dplyr</code></strong> version. It will do your head in trying to figure out what is wrong with your code, so always <code>MASS::mvrnorm</code> and never <code>library("MASS")</code>.</p>
 </div>
 
 Have a look at the documentation for the `mvrnorm()` function (type `?MASS::mvrnorm` in the console).
@@ -298,35 +293,26 @@ When you have multivariate data, the **covariance matrix** (also known as the **
 You can think of a covariance matrix as something like the correlation matrix that you saw above; indeed, with a few calculations you can turn a covariance matrix into a correlation matrix.
 
 <div class="info">
-
-What's all this talk about the Matrix? Wasn't that a sci-fi film series from the 1990s?
-
-In mathematics, matrices are just generalizations of the concept of a vector: a vector can be thought of as having one dimension, whereas a matrix can have any number of dimensions.
-
-So the matrix
-
-$$
+<p>What’s all this talk about the Matrix? Wasn’t that a sci-fi film series from the 1990s?</p>
+<p>In mathematics, matrices are just generalizations of the concept of a vector: a vector can be thought of as having one dimension, whereas a matrix can have any number of dimensions.</p>
+<p>So the matrix</p>
+<p><span class="math display">\[
 \begin{pmatrix}
-1 & 4 & 7 \\
-2 & 5 & 8 \\
-3 & 6 & 9 \\
+1 &amp; 4 &amp; 7 \\
+2 &amp; 5 &amp; 8 \\
+3 &amp; 6 &amp; 9 \\
 \end{pmatrix}
-$$
-
-is a 3 (row) by 3 (column) matrix containing the column vectors $\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}$, $\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}$, and $\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}$. Conventionally, we refer to matrices in $i$ by $j$ format, with $i$ being the number of rows and $j$ being the number of columns.  So a 3x2 matrix has 3 rows and 2 columns, like so.
-
-$$
+\]</span></p>
+<p>is a 3 (row) by 3 (column) matrix containing the column vectors <span class="math inline">\(\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}\)</span>, <span class="math inline">\(\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}\)</span>, and <span class="math inline">\(\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}\)</span>. Conventionally, we refer to matrices in <span class="math inline">\(i\)</span> by <span class="math inline">\(j\)</span> format, with <span class="math inline">\(i\)</span> being the number of rows and <span class="math inline">\(j\)</span> being the number of columns. So a 3x2 matrix has 3 rows and 2 columns, like so.</p>
+<p><span class="math display">\[
 \begin{pmatrix}
-a & d \\
-b & e \\
-c & f \\
+a &amp; d \\
+b &amp; e \\
+c &amp; f \\
 \end{pmatrix}
-$$
-
-A **square matrix** is a matrix where the number of rows is equal to the number of columns.
-
-You can create the above matrix in R using the `matrix()` function (see below) or by binding together vectors column-wise, using the base R `cbind()` function. Try `cbind(1:3, 4:6, 7:9)` in your console. You can also bind vectors together row-wise using `rbind()`.
-
+\]</span></p>
+<p>A <strong>square matrix</strong> is a matrix where the number of rows is equal to the number of columns.</p>
+<p>You can create the above matrix in R using the <code>matrix()</code> function (see below) or by binding together vectors column-wise, using the base R <code>cbind()</code> function. Try <code>cbind(1:3, 4:6, 7:9)</code> in your console. You can also bind vectors together row-wise using <code>rbind()</code>.</p>
 </div>
 
 Now what is all this about the matrix being "positive-definite" and "symmetric"? These are mathematical requirements about the kinds of matrices that can represent possible multivariate normal distributions. In other words, the covariance matrix you supply must be represent a legal multivariate normal distribution. At this point, you don't really need to know much more about this than that.

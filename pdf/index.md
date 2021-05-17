@@ -1,7 +1,7 @@
 --- 
 title: "Learning Statistical Models Through Simulation in R"
 author: "Dale J. Barr"
-date: "2021-05-17"
+date: "2020-12-31"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]

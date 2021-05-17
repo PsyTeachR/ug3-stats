@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2020-11-05" />
+<meta name="date" content="2021-05-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -196,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>5</b> Introducing Linear Mixed-Effects Models</a><ul>
 <li class="chapter" data-level="5.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
 <li class="chapter" data-level="5.2" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#modeling-multi-level-data"><i class="fa fa-check"></i><b>5.2</b> Modeling multi-level data</a></li>
-<li class="chapter" data-level="5.3" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#how-to-model-this-data"><i class="fa fa-check"></i><b>5.3</b> How to model this data?</a><ul>
+<li class="chapter" data-level="5.3" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#how-to-model-these-data"><i class="fa fa-check"></i><b>5.3</b> How to model these data?</a><ul>
 <li class="chapter" data-level="5.3.1" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#complete-pooling-one-size-fits-all"><i class="fa fa-check"></i><b>5.3.1</b> Complete pooling: One size fits all</a></li>
 <li class="chapter" data-level="5.3.2" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#no-pooling"><i class="fa fa-check"></i><b>5.3.2</b> No pooling</a></li>
 <li class="chapter" data-level="5.3.3" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#partial-pooling-using-mixed-effects-models"><i class="fa fa-check"></i><b>5.3.3</b> Partial pooling using mixed-effects models</a></li>
@@ -251,6 +251,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>8.4.4</b> Estimating logistic regression models in R</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="modeling-ordinal-data.html"><a href="modeling-ordinal-data.html"><i class="fa fa-check"></i><b>9</b> Modeling Ordinal Data</a></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="symbols.html"><a href="symbols.html"><i class="fa fa-check"></i><b>A</b> Symbols</a><ul>
 <li class="chapter" data-level="A.1" data-path="symbols.html"><a href="symbols.html#general-notes"><i class="fa fa-check"></i><b>A.1</b> General notes</a></li>
@@ -302,11 +303,11 @@ Reaction times in a sleep deprivation study
 
 Description:
 
-     The average reaction time per day for subjects in a sleep
-     deprivation study. On day 0 the subjects had their normal amount
-     of sleep.  Starting that night they were restricted to 3 hours of
-     sleep per night.  The observations represent the average reaction
-     time on a series of tests given each day to each subject.
+     The average reaction time per day (in milliseconds) for subjects
+     in a sleep deprivation study.
+
+     Days 0-1 were adaptation and training (T1/T2), day 2 was baseline
+     (B); sleep deprivation started after day 2.
 
 Format:
 
@@ -321,8 +322,10 @@ Format:
 Details:
 
      These data are from the study described in Belenky et al.  (2003),
-     for the sleep-deprived group and for the first 10 days of the
-     study, up to the recovery period.
+     for the most sleep-deprived group (3 hours time-in-bed) and for
+     the first 10 days of the study, up to the recovery period.  The
+     original study analyzed speed (1/(reaction time)) and treated day
+     as a categorical rather than a continuous predictor.
 
 References:
 
@@ -331,8 +334,8 @@ References:
      Thomas J. Balkin (2003) Patterns of performance degradation and
      restoration during sleep restriction and subsequent recovery: a
      sleep dose-response study. _Journal of Sleep Research_ *12*, 1-12.</code></pre>
-<p>Note that these data meet our definition of multilevel data due to multistage sampling: Participants are sampled from a population, and then their mean reaction times are measured on each of the 10 days in the study. Even though we don’t have the trial-by-trial information used to calculate the means, this is still multilevel data, because of the multiple observations on the response variable (reaction time) for each subject.</p>
-<p>Multi-level data of this type is extremely common in psychology. However, if you open up most introductory statistics textbooks and read through to the end, you’ll learn about t-tests, repeated-measures and mixed-model ANOVA, and multiple regression, but none of the techniques that you learn would be applicable to multi-level data of this sort. It suggests a serious gap in training, one which should be filled by teaching multi-level modeling. All of the other techniques—t-test, ANOVA, multiple regression—can be seen as special cases of the more general multi-level modeling approach. My view is that multi-level modeling should be taught as the <strong>default</strong>, not as an advanced approach that is too far beyond the reach of undergraduates.</p>
+<p>Note that these data meet our definition of multilevel data due to multistage sampling: Participants are sampled from a population, and then their mean reaction times are measured on each of the 10 days in the study. Even though we don’t have the trial-by-trial information used to calculate the means, this is still multilevel data, because of the multiple observations on the response variable (reaction time) across days for each subject.</p>
+<p>Multi-level data of this type is extremely common in psychology. However, if you open up most introductory statistics textbooks and read through to the end, you’ll learn about t-tests, repeated-measures and mixed-model ANOVA, and multiple regression, but none of the techniques that you learn would be applicable to this type of data. It suggests a serious gap in training. Because most data is multi-level, multi-level modeling should be taught as the <strong>default</strong> approach, not as an advanced approach that is far beyond the reach of undergraduates. All of the other techniques—t-test, ANOVA, multiple regression—can be seen as special cases of the more general multi-level approach.</p>
 <p>Let’s consider the <code>sleepstudy</code> data. The dataset contains eighteen participants from the three-hour sleep condition. Each day, over 10 days, participants performed a ten-minute “psychomotor vigilance test” where they had to monitor a display and press a button as quickly as possible each time a stimulus appeared. The dependent measure in the dataset is the participant’s average response time (RT) on the task for that day.</p>
 <p>It is always good to start by looking at the data. Here is data for a single subject.</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" title="1"><span class="kw">library</span>(<span class="st">&quot;lme4&quot;</span>)</a>
@@ -350,7 +353,6 @@ References:
 Figure 5.1: <em>Data from a single subject in Belenky et al. (2003)</em>
 </p>
 </div>
-<p>It looks like RT is increasing with each additional day of sleep deprivation, at least from day 2 to day 10.</p>
 <div class="try">
 <h3 id="exercise" class="unnumbered">Exercise</h3>
 <p>Use ggplot to recreate the plot below, which shows data for all 18 subjects.</p>
@@ -360,6 +362,7 @@ Figure 5.1: <em>Data from a single subject in Belenky et al. (2003)</em>
 Figure 5.2: <em>Data from Belenky et al. (2003)</em>
 </p>
 </div>
+<p>It looks like RT is increasing with each additional day of sleep deprivation, starting from day 2 and increasing until day 10.</p>
 <div class="solution">
 <button>
 Hint, please
@@ -378,17 +381,13 @@ Show me
 </div>
 </div>
 </div>
-<div id="how-to-model-this-data" class="section level2">
-<h2><span class="header-section-number">5.3</span> How to model this data?</h2>
-<p>Before proceeding, there is one important thing to note. Unfortunately, the description of the <code>sleepstudy</code> data in the <code>lme4</code> package is inaccurate. The documentation states:</p>
-<blockquote>
-<p>On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night.</p>
-</blockquote>
-<p>However, this is what <span class="citation">Belenky et al. (<a href="#ref-Belenky_et_al_2003">2003</a>)</span> actually say (p. 2 of the PDF):</p>
+<div id="how-to-model-these-data" class="section level2">
+<h2><span class="header-section-number">5.3</span> How to model these data?</h2>
+<p>This is how <span class="citation">Belenky et al. (<a href="#ref-Belenky_et_al_2003">2003</a>)</span> describe their study (p. 2 of the PDF):</p>
 <blockquote>
 <p>The first 3 days (T1, T2 and B) were adaptation and training (T1 and T2) and baseline (B) and subjects were required to be in bed from 23:00 to 07:00 h [8 h required time in bed (TIB)]. On the third day (B), baseline measures were taken. Beginning on the fourth day and continuing for a total of 7 days (E1–E7) subjects were in one of four sleep conditions [9 h required TIB (22:00–07:00 h), 7 h required TIB (24:00–07:00 h), 5 h required TIB (02:00–07:00 h), or 3 h required TIB (04:00–07:00 h)], effectively one sleep augmentation condition, and three sleep restriction conditions.</p>
 </blockquote>
-<p>One thing to note is that the dataset includes data from only one of the three conditions (the 3h TIB condition). But the more important thing is that the documentation of <code>sleepstudy</code> is wrong: there were seven nights of sleep restriction, not nine, with the first night of restriction occurring after the third day. The first two days, coded as <code>0</code>, <code>1</code>, were adaptation and training. The day coded as <code>2</code>, where the baseline measurement was taken should be the place where we start our analysis. If we include the days <code>0</code> and <code>1</code> in our analysis, this might bias our results, since any changes in performance during the first two days have to do with training, not sleep restriction.</p>
+<p>There were seven nights of sleep restriction, with the first night of restriction occurring after the third day. The first two days, coded as <code>0</code>, <code>1</code>, were adaptation and training. The day coded as <code>2</code>, where the baseline measurement was taken, should be the place where we start our analysis. If we include the days <code>0</code> and <code>1</code> in our analysis, this might bias our results, since any changes in performance during the first two days have to do with training, not sleep restriction.</p>
 <div class="try">
 <h3 id="exercise-1" class="unnumbered">Exercise</h3>
 <p>Remove from the dataset observations where <code>Days</code> is coded <code>0</code> or <code>1</code>, and then make a new variable <code>days_deprived</code> from the <code>Days</code> variable so that the sequence starts at day 2, with day 2 being re-coded as day 0, day 3 as day 1, day 4 as day 2, etc. This new variable now tracks the number of days of sleep deprivation. Store the new table as <code>sleep2</code>.</p>
@@ -804,7 +803,7 @@ Y_{sd} = \gamma_{0} + S_{0s} + \left(\gamma_{1} + S_{1s}\right) X_{sd} + e_{sd}
          \end{array}\right) 
 \end{equation}\]</span></p>
 <p>Equations in the <em>Variance Components</em> characterize our estimates of variability. The first equation states our assumption that the random intercept / random slope pairs <span class="math inline">\(\langle S_{0s}, S_{1s} \rangle\)</span> are drawn from a bivariate normal distribution centered at the origin <span class="math inline">\(\langle 0, 0 \rangle\)</span> with variance-covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span>.</p>
-<p>The variance-covariance matrix is key: it determines the probability of drawing random effect pairs <span class="math inline">\(\langle S_{0s}, S_{1s} \rangle\)</span> from the population. You have seen these before, in the <a href="03-bivariate-simulation.html">chapter on correlation and regression</a>. The covariance matrix is always a square matrix (equal numbers of columns and rows). On the main diagonal (upper left and bottom right cells) it has random effect variances <span class="math inline">\({\tau_{00}}^2\)</span> and <span class="math inline">\({\tau_{11}}^2\)</span>. <span class="math inline">\({\tau_{00}}^2\)</span> is the random intercept variance, which captures how much subjects vary in their mean response time on Day0, before any sleep deprivation. <span class="math inline">\({\tau_{11}}^2\)</span> is the random slope variance, which captures how much subjects vary in their susceptibility to the effects of sleep deprivation.</p>
+<p>The variance-covariance matrix is key: it determines the probability of drawing random effect pairs <span class="math inline">\(\langle S_{0s}, S_{1s} \rangle\)</span> from the population. You have seen these before, in the <a href="03-bivariate-simulation.html">chapter on correlation and regression</a>. The covariance matrix is always a square matrix (equal numbers of columns and rows). On the main diagonal (upper left and bottom right cells) it has random effect variances <span class="math inline">\({\tau_{00}}^2\)</span> and <span class="math inline">\({\tau_{11}}^2\)</span>. <span class="math inline">\({\tau_{00}}^2\)</span> is the random intercept variance, which captures how much subjects vary in their mean response time on Day 0, before any sleep deprivation. <span class="math inline">\({\tau_{11}}^2\)</span> is the random slope variance, which captures how much subjects vary in their susceptibility to the effects of sleep deprivation.</p>
 <p>The cells in the off-diagonal contain covariances, but this information is represented redundantly in the matrix; the lower left element is identical to the upper right element; both capture the covariance between random intercepts and slopes, as expressed by <span class="math inline">\(\rho\tau_{00}\tau_{11}\)</span>. In this equation <span class="math inline">\(\rho\)</span> is the correlation between the intercept and slope. So, all the information in the matrix can be captured by just three parameters: <span class="math inline">\(\tau_{00}\)</span>, <span class="math inline">\(\tau_{11}\)</span>, and <span class="math inline">\(\rho\)</span>.</p>
 </div>
 </div>

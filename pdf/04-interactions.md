@@ -1,67 +1,6 @@
 # Interactions
 
-```{r setup, include=FALSE}
-library("kableExtra")
-library("tidyverse")
 
-.mk_tib <- function(x) {
-  tibble(CBT = rep(c("No CBT", "CBT"), 2),
-         Drugs = rep(c("Placebo", "Drug"), each = 2) %>%
-           fct_relevel("Placebo"),
-         Mood = x)
-}
-
-.fac_plot <- function(x) {
-  ggplot(.mk_tib(x), aes(Drugs, Mood, color = CBT, group = CBT)) +
-    geom_point(aes(shape = CBT)) +
-    geom_line() +
-    scale_y_continuous(breaks = seq(0, 100, 20)) +
-    scale_x_discrete(breaks = c("Placebo", "Drug")) +
-    coord_cartesian(ylim = c(0, 100)) 
-}
-
-.mean_tbl <- function(x) {
-  .mk_tib(x) %>%
-    pivot_wider(names_from = "CBT", values_from = "Mood") %>%
-    rename(" " = Drugs) %>%
-    bind_rows(tibble(` ` = "",
-                     `No CBT` = (x[1] + x[3]) / 2,
-                     CBT = (x[2] + x[4]) / 2)) %>%
-    bind_cols(tibble("  " = c((x[1] + x[2]) / 2,
-                              (x[3] + x[4]) / 2,
-                              "")))
-}
-
-## paste
-.p <- paste0
-
-## .fraction
-.f <- function(x, y) {
-  paste0("\\frac{", x, "}{", y, "}")
-}
-
-## y-bar
-.yb1 <- function(x) {
-  paste0("$\\bar{Y}_{", x, "}$")
-}
-
-.yb2 <- function(x) {
-  paste0("\\bar{Y}_{", x, "}")
-}
-
-## subtraction term
-.st <- function(x, y, bracket = NULL) {
-  if (is.null(bracket)) {
-    paste0(x, " - ", y)
-  } else {
-    paste0(bracket[1], x, " - ", y, bracket[2])
-  }
-}
-
-.rb <- c("(", ")")
-.dr <- c("\\displaystyle\\left(", "\\right)")
-.ds <- c("\\displaystyle\\left[", "\\right]")
-```
 
 ## Learning objectives
 
@@ -96,7 +35,8 @@ where $X_i$ is the amount of sonic distraction.
 
 Let's simulate data for 100 participants as below with $\sigma = 80$, setting the seed before we begin.
 
-```{r sim-urban, message = FALSE}
+
+```r
 library("tidyverse")
 set.seed(1031)
 
@@ -117,19 +57,51 @@ urban <- tibble(
 urban
 ```
 
+```
+## # A tibble: 100 x 7
+##    subj_id group    b0    b1 dist_level     err simple_rt
+##      <int> <chr> <dbl> <dbl>      <int>   <dbl>     <dbl>
+##  1       1 urban   450     2         59  -36.1       532.
+##  2       2 urban   450     2         45  128.        668.
+##  3       3 urban   450     2         55   23.5       584.
+##  4       4 urban   450     2          8    1.04      467.
+##  5       5 urban   450     2         47   48.7       593.
+##  6       6 urban   450     2         96   88.2       730.
+##  7       7 urban   450     2         62  110.        684.
+##  8       8 urban   450     2          8  -91.6       374.
+##  9       9 urban   450     2         15 -109.        371.
+## 10      10 urban   450     2         70   20.7       611.
+## # ... with 90 more rows
+```
+
 Let's plot the data we created, along with the line of best fit.
 
-```{r plot-urban, fig.cap = "*Effect of sonic distraction on simple RT, urban group.*"}
+
+```r
 ggplot(urban, aes(dist_level, simple_rt)) + 
   geom_point(alpha = .2) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{04-interactions_files/figure-latex/plot-urban-1} 
+
+}
+
+\caption{*Effect of sonic distraction on simple RT, urban group.*}(\#fig:plot-urban)
+\end{figure}
+
 Now let's simulate data for the urban group. We assume that these participants should perhaps have a little higher intercept, maybe because they are less familiar with technology. Most importantly, we assume that they would have a steeper slope because they are more affected by the noise. Something like:
 
 $$Y_i = 500 + 3 X_i + e_i$$
 
-```{r sim-rural}
+
+```r
 b0_rural <- 500
 b1_rural <- 3
 
@@ -145,7 +117,8 @@ rural <- tibble(
 
 Now let's plot the data from the two groups side by side.
 
-```{r combined-plot, fig.cap = "*Effect of sonic distraction on simple RT for urban and rural participants.*"}
+
+```r
 all_data <- bind_rows(urban, rural)
 
 ggplot(all_data %>% mutate(group = fct_relevel(group, "urban")), 
@@ -155,6 +128,19 @@ ggplot(all_data %>% mutate(group = fct_relevel(group, "urban")),
   facet_wrap(~ group) + 
   theme(legend.position = "none")
 ```
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{04-interactions_files/figure-latex/combined-plot-1} 
+
+}
+
+\caption{*Effect of sonic distraction on simple RT for urban and rural participants.*}(\#fig:combined-plot)
+\end{figure}
 
 Here we see very clearly the difference in slope that we built into our data. How do we test whether the two slopes are significantly different?  To do this, we can't have two separate regressions. We need to bring the two regression lines into the same model. How do we do this?
 
@@ -225,16 +211,41 @@ Now let's see how to estimate the regression in R.  Let's say we wanted to test 
 
 We have already created the dataset `all_data` combining the simulated data for our two groups. The way we express our model using R formula syntax is `Y ~ X1 + X2 + X1:X2` where `X1:X2` tells R to create a predictor that is the product of predictors X1 and X2. There is a shortcut `Y ~ X1 * X2` which tells R to calculate all possible main effects and interactions.  First we'll add a dummy predictor to our model, storing the result in `all_data2`.
 
-```{r all-data2}
+
+```r
 all_data2 <- all_data %>%
   mutate(grp = if_else(group == "rural", 1, 0))
 ```
 
 
-```{r sonic-model}
+
+```r
 sonic_mod <- lm(simple_rt ~ dist_level + grp + dist_level:grp, all_data2)
 
 summary(sonic_mod)
+```
+
+```
+## 
+## Call:
+## lm(formula = simple_rt ~ dist_level + grp + dist_level:grp, data = all_data2)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -261.130  -50.749    3.617   62.304  191.211 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)    460.1098    15.5053  29.674  < 2e-16 ***
+## dist_level       1.9123     0.2620   7.299 7.07e-12 ***
+## grp              4.8250    21.7184   0.222    0.824    
+## dist_level:grp   1.5865     0.3809   4.166 4.65e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 81.14 on 196 degrees of freedom
+## Multiple R-squared:  0.5625,	Adjusted R-squared:  0.5558 
+## F-statistic: 83.99 on 3 and 196 DF,  p-value: < 2.2e-16
 ```
 
 Can you identify the values of the regression coefficients in the output?
@@ -247,53 +258,67 @@ A factorial design is one in which the predictors (IVs) are all categorical: eac
 
 Typically, factorial designs are given a tabular representation, showing all the combinations of factor levels. Below is a tabular representation of a 2x2 design.
 
-```{r full-factorial-2x3, echo = FALSE}
-.a <- data.frame(`$B_1$` = c("$AB_{11}$", "$AB_{21}$"),
-                 `$B_2$` = c("$AB_{12}$", "$AB_{22}$"), check.names = FALSE)
-
-rownames(.a) <- c("$A_1$", "$A_2$")
-
-knitr::kable(.a) %>%
-  kable_styling(full_width = FALSE)
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l}
+\hline
+  & \$B\_1\$ & \$B\_2\$\\
+\hline
+\$A\_1\$ & \$AB\_\{11\}\$ & \$AB\_\{12\}\$\\
+\hline
+\$A\_2\$ & \$AB\_\{21\}\$ & \$AB\_\{22\}\$\\
+\hline
+\end{tabular}
+\end{table}
 
 A 3x2 design might be shown as follows.
 
-```{r full-factorial, echo = FALSE}
-.a <- data.frame(`$B_1$` = c("$AB_{11}$", "$AB_{21}$", "$AB_{31}$"),
-                 `$B_2$` = c("$AB_{12}$", "$AB_{22}$", "$AB_{32}$"), check.names = FALSE)
-
-rownames(.a) <- c("$A_1$", "$A_2$", "$A_3$")
-
-knitr::kable(.a) %>%
-  kable_styling(full_width = FALSE)
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l}
+\hline
+  & \$B\_1\$ & \$B\_2\$\\
+\hline
+\$A\_1\$ & \$AB\_\{11\}\$ & \$AB\_\{12\}\$\\
+\hline
+\$A\_2\$ & \$AB\_\{21\}\$ & \$AB\_\{22\}\$\\
+\hline
+\$A\_3\$ & \$AB\_\{31\}\$ & \$AB\_\{32\}\$\\
+\hline
+\end{tabular}
+\end{table}
 
 And finally, here's a 2x2x2 design.
 
 $$C_1$$
 
-```{r full-factorial-2x2-c1, echo = FALSE}
-.a <- data.frame(`$B_1$` = c("$ABC_{111}$", "$ABC_{211}$"),
-                 `$B_2$` = c("$ABC_{121}$", "$ABC_{221}$"), check.names = FALSE)
-
-rownames(.a) <- c("$A_1$", "$A_2$")
-
-knitr::kable(.a) %>%
-  kable_styling(full_width = FALSE)
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l}
+\hline
+  & \$B\_1\$ & \$B\_2\$\\
+\hline
+\$A\_1\$ & \$ABC\_\{111\}\$ & \$ABC\_\{121\}\$\\
+\hline
+\$A\_2\$ & \$ABC\_\{211\}\$ & \$ABC\_\{221\}\$\\
+\hline
+\end{tabular}
+\end{table}
 
 $$C_2$$
 
-```{r full-factorial-2x2-c2, echo = FALSE}
-.a <- data.frame(`$B_1$` = c("$ABC_{112}$", "$ABC_{212}$"),
-                 `$B_2$` = c("$ABC_{122}$", "$ABC_{222}$"), check.names = FALSE)
-
-rownames(.a) <- c("$A_1$", "$A_2$")
-
-knitr::kable(.a) %>%
-  kable_styling(full_width = FALSE)
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l}
+\hline
+  & \$B\_1\$ & \$B\_2\$\\
+\hline
+\$A\_1\$ & \$ABC\_\{112\}\$ & \$ABC\_\{122\}\$\\
+\hline
+\$A\_2\$ & \$ABC\_\{212\}\$ & \$ABC\_\{222\}\$\\
+\hline
+\end{tabular}
+\end{table}
 
 <div class="warning">
 
@@ -323,17 +348,33 @@ Keep in mind that you will almost **never** know the true means of any populatio
 
 #### Scenario A {-}
 
-```{r scenario-a-plot, echo = FALSE, fig.cap = "*Scenario A, plot of cell means.*", fig.width=3, fig.asp = .5, out.width = "50%"}
-.fac_plot(c(40, 60, 60, 80))
-```
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth]{04-interactions_files/figure-latex/scenario-a-plot-1} 
+
+}
+
+\caption{*Scenario A, plot of cell means.*}(\#fig:scenario-a-plot)
+\end{figure}
 
 Below is a table of **cell means** and **marginal means**.  The cell means are the mean values of the dependent variable (mood) at each cell of the design. The marginal means (in the margins of the table) provide the means for each row and column.
 
-```{r scenario-a-means, echo = FALSE, warning=FALSE, message=FALSE}
-.mean_tbl(c(40, 60, 60, 80)) %>% 
-  knitr::kable(caption = "*Scenario A, Table of Means.*", align = "lrr") %>%
-  kableExtra::kable_styling(full_width = FALSE)
-```
+\begin{table}
+
+\caption{(\#tab:scenario-a-means)*Scenario A, Table of Means.*}
+\centering
+\begin{tabular}[t]{l|r|r|l}
+\hline
+  & No CBT & CBT &   \\
+\hline
+Placebo & 40 & 60 & 50\\
+\hline
+Drug & 60 & 80 & 70\\
+\hline
+ & 50 & 70 & \\
+\hline
+\end{tabular}
+\end{table}
 
 If this was our outcome, what would you conclude? Is cognitive therapy having an effect on mood? How about drug therapy. The answer to both of these questions is yes: The mean mood for people who got CBT (70; mean of column 2) is 20 points higher than the mean mood for people who didn't (50; mean of column 1).
 
@@ -343,29 +384,61 @@ Now we can also ask the following question: **did the effect of cognitive therap
 
 #### Scenario B {-}
 
-```{r scenario-b-plot, echo = FALSE, fig.cap = "*Scenario B, plot of cell means.*", fig.width=3, fig.asp = .5, out.width = "50%"}
-.fac_plot(c(40, 60, 40, 60))
-```
+\begin{figure}
 
-```{r scenario-b-means, echo = FALSE, warning = FALSE}
-.mean_tbl(c(40, 60, 40, 60)) %>% 
-  knitr::kable(caption = "*Scenario B, Table of Means.*") %>%
-  kableExtra::kable_styling(full_width = FALSE)
-```
+{\centering \includegraphics[width=0.5\linewidth]{04-interactions_files/figure-latex/scenario-b-plot-1} 
+
+}
+
+\caption{*Scenario B, plot of cell means.*}(\#fig:scenario-b-plot)
+\end{figure}
+
+\begin{table}
+
+\caption{(\#tab:scenario-b-means)*Scenario B, Table of Means.*}
+\centering
+\begin{tabular}[t]{l|r|r|l}
+\hline
+  & No CBT & CBT &   \\
+\hline
+Placebo & 40 & 60 & 50\\
+\hline
+Drug & 40 & 60 & 50\\
+\hline
+ & 40 & 60 & \\
+\hline
+\end{tabular}
+\end{table}
 
 In this scenario, we also see that CBT improved mood (again, by 20 points), but there was no effect of Drug Therapy (equal marginal means of 50 for row 1 and row 2). We can also see here that the effect of CBT also didn't depend upon Drug therapy; there is an increase of 20 points in each row.
 
 #### Scenario C {-}
 
-```{r scenario-c-plot, echo = FALSE, fig.cap = "*Scenario C, plot of cell means.*", fig.width=3, fig.asp = .5, out.width = "50%"}
-.fac_plot(c(40, 60, 50, 90))
-```
+\begin{figure}
 
-```{r scenario-c-means, echo = FALSE, warning = FALSE}
-.mean_tbl(c(40, 60, 50, 90)) %>% 
-  knitr::kable(caption = "*Scenario C, Table of Means.*", align = "lrr") %>%
-  kableExtra::kable_styling(full_width = FALSE)
-```
+{\centering \includegraphics[width=0.5\linewidth]{04-interactions_files/figure-latex/scenario-c-plot-1} 
+
+}
+
+\caption{*Scenario C, plot of cell means.*}(\#fig:scenario-c-plot)
+\end{figure}
+
+\begin{table}
+
+\caption{(\#tab:scenario-c-means)*Scenario C, Table of Means.*}
+\centering
+\begin{tabular}[t]{l|r|r|l}
+\hline
+  & No CBT & CBT &   \\
+\hline
+Placebo & 40 & 60 & 50\\
+\hline
+Drug & 50 & 90 & 70\\
+\hline
+ & 45 & 75 & \\
+\hline
+\end{tabular}
+\end{table}
 
 Following the logic in previous sections, we see that overall, people who got cognitive therapy showed elevated mood relative to control (75 vs 45), and that people who got drug therapy also showed elevated mood relative to placebo (70 vs 50). But there is something else going on here: it seems that the effect of cognitive therapy on mood was **more pronounced for patients who were also receiving drug therapy**. For patients on antidepressants, there was a 40 point increase in mood relative to control (from 50 to 90; row 2 of the table). For patients who got the placebo, there was only a 20 point increase in mood, from 40 to 60 (row 1 of the table). So in this hypothetical scenario, **the effect of cognitive therapy depends on whether or not there is also ongoing drug therapy.**
 
@@ -426,7 +499,7 @@ So if we have a three-way design, e.g., a 2x2x2 with factors $A$, $B$, and $C$, 
 
 Three-way interactions are hard to interpret, but what they imply is that the **simple interaction** between any two given factors varies across the level of the third factor. For example, it would imply that the $AB$ interaction at $C_1$ would be different from the $AB$ interaction at $C_2$.
 
-If you have a four way design, you have four main effects, `choose(4, 2) = ``r choose(4, 2)` two-way interactions, `choose(4, 3) = ``r choose(4, 3)` three-way interactions, and one four-way interaction. It is next to impossible to interpret results from a four-way design, so keep your designs simple!
+If you have a four way design, you have four main effects, `choose(4, 2) = `6 two-way interactions, `choose(4, 3) = `4 three-way interactions, and one four-way interaction. It is next to impossible to interpret results from a four-way design, so keep your designs simple!
 
 <!-- ## A common fallacy
 Comparing the significance of the simple effects is **not the same** as testing whether the simple effects are significantly different.
@@ -455,25 +528,23 @@ An important mathematical fact is that the individual main and interaction effec
 
 The best way to understand these effects is to see them in a decomposition table. Study the decomposition table belo wfor 12 simulated observations from a 2x2 design with factors $A$ and $B$. The indexes $i$, $j$, and $k$ are provided just to help you keep track of what observation you are dealing with. Remember that $i$ indexes the level of factor $A$, $j$ indexes the level of factor $B$, and $k$ indexes the observation number within the cell $AB_{ij}$.
 
-```{r decomp-tbl, echo = FALSE}
-err <- replicate(4, {
-  v <- sample(-3:3, 2, FALSE, prob = c(.8, .14, .18, .24, .18, .14, .8))
-  c(v, -sum(v))
-}, simplify = FALSE) %>% unlist()
 
-decomp <- tibble(
-  i = rep(1:2, each = 6),
-  j = rep(rep(1:2, each = 3), 2),
-  k = rep(rep(1:3), 4),
-  mu = 10,
-  A_i = rep(c(4, -4), each = 6),
-  B_j = rep(rep(c(-2, 2), each = 3), 2),
-  AB_ij = rep(c(-1, 1, 1, -1), each = 3),
-  err,
-  Y = mu + A_i + B_j + AB_ij + err)
-   
-decomp %>%
-  select(Y, everything()) 
+```
+## # A tibble: 12 x 9
+##        Y     i     j     k    mu   A_i   B_j AB_ij   err
+##    <dbl> <int> <int> <int> <dbl> <dbl> <dbl> <dbl> <int>
+##  1    11     1     1     1    10     4    -2    -1     0
+##  2    14     1     1     2    10     4    -2    -1     3
+##  3     8     1     1     3    10     4    -2    -1    -3
+##  4    17     1     2     1    10     4     2     1     0
+##  5    15     1     2     2    10     4     2     1    -2
+##  6    19     1     2     3    10     4     2     1     2
+##  7     8     2     1     1    10    -4    -2     1     3
+##  8     4     2     1     2    10    -4    -2     1    -1
+##  9     3     2     1     3    10    -4    -2     1    -2
+## 10    10     2     2     1    10    -4     2    -1     3
+## 11     7     2     2     2    10    -4     2    -1     0
+## 12     4     2     2     3    10    -4     2    -1    -3
 ```
 
 
@@ -496,37 +567,7 @@ Note that the $Y$ variable with the dots in the subscripts are means of $Y$, tak
 
 ## Code your own categorical predictors in factorial designs
 
-```{r setup2, include=FALSE}
-## paste
-.p <- paste0
 
-## .fraction
-.f <- function(x, y) {
-  paste0("\\frac{", x, "}{", y, "}")
-}
-
-## y-bar
-.yb1 <- function(x) {
-  paste0("$\\bar{Y}_{", x, "}$")
-}
-
-.yb2 <- function(x) {
-  paste0("\\bar{Y}_{", x, "}")
-}
-
-## subtraction term
-.st <- function(x, y, bracket = NULL) {
-  if (is.null(bracket)) {
-    paste0(x, " - ", y)
-  } else {
-    paste0(bracket[1], x, " - ", y, bracket[2])
-  }
-}
-
-.rb <- c("(", ")")
-.dr <- c("\\displaystyle\\left(", "\\right)")
-.ds <- c("\\displaystyle\\left[", "\\right]")
-```
 
 Many studies in psychology---especially experimental psychology---involve categorical independent variables. Analyzing data from these studies requires care in specifying the predictors, because the defaults in R are not ideal for experimental situations.
 
@@ -536,7 +577,8 @@ If you're used to running ANOVAs, the results that you get from fitting a linear
 
 First, let's define our little data set, `dat`.
 
-```{r demo-no-factors}
+
+```r
   ## demo for why you should avoid factors
   dat <- tibble(
     subject = factor(1:16),
@@ -547,12 +589,58 @@ First, let's define our little data set, `dat`.
   dat
 ```
 
+```
+## # A tibble: 16 x 4
+##    subject priming structure    RT
+##    <fct>   <chr>   <chr>     <dbl>
+##  1 1       yes     noun       792.
+##  2 2       yes     noun       771.
+##  3 3       yes     noun       760.
+##  4 4       yes     noun       811.
+##  5 5       yes     verb       787.
+##  6 6       yes     verb       820.
+##  7 7       yes     verb       768.
+##  8 8       yes     verb       806.
+##  9 9       no      noun       791.
+## 10 10      no      noun       824.
+## 11 11      no      noun       817.
+## 12 12      no      noun       790.
+## 13 13      no      verb       790.
+## 14 14      no      verb       813.
+## 15 15      no      verb       810.
+## 16 16      no      verb       763.
+```
+
 This is between subjects data, so we can fit a model using `lm()`.  In the model, we include effects of `priming` and `structure` as well as their interaction. Instead of typing `priming + structure + priming:structure` we can simply type the shortcut `priming * structure`.
 
-```{r specify-fixed}
+
+```r
   ps_mod <- lm(RT ~ priming * structure, dat)
 
   summary(ps_mod)
+```
+
+```
+## 
+## Call:
+## lm(formula = RT ~ priming * structure, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -30.782 -14.711   2.036  16.466  27.755 
+## 
+## Coefficients:
+##                          Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                805.57      10.83  74.409   <2e-16 ***
+## primingyes                 -22.08      15.31  -1.442    0.175    
+## structureverb              -11.49      15.31  -0.750    0.468    
+## primingyes:structureverb    23.20      21.65   1.071    0.305    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 21.65 on 12 degrees of freedom
+## Multiple R-squared:  0.1481,	Adjusted R-squared:  -0.06493 
+## F-statistic: 0.6951 on 3 and 12 DF,  p-value: 0.5726
 ```
 
 Note that in the output the predictors are shown as `primingyes` and `structureverb`. The value `yes` is a level of `priming`; the level **not shown** is the one chosen as baseline, and in the default treatment coding scheme, the not-shown level (`no`) is coded as 0, and the shown level (`yes`) is coded as 1. Likewise, for `structure`, `noun` is coded as 0 and `verb` is coded as 1.
@@ -561,22 +649,42 @@ This is not ideal, for reasons we will discuss further below. But I want to show
 
 Let's say we wanted to test the effect of `priming` by itself using model comparison. To do this, we would fit another model where we exclude this effect while keeping the interaction. Despite what you may have heard to the contrary, in a fully randomized, balanced experiment, all factors are orthogonal, and so it is completely legitimate to drop a main effect while leaving an interaction term in the model.
 
-```{r drop-factor}
+
+```r
   ps_mod_nopriming <- lm(RT ~ structure + priming:structure, dat)
 ```
 
 OK, now that we've dropped `priming`, we should have 3 parameter estimates instead of 4. Let's check.
 
-```{r check-factor}
+
+```r
   ## not right!
   coef(ps_mod_nopriming)
 ```
 
+```
+##              (Intercept)            structureverb structurenoun:primingyes 
+##               805.566187               -11.485457               -22.081224 
+## structureverb:primingyes 
+##                 1.117333
+```
+
 There are still 4 of them, and we're suddenly getting `primingyes:structureverb`. This is weird and *not at all* what we intended.  If we try to do the model comparison:
 
-```{r mod-compare}
+
+```r
   ## nonsense result
   anova(ps_mod_nopriming, ps_mod)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: RT ~ structure + priming:structure
+## Model 2: RT ~ priming * structure
+##   Res.Df  RSS Df  Sum of Sq F Pr(>F)
+## 1     12 5626                       
+## 2     12 5626  0 9.0949e-13
 ```
 
 we'd get nonsensical results.
@@ -599,16 +707,22 @@ It is important that you understand the difference between a **simple effect** a
 
 In an \(A{\times}B\) design, the simple effect of \(A\) is the effect of \(A\) **controlling** for \(B\), while the main effect of \(A\) is the effect of \(A\) **ignoring** \(B\).  Another way of looking at this is to consider the cell means (\(\bar{Y}_{11}\), \(\bar{Y}_{12}\), \(\bar{Y}_{21}\), and \(\bar{Y}_{22}\)) and marginal means (\(\bar{Y}_{1.}\), \(\bar{Y}_{2.}\), \(\bar{Y}_{.1}\), and \(\bar{Y}_{.2}\)) in a factorial design. (The dot subscript tells you to "ignore" the dimension containing the dot; e.g., \(\bar{Y}_{.1}\) tells you to take the mean of the first column ignoring the row variable.) To test the main effect of A is to test the null hypothesis that \(\bar{Y}_{1.}=\bar{Y}_{2.}\).  To test a simple effect of \(A\)—the effect of \(A\) at a particular level of \(B\)—would be, for instance, to test the null hypothesis that \(\bar{Y}_{11}=\bar{Y}_{21}\).
 
-```{r simple-effect, echo=FALSE}
-tribble(~blah, ~B_1, ~B_2, ~junk, ~marg,
-        "\\(A_1\\)", .yb1("11"), .yb1("12"), "", .yb1("1."),
-        "\\(A_2\\)", .yb1("21"), .yb1("22"), "", .yb1("2."),
-        "", "", "", "", "",
-        "", .yb1(".1"), .yb1(".2"), "", "") %>%
-  kable(col.names = c("", "\\(B_1\\)", "\\(B_2\\)", "", ""),
-        align = "cccc")  %>%
-  kable_styling(full_width = FALSE, bootstrap_options = "basic")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c|c}
+\hline
+ & \textbackslash{}(B\_1\textbackslash{}) & \textbackslash{}(B\_2\textbackslash{}) &  & \\
+\hline
+\textbackslash{}(A\_1\textbackslash{}) & \$\textbackslash{}bar\{Y\}\_\{11\}\$ & \$\textbackslash{}bar\{Y\}\_\{12\}\$ &  & \$\textbackslash{}bar\{Y\}\_\{1.\}\$\\
+\hline
+\textbackslash{}(A\_2\textbackslash{}) & \$\textbackslash{}bar\{Y\}\_\{21\}\$ & \$\textbackslash{}bar\{Y\}\_\{22\}\$ &  & \$\textbackslash{}bar\{Y\}\_\{2.\}\$\\
+\hline
+ &  &  &  & \\
+\hline
+ & \$\textbackslash{}bar\{Y\}\_\{.1\}\$ & \$\textbackslash{}bar\{Y\}\_\{.2\}\$ &  & \\
+\hline
+\end{tabular}
+\end{table}
 
 The distinction between **simple interactions** and **main interactions** has the same logic: the simple interaction of \(AB\) in an \(ABC\) design is the interaction of \(AB\) at a particular level of \(C\); the main interaction of \(AB\) is the interaction **ignoring** C.  The latter is what we are usually talking about when we talk about lower-order interactions in a three-way design.  It is also what we are given in the output from standard ANOVA procedures, e.g., the `aov()` function in R, SPSS, SAS, etc.
 
@@ -625,17 +739,20 @@ There are many possible coding schemes (see `?contr.treatment` for more informat
 
 For a two-level factor, you would use the following codes:
 
-```{r coding-schemes, echo=FALSE}
-tribble(~Coding, ~A_1, ~A_2,
-        "Treatment (dummy)", "\\(0\\)", "\\(1\\)",
-        "Sum",               "\\(-1\\)", "\\(1\\)",
-        "Deviation",
-        .p("\\(", "-", .f(1, 2), "\\)"),
-        .p("\\(", .f(1, 2), "\\)")) %>%
-  kable(col.names = c("Scheme", "\\(A_1\\)", "\\(A_2\\)"),
-        align = "lrrr")  %>%
-  kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r}
+\hline
+Scheme & \textbackslash{}(A\_1\textbackslash{}) & \textbackslash{}(A\_2\textbackslash{})\\
+\hline
+Treatment (dummy) & \textbackslash{}(0\textbackslash{}) & \textbackslash{}(1\textbackslash{})\\
+\hline
+Sum & \textbackslash{}(-1\textbackslash{}) & \textbackslash{}(1\textbackslash{})\\
+\hline
+Deviation & \textbackslash{}(-\textbackslash{}frac\{1\}\{2\}\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{1\}\{2\}\textbackslash{})\\
+\hline
+\end{tabular}
+\end{table}
 
 The default in R is to use treatment coding for any variable defined as a =factor= in the model (see `?factor` and `?contrasts` for information).  To see why this is not ideal for factorial designs, consider a 2x2x2 factorial design with factors $A$, $B$ and $C$.  We will just consider a fully between-subjects design with only one observation per subject as this allows us to use the simplest possible error structure.  We would fit such a model using `lm()`:
 
@@ -643,123 +760,92 @@ The default in R is to use treatment coding for any variable defined as a =facto
 
 The figure below spells out the notation for the various cell and marginal means for a 2x2x2 design.
 
-`r if (knitr::is_html_output()) cat("<div class=\"column\" style=\"float:left; width: 50%\">\n")`
+
 
 $$C_1$$
 
-```{r simple-effect-C1, echo=FALSE}
-tribble(~blah, ~B_1, ~B_2, ~junk, ~marg,
-        "\\(A_1\\)", .yb1("111"), .yb1("121"), "", .yb1("1.1"),
-        "\\(A_2\\)", .yb1("211"), .yb1("221"), "", .yb1("2.1"),
-        "", "", "", "", "",
-        "", .yb1(".11"), .yb1(".21"), "", "") %>%
-  kable(col.names = c("", "\\(B_1\\)", "\\(B_2\\)", "", ""),
-        align = "cccc")  %>%
-  kable_styling(full_width = FALSE, bootstrap_options = "basic")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c|c}
+\hline
+ & \textbackslash{}(B\_1\textbackslash{}) & \textbackslash{}(B\_2\textbackslash{}) &  & \\
+\hline
+\textbackslash{}(A\_1\textbackslash{}) & \$\textbackslash{}bar\{Y\}\_\{111\}\$ & \$\textbackslash{}bar\{Y\}\_\{121\}\$ &  & \$\textbackslash{}bar\{Y\}\_\{1.1\}\$\\
+\hline
+\textbackslash{}(A\_2\textbackslash{}) & \$\textbackslash{}bar\{Y\}\_\{211\}\$ & \$\textbackslash{}bar\{Y\}\_\{221\}\$ &  & \$\textbackslash{}bar\{Y\}\_\{2.1\}\$\\
+\hline
+ &  &  &  & \\
+\hline
+ & \$\textbackslash{}bar\{Y\}\_\{.11\}\$ & \$\textbackslash{}bar\{Y\}\_\{.21\}\$ &  & \\
+\hline
+\end{tabular}
+\end{table}
 
-`r if (knitr::is_html_output()) cat("</div>\n")`
 
-`r if (knitr::is_html_output()) cat("<div class=\"column\" style=\"float:right; width: 50%\">\n")`
+
+
 
 $$C_2$$
 
-```{r simple-effect-C2, echo=FALSE}
-tribble(~blah, ~B_1, ~B_2, ~junk, ~marg,
-        "\\(A_1\\)", .yb1("112"), .yb1("122"), "", .yb1("1.2"),
-        "\\(A_2\\)", .yb1("212"), .yb1("222"), "", .yb1("2.2"),
-        "", "", "", "", "",
-        "", .yb1(".12"), .yb1(".22"), "", "") %>%
-  kable(col.names = c("", "\\(B_1\\)", "\\(B_2\\)", "", ""),
-        align = "cccc")  %>%
-  kable_styling(full_width = FALSE, bootstrap_options = "basic")
-```
-`r if (knitr::is_html_output()) cat("</div>\n")`
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c|c}
+\hline
+ & \textbackslash{}(B\_1\textbackslash{}) & \textbackslash{}(B\_2\textbackslash{}) &  & \\
+\hline
+\textbackslash{}(A\_1\textbackslash{}) & \$\textbackslash{}bar\{Y\}\_\{112\}\$ & \$\textbackslash{}bar\{Y\}\_\{122\}\$ &  & \$\textbackslash{}bar\{Y\}\_\{1.2\}\$\\
+\hline
+\textbackslash{}(A\_2\textbackslash{}) & \$\textbackslash{}bar\{Y\}\_\{212\}\$ & \$\textbackslash{}bar\{Y\}\_\{222\}\$ &  & \$\textbackslash{}bar\{Y\}\_\{2.2\}\$\\
+\hline
+ &  &  &  & \\
+\hline
+ & \$\textbackslash{}bar\{Y\}\_\{.12\}\$ & \$\textbackslash{}bar\{Y\}\_\{.22\}\$ &  & \\
+\hline
+\end{tabular}
+\end{table}
+
 
 The table below provides the interpretation for various effects in the model under the three different coding schemes.  Note that $Y$ is the dependent variable, and the dots in the subscript mean to "ignore" the corresponding dimension.  Thus, \(\bar{Y}_{.1.}\) is the mean of B_1 (ignoring factors \(A\) and \(C\)) and \(\bar{Y}_{...}\) is the "grand mean" (ignoring all factors).
 
-```{r parameter-interpretation, echo = FALSE}
-tribble(~term, ~treatment, ~sum, ~deviation,
-        "\\(\\mu\\)", .yb1("111"), .yb1("..."), .yb1("..."),
-        ## (A) second row
-        "\\(A\\)",
-        .p("\\(", .st(.yb2("211"), .yb2("111")), "\\)"),
-        .p("\\(", .f(.st(.yb2("2.."), .yb2("1.."), .rb), 2), "\\)"),
-        .p("\\(", .st(.yb2("2.."), .yb2("1..")), "\\)"),
-        "\\(B\\)",
-        .p("\\(", .st(.yb2("121"), .yb2("111")), "\\)"),
-        .p("\\(", .f(.st(.yb2(".2."), .yb2(".1."), .rb), 2), "\\)"),
-        .p("\\(", .st(.yb2(".2."), .yb2(".1.")), "\\)"),
-        "\\(C\\)",
-        .p("\\(", .st(.yb2("112"), .yb2("111")), "\\)"),
-        .p("\\(", .f(.st(.yb2("..2"), .yb2("..1"), .rb), 2), "\\)"),
-        .p("\\(", .st(.yb2("..2"), .yb2("..1")), "\\)"),
-        "\\(AB\\)",
-        .p("\\(", .st(.st(.yb2("221"), .yb2("121"), .rb),
-                    .st(.yb2("211"), .yb2("111"), .rb)),
-           "\\)"),
-        .p("\\(", .f(.st(.st(.yb2("22."), .yb2("12."), .rb),
-                       .st(.yb2("21."), .yb2("11."), .rb)), 4),
-           "\\)"),
-        .p("\\(", .st(.st(.yb2("22."), .yb2("12."), .rb),
-                    .st(.yb2("21."), .yb2("11."), .rb)),
-           "\\)"),
-        "\\(AC\\)",
-        .p("\\(", .st(.st(.yb2("212"), .yb2("211"), .rb),
-                    .st(.yb2("112"), .yb2("111"), .rb)),
-           "\\)"),
-        .p("\\(", .f(.st(.st(.yb2("2.2"), .yb2("1.2"), .rb),
-                       .st(.yb2("2.1"), .yb2("1.1"), .rb)), 4),
-           "\\)"),
-        .p("\\(", .st(.st(.yb2("2.2"), .yb2("1.2"), .rb),
-                    .st(.yb2("2.1"), .yb2("1.1"), .rb)),
-           "\\)"),
-        "\\(BC\\)",
-        .p("\\(", .st(.st(.yb2("122"), .yb2("112"), .rb),
-                    .st(.yb2("121"), .yb2("111"), .rb)),
-           "\\)"),
-        .p("\\(", .f(.st(.st(.yb2(".22"), .yb2(".12"), .rb),
-                       .st(.yb2(".21"), .yb2(".11"), .rb)), 4),
-           "\\)"),
-        .p("\\(", .st(.st(.yb2(".22"), .yb2(".12"), .rb),
-                    .st(.yb2(".21"), .yb2(".11"), .rb)),
-           "\\)")
-        ) %>%
-  kable(align = "cccc")  %>%
-  kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c}
+\hline
+term & treatment & sum & deviation\\
+\hline
+\textbackslash{}(\textbackslash{}mu\textbackslash{}) & \$\textbackslash{}bar\{Y\}\_\{111\}\$ & \$\textbackslash{}bar\{Y\}\_\{...\}\$ & \$\textbackslash{}bar\{Y\}\_\{...\}\$\\
+\hline
+\textbackslash{}(A\textbackslash{}) & \textbackslash{}(\textbackslash{}bar\{Y\}\_\{211\} - \textbackslash{}bar\{Y\}\_\{111\}\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{(\textbackslash{}bar\{Y\}\_\{2..\} - \textbackslash{}bar\{Y\}\_\{1..\})\}\{2\}\textbackslash{}) & \textbackslash{}(\textbackslash{}bar\{Y\}\_\{2..\} - \textbackslash{}bar\{Y\}\_\{1..\}\textbackslash{})\\
+\hline
+\textbackslash{}(B\textbackslash{}) & \textbackslash{}(\textbackslash{}bar\{Y\}\_\{121\} - \textbackslash{}bar\{Y\}\_\{111\}\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{(\textbackslash{}bar\{Y\}\_\{.2.\} - \textbackslash{}bar\{Y\}\_\{.1.\})\}\{2\}\textbackslash{}) & \textbackslash{}(\textbackslash{}bar\{Y\}\_\{.2.\} - \textbackslash{}bar\{Y\}\_\{.1.\}\textbackslash{})\\
+\hline
+\textbackslash{}(C\textbackslash{}) & \textbackslash{}(\textbackslash{}bar\{Y\}\_\{112\} - \textbackslash{}bar\{Y\}\_\{111\}\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{(\textbackslash{}bar\{Y\}\_\{..2\} - \textbackslash{}bar\{Y\}\_\{..1\})\}\{2\}\textbackslash{}) & \textbackslash{}(\textbackslash{}bar\{Y\}\_\{..2\} - \textbackslash{}bar\{Y\}\_\{..1\}\textbackslash{})\\
+\hline
+\textbackslash{}(AB\textbackslash{}) & \textbackslash{}((\textbackslash{}bar\{Y\}\_\{221\} - \textbackslash{}bar\{Y\}\_\{121\}) - (\textbackslash{}bar\{Y\}\_\{211\} - \textbackslash{}bar\{Y\}\_\{111\})\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{(\textbackslash{}bar\{Y\}\_\{22.\} - \textbackslash{}bar\{Y\}\_\{12.\}) - (\textbackslash{}bar\{Y\}\_\{21.\} - \textbackslash{}bar\{Y\}\_\{11.\})\}\{4\}\textbackslash{}) & \textbackslash{}((\textbackslash{}bar\{Y\}\_\{22.\} - \textbackslash{}bar\{Y\}\_\{12.\}) - (\textbackslash{}bar\{Y\}\_\{21.\} - \textbackslash{}bar\{Y\}\_\{11.\})\textbackslash{})\\
+\hline
+\textbackslash{}(AC\textbackslash{}) & \textbackslash{}((\textbackslash{}bar\{Y\}\_\{212\} - \textbackslash{}bar\{Y\}\_\{211\}) - (\textbackslash{}bar\{Y\}\_\{112\} - \textbackslash{}bar\{Y\}\_\{111\})\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{(\textbackslash{}bar\{Y\}\_\{2.2\} - \textbackslash{}bar\{Y\}\_\{1.2\}) - (\textbackslash{}bar\{Y\}\_\{2.1\} - \textbackslash{}bar\{Y\}\_\{1.1\})\}\{4\}\textbackslash{}) & \textbackslash{}((\textbackslash{}bar\{Y\}\_\{2.2\} - \textbackslash{}bar\{Y\}\_\{1.2\}) - (\textbackslash{}bar\{Y\}\_\{2.1\} - \textbackslash{}bar\{Y\}\_\{1.1\})\textbackslash{})\\
+\hline
+\textbackslash{}(BC\textbackslash{}) & \textbackslash{}((\textbackslash{}bar\{Y\}\_\{122\} - \textbackslash{}bar\{Y\}\_\{112\}) - (\textbackslash{}bar\{Y\}\_\{121\} - \textbackslash{}bar\{Y\}\_\{111\})\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{(\textbackslash{}bar\{Y\}\_\{.22\} - \textbackslash{}bar\{Y\}\_\{.12\}) - (\textbackslash{}bar\{Y\}\_\{.21\} - \textbackslash{}bar\{Y\}\_\{.11\})\}\{4\}\textbackslash{}) & \textbackslash{}((\textbackslash{}bar\{Y\}\_\{.22\} - \textbackslash{}bar\{Y\}\_\{.12\}) - (\textbackslash{}bar\{Y\}\_\{.21\} - \textbackslash{}bar\{Y\}\_\{.11\})\textbackslash{})\\
+\hline
+\end{tabular}
+\end{table}
 
 For the three way \(A \times B \times C\) interaction:
 
-```{r three-way, echo=FALSE}
-tribble(~scheme, ~interpretation,
-        "treatment",
-        .p("\\(",
-           .st(.st(.st(.yb2(221), .yb2(121), .dr),
-                   .st(.yb2(211), .yb2(111), .dr), .ds),
-               .st(.st(.yb2(222), .yb2(122), .dr),
-                   .st(.yb2(212), .yb2(112), .dr), .ds)),
-           "\\)"),
-        "sum",
-        .p("\\(",
-           .f(
-             .st(.st(.st(.yb2(221), .yb2(121), .dr),
-                     .st(.yb2(211), .yb2(111), .dr), .ds),
-                 .st(.st(.yb2(222), .yb2(122), .dr),
-                     .st(.yb2(212), .yb2(112), .dr), .ds)),
-             8),
-           "\\)"),
-        "deviation",
-        .p("\\(",
-           .st(.st(.st(.yb2(221), .yb2(121), .dr),
-                   .st(.yb2(211), .yb2(111), .dr), .ds),
-               .st(.st(.yb2(222), .yb2(122), .dr),
-                   .st(.yb2(212), .yb2(112), .dr), .ds)),
-           "\\)")
-        ) %>%
-  kable(align = "cc") %>%
-  kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+\hline
+scheme & interpretation\\
+\hline
+treatment & \textbackslash{}(\textbackslash{}displaystyle\textbackslash{}left[\textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{221\} - \textbackslash{}bar\{Y\}\_\{121\}\textbackslash{}right) - \textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{211\} - \textbackslash{}bar\{Y\}\_\{111\}\textbackslash{}right)\textbackslash{}right] - \textbackslash{}displaystyle\textbackslash{}left[\textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{222\} - \textbackslash{}bar\{Y\}\_\{122\}\textbackslash{}right) - \textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{212\} - \textbackslash{}bar\{Y\}\_\{112\}\textbackslash{}right)\textbackslash{}right]\textbackslash{})\\
+\hline
+sum & \textbackslash{}(\textbackslash{}frac\{\textbackslash{}displaystyle\textbackslash{}left[\textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{221\} - \textbackslash{}bar\{Y\}\_\{121\}\textbackslash{}right) - \textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{211\} - \textbackslash{}bar\{Y\}\_\{111\}\textbackslash{}right)\textbackslash{}right] - \textbackslash{}displaystyle\textbackslash{}left[\textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{222\} - \textbackslash{}bar\{Y\}\_\{122\}\textbackslash{}right) - \textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{212\} - \textbackslash{}bar\{Y\}\_\{112\}\textbackslash{}right)\textbackslash{}right]\}\{8\}\textbackslash{})\\
+\hline
+deviation & \textbackslash{}(\textbackslash{}displaystyle\textbackslash{}left[\textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{221\} - \textbackslash{}bar\{Y\}\_\{121\}\textbackslash{}right) - \textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{211\} - \textbackslash{}bar\{Y\}\_\{111\}\textbackslash{}right)\textbackslash{}right] - \textbackslash{}displaystyle\textbackslash{}left[\textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{222\} - \textbackslash{}bar\{Y\}\_\{122\}\textbackslash{}right) - \textbackslash{}displaystyle\textbackslash{}left(\textbackslash{}bar\{Y\}\_\{212\} - \textbackslash{}bar\{Y\}\_\{112\}\textbackslash{}right)\textbackslash{}right]\textbackslash{})\\
+\hline
+\end{tabular}
+\end{table}
 
 Note that the inferential tests of $A \times B \times C$ will all have the same outcome, despite the parameter estimate for sum coding being one-eighth of that for the other schemes.  For all lower-order effects, sum and deviation coding will give different parameter estimates but identical inferential outcomes.  Both of these schemes provide identical tests of the canonical main effects and main interactions for a three-way ANOVA.  In contrast, treatment (dummy) coding will provide inferential tests of simple effects and simple interactions.  So, if what you are interested in getting are the "canonical" tests from ANOVA, use sum or deviation coding.
 
@@ -779,105 +865,180 @@ For deviation coding, the values must also sum to 0. Deviation coding is recomme
 
 #### Treatment (Dummy)
 
-```{r treatment-3-dummy, echo = FALSE}
-tribble(~level, ~A2v1, ~A3v1,
-        "A1", 0L, 0L,
-        "A2", 1L, 0L,
-        "A3", 0L, 1L) %>%
-  knitr::kable(align = "lrr") %>%
-  kableExtra::kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r}
+\hline
+level & A2v1 & A3v1\\
+\hline
+A1 & 0 & 0\\
+\hline
+A2 & 1 & 0\\
+\hline
+A3 & 0 & 1\\
+\hline
+\end{tabular}
+\end{table}
 
 #### Sum
 
-```{r sum-3, echo = FALSE}
-tribble(~level, ~A2v1, ~A3v1,
-        "A1", -1L, -1L,
-        "A2",  1L,  0L,
-        "A3",  0L,  1L) %>%
-  knitr::kable(align = "lrr") %>%
-  kableExtra::kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r}
+\hline
+level & A2v1 & A3v1\\
+\hline
+A1 & -1 & -1\\
+\hline
+A2 & 1 & 0\\
+\hline
+A3 & 0 & 1\\
+\hline
+\end{tabular}
+\end{table}
 
 #### Deviation
 
-```{r deviation-3, echo=FALSE}
-tribble(~level, ~A2v1, ~A3v1,
-        "A1", "\\(-\\frac{1}{3}\\)", "\\(-\\frac{1}{3}\\)",
-        "A2",  "\\(\\frac{2}{3}\\)", "\\(-\\frac{1}{3}\\)",
-        "A3", "\\(-\\frac{1}{3}\\)",  "\\(\\frac{2}{3}\\)") %>%
-  knitr::kable(align = "lrr") %>%
-  kableExtra::kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r}
+\hline
+level & A2v1 & A3v1\\
+\hline
+A1 & \textbackslash{}(-\textbackslash{}frac\{1\}\{3\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{3\}\textbackslash{})\\
+\hline
+A2 & \textbackslash{}(\textbackslash{}frac\{2\}\{3\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{3\}\textbackslash{})\\
+\hline
+A3 & \textbackslash{}(-\textbackslash{}frac\{1\}\{3\}\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{2\}\{3\}\textbackslash{})\\
+\hline
+\end{tabular}
+\end{table}
 
 #### Example: Five-level factor
 
 #### Treatment (Dummy)
 
-```{r treatment-5, echo=FALSE}
-tribble(~level, ~A2v1, ~A3v1, ~A4v1, ~A5v1,
-        "A1", 0L, 0L, 0L, 0L,
-        "A2", 1L, 0L, 0L, 0L,
-        "A3", 0L, 1L, 0L, 0L,
-        "A4", 0L, 0L, 1L, 0L,
-        "A5", 0L, 0L, 0L, 1L) %>%
-  knitr::kable(align = "lrrrr") %>%
-  kableExtra::kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r}
+\hline
+level & A2v1 & A3v1 & A4v1 & A5v1\\
+\hline
+A1 & 0 & 0 & 0 & 0\\
+\hline
+A2 & 1 & 0 & 0 & 0\\
+\hline
+A3 & 0 & 1 & 0 & 0\\
+\hline
+A4 & 0 & 0 & 1 & 0\\
+\hline
+A5 & 0 & 0 & 0 & 1\\
+\hline
+\end{tabular}
+\end{table}
 
 #### Sum
 
 
-```{r sum-5, echo=FALSE}
-tribble(~level, ~A2v1, ~A3v1, ~A4v1, ~A5v1,
-        "A1", -1L,     -1L, -  1L,   -1L,
-        "A2",  1L,      0L,    0L,    0L,
-        "A3",  0L,      1L,    0L,    0L,
-        "A4",  0L,      0L,    1L,    0L,
-        "A5",  0L,      0L,    0L,    1L) %>%
-  knitr::kable(align = "lrrrr") %>%
-  kableExtra::kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r}
+\hline
+level & A2v1 & A3v1 & A4v1 & A5v1\\
+\hline
+A1 & -1 & -1 & -1 & -1\\
+\hline
+A2 & 1 & 0 & 0 & 0\\
+\hline
+A3 & 0 & 1 & 0 & 0\\
+\hline
+A4 & 0 & 0 & 1 & 0\\
+\hline
+A5 & 0 & 0 & 0 & 1\\
+\hline
+\end{tabular}
+\end{table}
 
 #### Deviation
 
-```{r deviation-5, echo=FALSE}
-tribble(~level, ~A2v1, ~A3v1, ~A4v1, ~A5v1,
-        "A1", "\\(-\\frac{1}{5}\\)", "\\(-\\frac{1}{5}\\)", "\\(-\\frac{1}{5}\\)", "\\(-\\frac{1}{5}\\)",
-        "A2",  "\\(\\frac{4}{5}\\)", "\\(-\\frac{1}{5}\\)", "\\(-\\frac{1}{5}\\)", "\\(-\\frac{1}{5}\\)",
-        "A3", "\\(-\\frac{1}{5}\\)", "\\(\\frac{4}{5}\\)", "\\(-\\frac{1}{5}\\)", "\\(-\\frac{1}{5}\\)",
-        "A4", "\\(-\\frac{1}{5}\\)", "\\(-\\frac{1}{5}\\)", "\\(\\frac{4}{5}\\)", "\\(-\\frac{1}{5}\\)",
-        "A5", "\\(-\\frac{1}{5}\\)", "\\(-\\frac{1}{5}\\)", 
-        "\\(-\\frac{1}{5}\\)", "\\(\\frac{4}{5}\\)") %>%
-  knitr::kable(align = "lrrrr") %>%
-  kableExtra::kable_styling(full_width = FALSE, bootstrap_options = "striped")
-```
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r}
+\hline
+level & A2v1 & A3v1 & A4v1 & A5v1\\
+\hline
+A1 & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{})\\
+\hline
+A2 & \textbackslash{}(\textbackslash{}frac\{4\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{})\\
+\hline
+A3 & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{4\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{})\\
+\hline
+A4 & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{4\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{})\\
+\hline
+A5 & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(-\textbackslash{}frac\{1\}\{5\}\textbackslash{}) & \textbackslash{}(\textbackslash{}frac\{4\}\{5\}\textbackslash{})\\
+\hline
+\end{tabular}
+\end{table}
 
 ### How to create your own numeric predictors
 
 Let's assume that your data is contained in a table `dat` like the one below.
 
-```{r specify-fixed-1}
+
+```r
  ## create your own numeric predictors
  ## make an example table
  dat <- tibble(Y = rnorm(12),
                A = rep(paste0("A", 1:3), each = 4))
 ```
 
-`r hide("Click to view example data")`
 
-```{r view-example-data, echo=FALSE}
- knitr::kable(dat, digits = 2) %>%
-   kableExtra::kable_styling(full_width = FALSE)
-```
+<div class='solution'><button>Click to view example data</button>
 
-`r unhide()`
+
+\begin{table}[H]
+\centering
+\begin{tabular}{r|l}
+\hline
+Y & A\\
+\hline
+-0.75 & A1\\
+\hline
+0.03 & A1\\
+\hline
+-0.22 & A1\\
+\hline
+1.09 & A1\\
+\hline
+-0.42 & A2\\
+\hline
+-0.68 & A2\\
+\hline
+2.09 & A2\\
+\hline
+-1.37 & A2\\
+\hline
+0.27 & A3\\
+\hline
+0.47 & A3\\
+\hline
+-0.95 & A3\\
+\hline
+0.16 & A3\\
+\hline
+\end{tabular}
+\end{table}
+
+
+</div>
+
 
 #### The `mutate()` / `if_else()` / `case_when()` approach for a three-level factor
 
 #### Treatment
 
-```{r treat-3-mutate}
+
+```r
   ## examples of three level factors
   ## treatment coding
   dat_treat <- dat %>%
@@ -885,17 +1046,37 @@ Let's assume that your data is contained in a table `dat` like the one below.
 	   A3v1 = if_else(A == "A3", 1L, 0L))
 ```
 
-`r hide("Click to view resulting table")`
 
-```{r dat-treat, echo=FALSE}
-dat_treat
+<div class='solution'><button>Click to view resulting table</button>
+
+
+
+```
+## # A tibble: 12 x 4
+##          Y A      A2v1  A3v1
+##      <dbl> <chr> <int> <int>
+##  1 -0.752  A1        0     0
+##  2  0.0251 A1        0     0
+##  3 -0.218  A1        0     0
+##  4  1.09   A1        0     0
+##  5 -0.417  A2        1     0
+##  6 -0.683  A2        1     0
+##  7  2.09   A2        1     0
+##  8 -1.37   A2        1     0
+##  9  0.268  A3        0     1
+## 10  0.472  A3        0     1
+## 11 -0.946  A3        0     1
+## 12  0.155  A3        0     1
 ```
 
-`r unhide()`
+
+</div>
+
 
 #### Sum
 
-```{r sum-3-mutate}
+
+```r
 ## sum coding
 dat_sum <- dat %>%
   mutate(A2v1 = case_when(A == "A1" ~ -1L, # baseline
@@ -906,17 +1087,37 @@ dat_sum <- dat %>%
                           TRUE      ~ 0L)) # anything else
 ```
 
-`r hide("Click to view resulting table")`
 
-```{r dat-sum, echo=FALSE}
-dat_sum
+<div class='solution'><button>Click to view resulting table</button>
+
+
+
+```
+## # A tibble: 12 x 4
+##          Y A      A2v1  A3v1
+##      <dbl> <chr> <int> <int>
+##  1 -0.752  A1       -1    -1
+##  2  0.0251 A1       -1    -1
+##  3 -0.218  A1       -1    -1
+##  4  1.09   A1       -1    -1
+##  5 -0.417  A2        1     0
+##  6 -0.683  A2        1     0
+##  7  2.09   A2        1     0
+##  8 -1.37   A2        1     0
+##  9  0.268  A3        0     1
+## 10  0.472  A3        0     1
+## 11 -0.946  A3        0     1
+## 12  0.155  A3        0     1
 ```
 
-`r unhide()`
+
+</div>
+
 
 #### Deviation
 
-```{r deviation-3-mutate}
+
+```r
 ## deviation coding
 ## baseline A1
 dat_dev <- dat %>%
@@ -924,13 +1125,36 @@ dat_dev <- dat %>%
          A3v1 = if_else(A == "A3", 2/3, -1/3)) # target A3
 ```
 
-`r hide("Click to view resulting table")`
 
-```{r dat-dev}
+<div class='solution'><button>Click to view resulting table</button>
+
+
+
+```r
 dat_dev
 ```
 
-`r unhide()`
+```
+## # A tibble: 12 x 4
+##          Y A       A2v1   A3v1
+##      <dbl> <chr>  <dbl>  <dbl>
+##  1 -0.752  A1    -0.333 -0.333
+##  2  0.0251 A1    -0.333 -0.333
+##  3 -0.218  A1    -0.333 -0.333
+##  4  1.09   A1    -0.333 -0.333
+##  5 -0.417  A2     0.667 -0.333
+##  6 -0.683  A2     0.667 -0.333
+##  7  2.09   A2     0.667 -0.333
+##  8 -1.37   A2     0.667 -0.333
+##  9  0.268  A3    -0.333  0.667
+## 10  0.472  A3    -0.333  0.667
+## 11 -0.946  A3    -0.333  0.667
+## 12  0.155  A3    -0.333  0.667
+```
+
+
+</div>
+
 
 ### Conclusion
 

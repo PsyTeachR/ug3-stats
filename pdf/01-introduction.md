@@ -30,7 +30,7 @@ The generalizability of a finding depends on several factors: how the study was 
 
 ## Reproduciblity and Transparency
 
-The term <a class='glossary' target='_blank' title='The extent to which the findings of a study can be repeated in some other context' href='https://psyteachr.github.io/glossary/r#reproducibility'>reproducibility</a> refers to the degree to which it is possible to reproduce the pattern of findings in a study under various circumstances.
+The term <a class='glossary' target='_blank' title='The extent to which the findings of a study can be repeated in some other context, either with new samples from the same population (replicability) or with the same raw data but analyzed by different researchers or by the same researchers on a different occasion (computational or analytical reproducibility).' href='https://psyteachr.github.io/glossary/r#reproducibility'>reproducibility</a> refers to the degree to which it is possible to reproduce the pattern of findings in a study under various circumstances.
 
 We say a finding is *analytically* or *computationally* reproducible if, given the raw data, we can obtain the same pattern of results. Note that this is different from saying a finding is **replicable**, which refers to being able to reproduce the finding in **new samples.** There is not widespread agreement about these terms, but it is convenient to view analytic reproducibility and replicability as two different but related types of reproducibility, with the former capturing reproducibility across analysts (or among the same analysts over time) and the latter reflecting reproducibility across participants. 
 
@@ -105,7 +105,7 @@ dat
 ##  8 parent  471.
 ##  9 parent  550.
 ## 10 parent  485.
-## # … with 90 more rows
+## # ... with 90 more rows
 ```
 
 Here are some things to try with this simulated data.

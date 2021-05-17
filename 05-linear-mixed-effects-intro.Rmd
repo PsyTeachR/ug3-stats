@@ -55,11 +55,11 @@ Reaction times in a sleep deprivation study
 
 Description:
 
-     The average reaction time per day for subjects in a sleep
-     deprivation study. On day 0 the subjects had their normal amount
-     of sleep.  Starting that night they were restricted to 3 hours of
-     sleep per night.  The observations represent the average reaction
-     time on a series of tests given each day to each subject.
+     The average reaction time per day (in milliseconds) for subjects
+     in a sleep deprivation study.
+
+     Days 0-1 were adaptation and training (T1/T2), day 2 was baseline
+     (B); sleep deprivation started after day 2.
 
 Format:
 
@@ -74,8 +74,10 @@ Format:
 Details:
 
      These data are from the study described in Belenky et al.  (2003),
-     for the sleep-deprived group and for the first 10 days of the
-     study, up to the recovery period.
+     for the most sleep-deprived group (3 hours time-in-bed) and for
+     the first 10 days of the study, up to the recovery period.  The
+     original study analyzed speed (1/(reaction time)) and treated day
+     as a categorical rather than a continuous predictor.
 
 References:
 
@@ -86,9 +88,9 @@ References:
      sleep dose-response study. _Journal of Sleep Research_ *12*, 1-12.
 ```
 
-Note that these data meet our definition of multilevel data due to multistage sampling: Participants are sampled from a population, and then their mean reaction times are measured on each of the 10 days in the study. Even though we don't have the trial-by-trial information used to calculate the means, this is still multilevel data, because of the multiple observations on the response variable (reaction time) for each subject.
+Note that these data meet our definition of multilevel data due to multistage sampling: Participants are sampled from a population, and then their mean reaction times are measured on each of the 10 days in the study. Even though we don't have the trial-by-trial information used to calculate the means, this is still multilevel data, because of the multiple observations on the response variable (reaction time) across days for each subject.
 
-Multi-level data of this type is extremely common in psychology. However, if you open up most introductory statistics textbooks and read through to the end, you'll learn about t-tests, repeated-measures and mixed-model ANOVA, and multiple regression, but none of the techniques that you learn would be applicable to multi-level data of this sort. It suggests a serious gap in training, one which should be filled by teaching multi-level modeling. All of the other techniques---t-test, ANOVA, multiple regression---can be seen as special cases of the more general multi-level modeling approach. My view is that multi-level modeling should be taught as the **default**, not as an advanced approach that is too far beyond the reach of undergraduates.
+Multi-level data of this type is extremely common in psychology. However, if you open up most introductory statistics textbooks and read through to the end, you'll learn about t-tests, repeated-measures and mixed-model ANOVA, and multiple regression, but none of the techniques that you learn would be applicable to this type of data. It suggests a serious gap in training. Because most data is multi-level, multi-level modeling should be taught as the **default** approach, not as an advanced approach that is far beyond the reach of undergraduates. All of the other techniques---t-test, ANOVA, multiple regression---can be seen as special cases of the more general multi-level approach. 
 
 Let's consider the `sleepstudy` data. The dataset contains eighteen participants from the three-hour sleep condition. Each day, over 10 days, participants performed a ten-minute "psychomotor vigilance test" where they had to monitor a display and press a button as quickly as possible each time a stimulus appeared. The dependent measure in the dataset is the participant's average response time (RT) on the task for that day.
 
@@ -106,8 +108,6 @@ ggplot(just_308, aes(x = Days, y = Reaction)) +
   scale_x_continuous(breaks = 0:9)
 ```
 
-It looks like RT is increasing with each additional day of sleep deprivation, at least from day 2 to day 10.
-
 <div class="try">
 
 ### Exercise {-}
@@ -120,6 +120,8 @@ ggplot(sleepstudy, aes(x = Days, y = Reaction)) +
   scale_x_continuous(breaks = 0:9) +
   facet_wrap(~Subject)
 ```
+
+It looks like RT is increasing with each additional day of sleep deprivation, starting from day 2 and increasing until day 10.
 
 `r hide("Hint, please")`
 
@@ -142,17 +144,13 @@ ggplot(sleepstudy, aes(x = Days, y = Reaction)) +
 
 </div>
 
-## How to model this data?
+## How to model these data?
 
-Before proceeding, there is one important thing to note. Unfortunately, the description of the `sleepstudy` data in the `lme4` package is inaccurate. The documentation states:
-
-> On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night.
-
-However, this is what @Belenky_et_al_2003 actually say (p. 2 of the PDF):
+This is how @Belenky_et_al_2003 describe their study (p. 2 of the PDF):
 
 > The first 3 days (T1, T2 and B) were adaptation and training (T1 and T2) and baseline (B) and subjects were required to be in bed from 23:00 to 07:00 h [8 h required time in bed (TIB)]. On the third day (B), baseline measures were taken. Beginning on the fourth day and continuing for a total of 7 days (E1–E7) subjects were in one of four sleep conditions [9 h required TIB (22:00–07:00 h), 7 h required TIB (24:00–07:00 h), 5 h required TIB (02:00–07:00 h), or 3 h required TIB (04:00–07:00 h)], effectively one sleep augmentation condition, and three sleep restriction conditions.
 
-One thing to note is that the dataset includes data from only one of the three conditions (the 3h TIB condition). But the more important thing is that the documentation of `sleepstudy` is wrong: there were seven nights of sleep restriction, not nine, with the first night of restriction occurring after the third day. The first two days, coded as `0`, `1`, were adaptation and training. The day coded as `2`, where the baseline measurement was taken should be the place where we start our analysis. If we include the days `0` and `1` in our analysis, this might bias our results, since any changes in performance during the first two days have to do with training, not sleep restriction.
+There were seven nights of sleep restriction, with the first night of restriction occurring after the third day. The first two days, coded as `0`, `1`, were adaptation and training. The day coded as `2`, where the baseline measurement was taken, should be the place where we start our analysis. If we include the days `0` and `1` in our analysis, this might bias our results, since any changes in performance during the first two days have to do with training, not sleep restriction.
 
 <div class="try">
 
@@ -475,7 +473,7 @@ Each participant can be represented as a vector pair \(\langle S_{0i}, S_{1i} \r
 
 Equations in the *Variance Components* characterize our estimates of variability. The first equation states our assumption that the random intercept / random slope pairs \(\langle S_{0s}, S_{1s} \rangle\) are drawn from a bivariate normal distribution centered at the origin \(\langle 0, 0 \rangle\) with variance-covariance matrix \(\mathbf{\Sigma}\).
 
-The variance-covariance matrix is key: it determines the probability of drawing random effect pairs \(\langle S_{0s}, S_{1s} \rangle\) from the population.  You have seen these before, in the [chapter on correlation and regression](03-bivariate-simulation.html). The covariance matrix is always a square matrix (equal numbers of columns and rows).  On the main diagonal (upper left and bottom right cells) it has random effect variances \({\tau_{00}}^2\) and \({\tau_{11}}^2\). \({\tau_{00}}^2\) is the random intercept variance, which captures how much subjects vary in their mean response time on Day\nbsp{}0, before any sleep deprivation. \({\tau_{11}}^2\) is the random slope variance, which captures how much subjects vary in their susceptibility to the effects of sleep deprivation.
+The variance-covariance matrix is key: it determines the probability of drawing random effect pairs \(\langle S_{0s}, S_{1s} \rangle\) from the population.  You have seen these before, in the [chapter on correlation and regression](03-bivariate-simulation.html). The covariance matrix is always a square matrix (equal numbers of columns and rows).  On the main diagonal (upper left and bottom right cells) it has random effect variances \({\tau_{00}}^2\) and \({\tau_{11}}^2\). \({\tau_{00}}^2\) is the random intercept variance, which captures how much subjects vary in their mean response time on Day 0, before any sleep deprivation. \({\tau_{11}}^2\) is the random slope variance, which captures how much subjects vary in their susceptibility to the effects of sleep deprivation.
 
 The cells in the off-diagonal contain covariances, but this information is represented redundantly in the matrix; the lower left element is identical to the upper right element; both capture the covariance between random intercepts and slopes, as expressed by \(\rho\tau_{00}\tau_{11}\). In this equation \(\rho\) is the correlation between the intercept and slope. So, all the information in the matrix can be captured by just three parameters: \(\tau_{00}\), \(\tau_{11}\), and \(\rho\).
 

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Learning Statistical Models Through Simulation in R</title>
+  <title>Chapter 9 Modeling Ordinal Data | Learning Statistical Models Through Simulation in R</title>
   <meta name="description" content="Textbook on statistical models for social scientists." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Learning Statistical Models Through Simulation in R" />
+  <meta property="og:title" content="Chapter 9 Modeling Ordinal Data | Learning Statistical Models Through Simulation in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Learning Statistical Models Through Simulation in R" />
+  <meta name="twitter:title" content="Chapter 9 Modeling Ordinal Data | Learning Statistical Models Through Simulation in R" />
   
   <meta name="twitter:description" content="Textbook on statistical models for social scientists." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="introduction.html"/>
+<link rel="prev" href="generalized-linear-mixed-effects-models.html"/>
+<link rel="next" href="symbols.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -282,36 +282,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Learning Statistical Models Through Simulation in R</h1>
-<p class="author"><em>Dale J. Barr</em></p>
-<p class="date"><em>2021-05-17</em></p>
+<div id="modeling-ordinal-data" class="section level1">
+<h1><span class="header-section-number">Chapter 9</span> Modeling Ordinal Data</h1>
+<p>It is perhaps easiest to think about ordinal data by viewing it as a more general case of logistic regression. In logistic regression, the response variable <span class="math inline">\(Y\)</span> has two categories (e.g., 0, 1), with the model intercept representing the point in log odds space where 0 and 1 are equiprobable.</p>
+<p><span class="math display">\[\eta = \beta_0 + \beta_1 X_i\]</span></p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb237-1" title="1">xx &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dt">by =</span> <span class="fl">.1</span>))</a>
+<a class="sourceLine" id="cb237-2" title="2">x2 &lt;-<span class="st"> </span>xx <span class="op">+</span><span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb237-3" title="3">yy &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dt">by =</span> <span class="fl">.1</span>))</a>
+<a class="sourceLine" id="cb237-4" title="4"></a>
+<a class="sourceLine" id="cb237-5" title="5">ras &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(<span class="kw">crossing</span>(xx, yy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb237-6" title="6"><span class="st">                 </span><span class="kw">mutate</span>(<span class="dt">zz =</span> yy, <span class="dt">cat =</span> 1L),</a>
+<a class="sourceLine" id="cb237-7" title="7">                 <span class="kw">crossing</span>(xx, yy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb237-8" title="8"><span class="st">                 </span><span class="kw">mutate</span>(<span class="dt">zz =</span> yy <span class="op">+</span><span class="st"> </span><span class="fl">1.5</span>, <span class="dt">cat =</span> 2L))</a>
+<a class="sourceLine" id="cb237-9" title="9">          </a>
+<a class="sourceLine" id="cb237-10" title="10"><span class="kw">ggplot</span>(ras, <span class="kw">aes</span>(xx, yy)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb237-11" title="11"><span class="st">  </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> zz), <span class="dt">interpolate =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb237-12" title="12"><span class="st">  </span><span class="kw">scale_fill_gradient2</span>(<span class="dt">high =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">low =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb237-13" title="13"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>cat)</a></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:start"></span>
+<img src="09-ordinal_files/figure-html/start-1.png" alt="TODO" width="100%" />
+<p class="caption">
+Figure 9.1: TODO
+</p>
 </div>
-<div id="overview" class="section level1 unnumbered">
-<h1>Overview</h1>
-<p>This textbook approaches statistical analysis through the General Linear Model, taking a simulation-based approach in the R software environment. The overarching goal is to teach students how to translate a description of the design of a study into a linear model to analyze data from that study. The focus is on the skills needed to analyze data from psychology experiments.</p>
-<p>The following topics are covered:</p>
-<ul>
-<li>linear modeling workflow;</li>
-<li>variance-covariance matrices;</li>
-<li>multiple regression;</li>
-<li>interactions (continuous-by-categorical; categorical-by-categorical);</li>
-<li>linear mixed-effects regression;</li>
-<li>generalized linear mixed-effects regression.</li>
-</ul>
-<p>The material in this course forms the basis for a one-semester course for third-year undergradautes taught by <a href="">Dale Barr</a> at the <a href="">University of Glasgow School of Psychology</a>. It is part of the <a href="https://psyteachr.github.io">PsyTeachR series of course materials</a> developed by University of Glasgow Psychology staff.</p>
-<p>Unlike other textbooks you may have encountered, this is an <strong>interactive textbook</strong>. Each chapter contains embedded exercises as well as web applications to help students better understand the content. The interactive content will only work if you access this material through a web browser. Printing out the material is not recommended. If you want to access the textbook without an internet connection or have a local version to keep in case this site changes or moves, you can <a href="offline-textbook.zip">download a version for offline use</a>. Just extract the files from the ZIP archive, locate the file <code>index.html</code> in the <code>docs</code> directory, and open this file using a web browser.</p>
-<div id="how-to-cite-this-book" class="section level2 unnumbered">
-<h2>How to cite this book</h2>
-<p>Barr, Dale J. (2020). <em>Learning statistical models through simulation in R: An interactive textbook</em>. Version 0.9-3. Retrieved from <a href="https://psyteachr.github.io/book/ug3-stats" class="uri">https://psyteachr.github.io/book/ug3-stats</a>.</p>
-</div>
-<div id="information-for-educators" class="section level2 unnumbered">
-<h2>Information for educators</h2>
-<p>You are free to re-use and modify the material in this textbook for your own purposes, with the stipulation that you cite the original work. Please note additional terms of the <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons CC-BY-SA 4.0 license</a> governing re-use of this material.</p>
-<p>The book was built using the R <a href="https://bookdown.org"><strong><code>bookdown</code></strong></a> package. The source files are available at <a href="https://github.com/psyteachr/ug3-stats">github</a>.</p>
 
 </div>
-</div>
+
+
+
 <div class="psyteachr_footer">
   
 </div>
@@ -422,8 +420,8 @@ window.onload = function() {
           </div>
         </div>
       </div>
-
-<a href="introduction.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="generalized-linear-mixed-effects-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="symbols.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

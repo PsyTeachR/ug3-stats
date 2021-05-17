@@ -53,10 +53,14 @@ rainy_days %>%
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-<div class="figure" style="text-align: center">
-<img src="08-generalized-linear-models_files/figure-html/rbinom-1.png" alt="**Distribution of number of rainy days for 500 years of simulated rainfall in Barcelona and Glasgow**" width="100%" />
-<p class="caption">(\#fig:rbinom)**Distribution of number of rainy days for 500 years of simulated rainfall in Barcelona and Glasgow**</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{08-generalized-linear-models_files/figure-latex/rbinom-1} 
+
+}
+
+\caption{**Distribution of number of rainy days for 500 years of simulated rainfall in Barcelona and Glasgow**}(\#fig:rbinom)
+\end{figure}
 
 The distribution for Glasgow is slightly fatter than the distribution for Barcelona. We can also see the greater variability in Glasgow if we look at the standard deviations of these variables.
 
@@ -68,11 +72,15 @@ rainy_days %>%
 ```
 
 ```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```
 ## # A tibble: 2 x 2
 ##   city         sd
 ##   <chr>     <dbl>
-## 1 Barcelona  6.81
-## 2 Glasgow    9.49
+## 1 Barcelona  6.68
+## 2 Glasgow    9.19
 ```
 
 
@@ -90,32 +98,20 @@ There are a large variety of different kinds of generalized linear models you ca
 
 ### Terminology
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Term </th>
-   <th style="text-align:left;"> Definition </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> **Bernoulli trial** </td>
-   <td style="text-align:left;"> An event with a binary outcome, with one outcome considered 'success' </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> **proportion** </td>
-   <td style="text-align:left;"> The ratio of successes to the total number of Bernoulli trials </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> **odds** </td>
-   <td style="text-align:left;"> The ratio of successes to failures </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> **log odds** </td>
-   <td style="text-align:left;"> The (natural) log of the odds </td>
-  </tr>
-</tbody>
-</table>
+
+\begin{tabular}{l|l}
+\hline
+Term & Definition\\
+\hline
+**Bernoulli trial** & An event with a binary outcome, with one outcome considered 'success'\\
+\hline
+**proportion** & The ratio of successes to the total number of Bernoulli trials\\
+\hline
+**odds** & The ratio of successes to failures\\
+\hline
+**log odds** & The (natural) log of the odds\\
+\hline
+\end{tabular}
 
 In logistic regression, we are modeling the relationship between the response and a set of predictors in log odds space.
 
@@ -153,8 +149,13 @@ $$np(1 - p)$$.
 
 The app below allows you to manipulate the intercept and slope of a line in log odds space and to see the projection of the line back into response space. Note the S-shaped ("sigmoidal") shape of the function in the response shape.
 
+
+```
+## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+```
+
 <div class="figure" style="text-align: center">
-<iframe src="https://shiny.psy.gla.ac.uk/Dale/logit?showcase=0" width="100%" height="500px"></iframe>
+<iframe src="https://shiny.psy.gla.ac.uk/Dale/logit?showcase=0" width="1\linewidth" height="500px"></iframe>
 <p class="caption">(\#fig:logit-app)**Logistic regression web app** <https://shiny.psy.gla.ac.uk/Dale/logit></p>
 </div>
 

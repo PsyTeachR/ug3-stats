@@ -20,7 +20,8 @@ Let's look at some (made up, but realistic) data to see how we can use multiple 
 
 Let's load in the data [grades.csv](data/grades.csv){target="_download"} and have a look.
 
-```{r load-data, message=FALSE}
+
+```r
 library("corrr") # correlation matrices
 library("tidyverse")
 
@@ -29,18 +30,60 @@ grades <- read_csv("data/grades.csv", col_types = "ddii")
 grades
 ```
 
+```
+## # A tibble: 100 x 4
+##    grade   GPA lecture nclicks
+##    <dbl> <dbl>   <int>   <int>
+##  1  2.40 1.13        6      88
+##  2  3.67 0.971       6      96
+##  3  2.85 3.34        6     123
+##  4  1.36 2.76        9      99
+##  5  2.31 1.02        4      66
+##  6  2.58 0.841       8      99
+##  7  2.69 4           5      86
+##  8  3.05 2.29        7     118
+##  9  3.21 3.39        9      98
+## 10  2.24 3.27       10     115
+## # ... with 90 more rows
+```
+
 First let's look at all the pairwise correlations.
 
-```{r correlation-matrix}
+
+```r
 grades %>%
   correlate() %>%
   shave() %>%
   fashion()
 ```
 
-```{r pairs, fig.cap="All pairwise relationships in the `grades` dataset."}
+```
+## 
+## Correlation method: 'pearson'
+## Missing treated using: 'pairwise.complete.obs'
+```
+
+```
+##   rowname grade  GPA lecture nclicks
+## 1   grade                           
+## 2     GPA   .25                     
+## 3 lecture   .24  .44                
+## 4 nclicks   .16  .30     .36
+```
+
+
+```r
 pairs(grades)
 ```
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{03-multiple-regression_files/figure-latex/pairs-1} 
+
+}
+
+\caption{All pairwise relationships in the `grades` dataset.}(\#fig:pairs)
+\end{figure}
 
 ### Estimation and interpretation
 
@@ -58,39 +101,60 @@ The `Y` variable is your response variable, and the `X` variables are the predic
 
 For the current data, let's predict `grade` from `lecture` and `nclicks`.
 
-```{r fit-the-model}
+
+```r
 my_model <- lm(grade ~ lecture + nclicks, grades)
 
 summary(my_model)
 ```
 
-```{r get-coef, echo=FALSE}
-.coef <- coef(my_model) %>% round(2)
 ```
+## 
+## Call:
+## lm(formula = grade ~ lecture + nclicks, data = grades)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.21653 -0.40603  0.02267  0.60720  1.38558 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)  
+## (Intercept) 1.462037   0.571124   2.560   0.0120 *
+## lecture     0.091501   0.045766   1.999   0.0484 *
+## nclicks     0.005052   0.006051   0.835   0.4058  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.8692 on 97 degrees of freedom
+## Multiple R-squared:  0.06543,	Adjusted R-squared:  0.04616 
+## F-statistic: 3.395 on 2 and 97 DF,  p-value: 0.03756
+```
+
+
 
 We'll often write the parameter symbol with a little hat on top to make clear that we are dealing with estimates from the sample rather than the (unknown) true population values. From above:
 
-* $\hat{\beta}_0$ = `r round(.coef[[1]], 2)`
-* $\hat{\beta}_1$ = `r round(.coef[[2]], 2)`
-* $\hat{\beta}_2$ = `r round(.coef[[3]], 2)`
+* $\hat{\beta}_0$ = 1.46
+* $\hat{\beta}_1$ = 0.09
+* $\hat{\beta}_2$ = 0.01
 
 This tells us that a person's predicted grade is related to their lecture attendance and download rate by the following formula:
 
-`grade` = `r .coef[[1]]` + `r .coef[[2]]` $\times$ `lecture` + `r .coef[[3]]` $\times$ `nclicks`
+`grade` = 1.46 + 0.09 $\times$ `lecture` + 0.01 $\times$ `nclicks`
 
 Because $\hat{\beta}_1$ and $\hat{\beta}_2$ are both positive, we know that higher values of `lecture` and `nclicks` are associated with higher grades.
 
 So if you were asked, what grade would you predict for a student who attends 3 lectures and downloaded 70 times, you could easily figure that out by substituting the appropriate values.
 
-`grade` = `r .coef[[1]]` + `r .coef[[2]]` $\times$ 3 + `r .coef[[3]]` $\times$ 70
+`grade` = 1.46 + 0.09 $\times$ 3 + 0.01 $\times$ 70
 
 which equals
 
-`grade` = `r .coef[[1]]` + `r round(.coef[[2]] * 3, 2)` + `r round(.coef[[3]] * 70, 2)`
+`grade` = 1.46 + 0.27 + 0.7
 
 and reduces to
 
-`grade` = `r .coef[[1]] + round(.coef[[2]] * 3, 2) + round(.coef[[3]] * 70, 2)`
+`grade` = 2.43
 
 ### Predictions from the linear model using `predict()`
 
@@ -98,15 +162,21 @@ If we want to predict response values for new predictor values, we can use the `
 
 `predict()` takes two main arguments. The first argument is a fitted model object (i.e., `my_model` from above) and the second is a data frame (or tibble) containing new values for the predictors.
 
-```{block, type="warning"}
+\begin{warning}
+You need to include \textbf{all} of the predictor variables in the new
+table. You'll get an error message if your tibble is missing any
+predictors. You also need to make sure that the variable names in the
+new table \textbf{exactly} match the variable names in the model.
+\end{warning}
 
-You need to include **all** of the predictor variables in the new table. You'll get an error message if your tibble is missing any predictors. You also need to make sure that the variable names in the new table **exactly** match the variable names in the model.
-
-```
+\begin{watchout}
+this is just a test
+\end{watchout}
 
 Let's create a tibble with new values and try it out.
 
-```{r}
+
+```r
 ## a 'tribble' is a way to make a tibble by rows,
 ## rather than by columns. This is sometimes useful
 new_data <- tribble(~lecture, ~nclicks,
@@ -124,7 +194,8 @@ The first row of the `tribble()` contains the column names, each preceded by a t
 
 This is sometimes easier to read than doing it row by row, although the result is the same. Consider that we could have made the above table using
 
-```{r tibble-example, eval = FALSE}
+
+```r
 new_data <- tibble(lecture = c(3, 10, 0, 5),
                    nclicks = c(70, 130, 20, 100))
 ```
@@ -133,15 +204,32 @@ new_data <- tibble(lecture = c(3, 10, 0, 5),
 
 Now that we've created our table `new_data`, we just pass it to `predict()` and it will return a vector with the predictions for $Y$ (`grade`).
 
-```{r predict-it}
+
+```r
 predict(my_model, new_data)
+```
+
+```
+##        1        2        3        4 
+## 2.090214 3.033869 1.563087 2.424790
 ```
 
 That's great, but maybe we want to line it up with the predictor values. We can do this by just adding it as a new column to `new_data`.
 
-```{r}
+
+```r
 new_data %>%
   mutate(predicted_grade = predict(my_model, new_data))
+```
+
+```
+## # A tibble: 4 x 3
+##   lecture nclicks predicted_grade
+##     <dbl>   <dbl>           <dbl>
+## 1       3      70            2.09
+## 2      10     130            3.03
+## 3       0      20            1.56
+## 4       5     100            2.42
 ```
 
 Want to see more options for `predict()`? Check the help at `?predict.lm`.
@@ -152,7 +240,8 @@ As noted above the parameter estimates for each regression coefficient tell us a
 
 For example, let's visualize the partial effect of `lecture` on `grade` holding `nclicks` constant at its mean value.
 
-```{r partial-lecture}
+
+```r
 nclicks_mean <- grades %>% pull(nclicks) %>% mean()
 
 ## new data for prediction
@@ -166,13 +255,40 @@ new_lecture2 <- new_lecture %>%
 new_lecture2
 ```
 
+```
+## # A tibble: 11 x 3
+##    lecture nclicks grade
+##      <int>   <dbl> <dbl>
+##  1       0    98.3  1.96
+##  2       1    98.3  2.05
+##  3       2    98.3  2.14
+##  4       3    98.3  2.23
+##  5       4    98.3  2.32
+##  6       5    98.3  2.42
+##  7       6    98.3  2.51
+##  8       7    98.3  2.60
+##  9       8    98.3  2.69
+## 10       9    98.3  2.78
+## 11      10    98.3  2.87
+```
+
 Now let's plot.
 
-```{r partial-lecture-plot, fig.cap = "Partial effect of 'lecture' on grade, with nclicks at its mean value."}
+
+```r
 ggplot(grades, aes(lecture, grade)) + 
   geom_point() +
   geom_line(data = new_lecture2)
 ```
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{03-multiple-regression_files/figure-latex/partial-lecture-plot-1} 
+
+}
+
+\caption{Partial effect of 'lecture' on grade, with nclicks at its mean value.}(\#fig:partial-lecture-plot)
+\end{figure}
 
 <div class="warning">
 
@@ -202,7 +318,8 @@ A $z$ score represents the distance of a score $X$ from the sample mean ($\mu_x$
 
 So we re-scale our predictors by converting them to $z$-scores. This is easy enough to do.
 
-```{r rescale-predictors}
+
+```r
 grades2 <- grades %>%
   mutate(lecture_c = (lecture - mean(lecture)) / sd(lecture),
          nclicks_c = (nclicks - mean(nclicks)) / sd(nclicks))
@@ -210,33 +327,67 @@ grades2 <- grades %>%
 grades2
 ```
 
+```
+## # A tibble: 100 x 6
+##    grade   GPA lecture nclicks lecture_c nclicks_c
+##    <dbl> <dbl>   <int>   <int>     <dbl>     <dbl>
+##  1  2.40 1.13        6      88  -0.484     -0.666 
+##  2  3.67 0.971       6      96  -0.484     -0.150 
+##  3  2.85 3.34        6     123  -0.484      1.59  
+##  4  1.36 2.76        9      99   0.982      0.0439
+##  5  2.31 1.02        4      66  -1.46      -2.09  
+##  6  2.58 0.841       8      99   0.493      0.0439
+##  7  2.69 4           5      86  -0.972     -0.796 
+##  8  3.05 2.29        7     118   0.00488    1.27  
+##  9  3.21 3.39        9      98   0.982     -0.0207
+## 10  2.24 3.27       10     115   1.47       1.08  
+## # ... with 90 more rows
+```
+
 Now let's re-fit the model using the centered and scaled predictors.
 
-```{r my-model2}
 
+```r
 my_model_scaled <- lm(grade ~ lecture_c + nclicks_c, grades2)
 
 summary(my_model_scaled)
 ```
 
-```{r which-larger, include=FALSE}
-.bigger <- names(which.max(coef(my_model_scaled)[-1]))
-.smaller <- setdiff(names(coef(my_model_scaled)[-1]), .bigger)
-
-if (coef(my_model_scaled)[[2]] > coef(my_model_scaled)[[1]]) "nclicks_c" else "lecture_c"
+```
+## 
+## Call:
+## lm(formula = grade ~ lecture_c + nclicks_c, data = grades2)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.21653 -0.40603  0.02267  0.60720  1.38558 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  2.59839    0.08692  29.895   <2e-16 ***
+## lecture_c    0.18734    0.09370   1.999   0.0484 *  
+## nclicks_c    0.07823    0.09370   0.835   0.4058    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.8692 on 97 degrees of freedom
+## Multiple R-squared:  0.06543,	Adjusted R-squared:  0.04616 
+## F-statistic: 3.395 on 2 and 97 DF,  p-value: 0.03756
 ```
 
-This tells us that `r .bigger` has a relatively larger influence; for each standard deviation increase in this variable, `grade` increases by about `r coef(my_model_scaled)[[.bigger]] %>% round(2)`.
+
+
+This tells us that lecture_c has a relatively larger influence; for each standard deviation increase in this variable, `grade` increases by about 0.19.
 
 ### Model comparison
 
 Another common kind of question multiple regression is also used to address is of the form: Does some predictor or set of predictors of interest significantly impact my response variable **over and above the effects of some control variables**?
 
 For example, we saw above that the model including `lecture` and `nclicks` was statistically significant, 
-$F(`r .df1 <- summary(my_model)$fstatistic[["numdf"]]; .df1`,
-`r .df2 <- summary(my_model)$fstatistic[["dendf"]]; .df2`) = 
-`r .f <- summary(my_model)$fstatistic[["value"]]; round(.f, 3)`$, 
-$p = `r .p <- pf(.f, .df1, .df2, lower.tail = FALSE); round(.p, 3)`$.
+$F(2,
+97) = 
+3.395$, 
+$p = 0.038$.
 
 The null hypothesis for a regression model with $m$ predictors is
 
@@ -254,23 +405,32 @@ The way we can test this hypothesis is by using **model comparison**. The logic 
 
 Here is how you do this:
 
-```{r model-comparison}
+
+```r
 m1 <- lm(grade ~ GPA, grades) # control model
 m2 <- lm(grade ~ GPA + lecture + nclicks, grades) # bigger model
 
 anova(m1, m2)
 ```
 
-```{r m1-m2, include = FALSE}
-.anova <- anova(m1, m2)
 ```
+## Analysis of Variance Table
+## 
+## Model 1: grade ~ GPA
+## Model 2: grade ~ GPA + lecture + nclicks
+##   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+## 1     98 73.528                           
+## 2     96 71.578  2    1.9499 1.3076 0.2752
+```
+
+
 
 The null hypothesis is that we are just as good predicting `grade` from `GPA` as we are predicting it from `GPA` plus `lecture` and `nclicks`. We will reject the null if adding these two variables leads to a substantial enough reduction in the **residual sums of squares** (RSS); i.e., if they explain away enough residual variance.
 
 We see that this is not the case: 
-$F(`r .df1 <- .anova$Df[2]; .df1`, `r .df2 <- .anova$Res.Df[2]; .df2` ) = 
-`r .f <- .anova$F[2]; round(.f, 3)`$, 
-$p = `r round(pf(.f, .df1, .df2, lower.tail = FALSE), 3)`$. So we don't have evidence that lecture attendance and downloading the online materials is associated with better grades above and beyond student ability, as measured by GPA.
+$F(2, 96 ) = 
+1.308$, 
+$p = 0.275$. So we don't have evidence that lecture attendance and downloading the online materials is associated with better grades above and beyond student ability, as measured by GPA.
 
 ## Dealing with categorical predictors
 
@@ -292,35 +452,109 @@ For a factor with two levels, choose one level as zero and the other as one. The
 
 First, we gin up some fake data to use in our analysis.
 
-```{r fake-data}
+
+```r
 fake_data <- tibble(Y = rnorm(10),
                     group = rep(c("A", "B"), each = 5))
 
 fake_data
 ```
 
+```
+## # A tibble: 10 x 2
+##          Y group
+##      <dbl> <chr>
+##  1  1.32   A    
+##  2  0.471  A    
+##  3 -1.20   A    
+##  4  1.96   A    
+##  5 -1.15   A    
+##  6 -0.0465 B    
+##  7 -0.918  B    
+##  8  0.808  B    
+##  9  1.38   B    
+## 10  0.175  B
+```
+
 Now let's add a new variable, `group_d`, which is the dummy coded group variable. We will use the `dplyr::if_else()` function to define the new column.
 
-```{r fake-data2}
+
+```r
 fake_data2 <- fake_data %>%
   mutate(group_d = if_else(group == "B", 1, 0))
 
 fake_data2
 ```
 
+```
+## # A tibble: 10 x 3
+##          Y group group_d
+##      <dbl> <chr>   <dbl>
+##  1  1.32   A           0
+##  2  0.471  A           0
+##  3 -1.20   A           0
+##  4  1.96   A           0
+##  5 -1.15   A           0
+##  6 -0.0465 B           1
+##  7 -0.918  B           1
+##  8  0.808  B           1
+##  9  1.38   B           1
+## 10  0.175  B           1
+```
+
 Now we just run it as a regular regression model.
 
-```{r fake-regression}
+
+```r
 summary(lm(Y ~ group_d, fake_data2))
+```
+
+```
+## 
+## Call:
+## lm(formula = Y ~ group_d, data = fake_data2)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.47929 -0.97916  0.04294  0.91025  1.68209 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)
+## (Intercept)  0.280742   0.529374   0.530    0.610
+## group_d     -0.001728   0.748647  -0.002    0.998
+## 
+## Residual standard error: 1.184 on 8 degrees of freedom
+## Multiple R-squared:  6.663e-07,	Adjusted R-squared:  -0.125 
+## F-statistic: 5.33e-06 on 1 and 8 DF,  p-value: 0.9982
 ```
 
 Note that if we reverse the coding we get the same result, just the sign is different.
 
-```{r fake-regression2}
+
+```r
 fake_data3 <- fake_data %>%
   mutate(group_d = if_else(group == "A", 1, 0))
 
 summary(lm(Y ~ group_d, fake_data3))
+```
+
+```
+## 
+## Call:
+## lm(formula = Y ~ group_d, data = fake_data3)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.47929 -0.97916  0.04294  0.91025  1.68209 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)
+## (Intercept) 0.279013   0.529374   0.527    0.612
+## group_d     0.001728   0.748647   0.002    0.998
+## 
+## Residual standard error: 1.184 on 8 degrees of freedom
+## Multiple R-squared:  6.663e-07,	Adjusted R-squared:  -0.125 
+## F-statistic: 5.33e-06 on 1 and 8 DF,  p-value: 0.9982
 ```
 
 The interpretation of the intercept is the estimated mean for the group coded as zero. You can see by plugging in zero for X in the prediction formula below. Thus, $\beta_1$ can be interpreted as the difference between the mean for the baseline group and the group coded as 1.
@@ -339,7 +573,8 @@ Why not just use **factors** as your predictors?
 
 When the predictor variable is a factor with $k$ levels where $k>2$, we need $k-1$ predictors to code that variable. So if the factor has 4 levels, we'll need to define three predictors. Here is code to do that. Try it out and see if you can figure out how it works.
 
-```{r three-predictors}
+
+```r
 mydata <- tibble(season = rep(c("winter", "spring", "summer", "fall"), each = 5),
                  bodyweight_kg = c(rnorm(5, 105, 3),
                                    rnorm(5, 103, 3),
@@ -349,9 +584,36 @@ mydata <- tibble(season = rep(c("winter", "spring", "summer", "fall"), each = 5)
 mydata
 ```
 
+```
+## # A tibble: 20 x 2
+##    season bodyweight_kg
+##    <chr>          <dbl>
+##  1 winter         107. 
+##  2 winter         102. 
+##  3 winter         105. 
+##  4 winter         105. 
+##  5 winter         103. 
+##  6 spring         104. 
+##  7 spring         101. 
+##  8 spring         105. 
+##  9 spring         108. 
+## 10 spring         102. 
+## 11 summer         101. 
+## 12 summer         100. 
+## 13 summer          98.8
+## 14 summer         101. 
+## 15 summer         104. 
+## 16 fall            99.5
+## 17 fall           102. 
+## 18 fall           102. 
+## 19 fall           101. 
+## 20 fall            99.0
+```
+
 Now let's add three predictors to code the variable `season`.
 
-```{r season}
+
+```r
 ## baseline value is 'winter'
 mydata2 <- mydata %>%
   mutate(V1 = if_else(season == "spring", 1, 0),
@@ -361,11 +623,38 @@ mydata2 <- mydata %>%
 mydata2
 ```
 
+```
+## # A tibble: 20 x 5
+##    season bodyweight_kg    V1    V2    V3
+##    <chr>          <dbl> <dbl> <dbl> <dbl>
+##  1 winter         107.      0     0     0
+##  2 winter         102.      0     0     0
+##  3 winter         105.      0     0     0
+##  4 winter         105.      0     0     0
+##  5 winter         103.      0     0     0
+##  6 spring         104.      1     0     0
+##  7 spring         101.      1     0     0
+##  8 spring         105.      1     0     0
+##  9 spring         108.      1     0     0
+## 10 spring         102.      1     0     0
+## 11 summer         101.      0     1     0
+## 12 summer         100.      0     1     0
+## 13 summer          98.8     0     1     0
+## 14 summer         101.      0     1     0
+## 15 summer         104.      0     1     0
+## 16 fall            99.5     0     0     1
+## 17 fall           102.      0     0     1
+## 18 fall           102.      0     0     1
+## 19 fall           101.      0     0     1
+## 20 fall            99.0     0     0     1
+```
+
 ## Equivalence between multiple regression and one-way ANOVA
 
 If we wanted to see whether our bodyweight varies over season, we could do a one way ANOVA on `mydata2` like so.
 
-```{r one-way}
+
+```r
 ## make season into a factor with baseline level 'winter'
 mydata3 <- mydata2 %>%
   mutate(season = factor(season, levels = c("winter", "spring", "summer", "fall")))
@@ -374,12 +663,44 @@ my_anova <- aov(bodyweight_kg ~ season, mydata3)
 summary(my_anova)
 ```
 
+```
+##             Df Sum Sq Mean Sq F value Pr(>F)  
+## season       3  59.14  19.714   5.155  0.011 *
+## Residuals   16  61.19   3.824                 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 OK, now can we replicate that result using the regression model below?
 
 $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{3i} + e_i$$
 
-```{r regression}
+
+```r
 summary(lm(bodyweight_kg ~ V1 + V2 + V3, mydata3))
+```
+
+```
+## 
+## Call:
+## lm(formula = bodyweight_kg ~ V1 + V2 + V3, data = mydata3)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.6048 -1.4881  0.0902  0.9071  3.5717 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 104.5803     0.8746 119.582  < 2e-16 ***
+## V1           -0.5034     1.2368  -0.407  0.68936    
+## V2           -3.4053     1.2368  -2.753  0.01414 *  
+## V3           -3.9033     1.2368  -3.156  0.00612 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.956 on 16 degrees of freedom
+## Multiple R-squared:  0.4915,	Adjusted R-squared:  0.3962 
+## F-statistic: 5.155 on 3 and 16 DF,  p-value: 0.01104
 ```
 
 Note that the $F$ values and $p$ values are identical for the two methods!
@@ -388,7 +709,8 @@ Note that the $F$ values and $p$ values are identical for the two methods!
 
 First create a tibble with new predictors. We might also want to know the range of values that `nclicks` varies over.
 
-```{r}
+
+```r
 lecture_mean <- grades %>% pull(lecture) %>% mean()
 min_nclicks <- grades %>% pull(nclicks) %>% min()
 max_nclicks <- grades %>% pull(nclicks) %>% max()
@@ -404,10 +726,37 @@ new_nclicks2 <- new_nclicks %>%
 new_nclicks2
 ```
 
+```
+## # A tibble: 76 x 3
+##    lecture nclicks grade
+##      <dbl>   <int> <dbl>
+##  1    6.99      54  2.37
+##  2    6.99      55  2.38
+##  3    6.99      56  2.38
+##  4    6.99      57  2.39
+##  5    6.99      58  2.39
+##  6    6.99      59  2.40
+##  7    6.99      60  2.40
+##  8    6.99      61  2.41
+##  9    6.99      62  2.41
+## 10    6.99      63  2.42
+## # ... with 66 more rows
+```
+
 Now plot.
 
-```{r partial-nclicks, fig.cap = "Partial effect plot of nclicks on grade."}
+
+```r
 ggplot(grades, aes(nclicks, grade)) +
   geom_point() +
   geom_line(data = new_nclicks2)
 ```
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{03-multiple-regression_files/figure-latex/partial-nclicks-1} 
+
+}
+
+\caption{Partial effect plot of nclicks on grade.}(\#fig:partial-nclicks)
+\end{figure}

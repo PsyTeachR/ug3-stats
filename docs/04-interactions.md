@@ -861,7 +861,7 @@ The default in R is to use treatment coding for any variable defined as a =facto
 
 The figure below spells out the notation for the various cell and marginal means for a 2x2x2 design.
 
-<div class="column" style="float:left; width: 50%">
+
 
 $$C_1$$
 
@@ -907,9 +907,9 @@ $$C_1$$
 </tbody>
 </table>
 
-</div>
 
-<div class="column" style="float:right; width: 50%">
+
+
 
 $$C_2$$
 
@@ -955,7 +955,6 @@ $$C_2$$
 </tbody>
 </table>
 
-</div>
 
 The table below provides the interpretation for various effects in the model under the three different coding schemes.  Note that $Y$ is the dependent variable, and the dots in the subscript mean to "ignore" the corresponding dimension.  Thus, \(\bar{Y}_{.1.}\) is the mean of B_1 (ignoring factors \(A\) and \(C\)) and \(\bar{Y}_{...}\) is the "grand mean" (ignoring all factors).
 

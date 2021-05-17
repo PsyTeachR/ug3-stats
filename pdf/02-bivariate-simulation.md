@@ -22,71 +22,92 @@ Let's say you've measured psychological well-being using multiple scales. One qu
 
 Recall that a correlation coefficient quantifies the **strength** and **direction** of a relationship between two variables. It is usually represented by the symbol $r$ (for a **statistic**) and $\rho$ (Greek letter "rho") (as a **parameter**).  The coefficient ranges between -1 and 1, with 0 corresponding to no relationship, positive values reflecting a positive relationship (as one variable increases, so does the other), and negative values reflecting a negative relationship (as one variable increases, the other decreases).
 
-```{r correlation-relationships, fig.width=6, fig.height=3, echo=FALSE, message=FALSE, fig.cap = "Different types of bivariate relationships."}
-library("tidyverse")
+\begin{figure}
 
-.pos <- MASS::mvrnorm(500, c(0, 0), matrix(c(1, .6, .6, 1), ncol = 2))
-.neg <- MASS::mvrnorm(500, c(0, 0), matrix(c(1, -.6, -.6, 1), ncol = 2))
-.none <- MASS::mvrnorm(500, c(0, 0), matrix(c(1, 0, 0, 1), ncol = 2))
+{\centering \includegraphics[width=1\linewidth]{02-bivariate-simulation_files/figure-latex/correlation-relationships-1} 
 
-.mytib <- tibble(
-  relationship = factor(c("negative", "none", "positive"),
-                        levels = c("negative", "none", "positive")),
-  data = list(tibble(x = .neg[, 1], y = .neg[, 2]),
-              tibble(x = .none[ ,1], y = .none[, 2]),
-              tibble(x = .pos[, 1], y = .pos[, 2]))
-) %>%
-  unnest(data)
+}
 
-ggplot(.mytib, aes(x, y)) +
-  facet_wrap(~ relationship,
-             labeller = "label_both") + 
-  geom_point(alpha = .1) +
-  geom_smooth(method = "lm", se = FALSE) +
-  coord_cartesian(xlim = c(-4, 4), ylim = c(-4, 4)) +
-  coord_equal()
-```
+\caption{Different types of bivariate relationships.}(\#fig:correlation-relationships)
+\end{figure}
 
 
-If you have $n$ measures, how many pairwise correlations can you compute? You can figure this out either by the formula in the info box below, or more easily you can computed it directly through the `choose(n, 2)` function in R. For instance, to get the number of possible pairwise correlations between 6 measures, you'd type `choose(6, 2)`, which tells you that you have `r choose(6, 2)` combinations.
+If you have $n$ measures, how many pairwise correlations can you compute? You can figure this out either by the formula in the info box below, or more easily you can computed it directly through the `choose(n, 2)` function in R. For instance, to get the number of possible pairwise correlations between 6 measures, you'd type `choose(6, 2)`, which tells you that you have 15 combinations.
 
-```{block, type="info"}
-For any $n$ measures, you can calculate $\frac{n!}{2(n - 2)!}$ pairwise correlations between measures. The $!$ symbol is called the **factorial** operator, defined as the product of all numbers from 1 to $n$. So, if you have six measurements, you have
+\begin{info}
+For any \(n\) measures, you can calculate \(\frac{n!}{2(n - 2)!}\)
+pairwise correlations between measures. The \(!\) symbol is called the
+\textbf{factorial} operator, defined as the product of all numbers from
+1 to \(n\). So, if you have six measurements, you have
 
-$$
+\[
 \frac{6!}{2(6-2)!} = \frac{1 \times 2 \times 3 \times 4 \times 5 \times 6}{2\left(1 \times 2 \times 3 \times 4\right)} = \frac{720}{2(24)} = 15
-$$
-```
+\]
+\end{info}
 
 You can create a correlation matrix in R using `base::cor()` or `corrr::correlate()`. We prefer the latter function because `cor()` requires that your data is stored in a matrix, whereas most of the data we will be working with is stored in a data frame. The `corrr::correlate()` function also takes a data frame as the first argument, so it works better with pipes (`%>%`).
 
 Let's create a correlation matrix to see how it works. Start by loading in the packages we will need.
 
-```{r load-packages, message = FALSE}
+
+```r
 library("tidyverse")
 library("corrr")  # install.packages("corrr") in console if missing
 ```
 
 We will use the `starwars` dataset, which is a built-in dataset that becomes available after you load the tidyverse package. This dataset has information about various characters that have appeared in the Star Wars film series. Let's look at the correlation between 
 
-```{r starwars-corr}
+
+```r
 starwars %>%
   select(height, mass, birth_year) %>%
   correlate()
 ```
 
-You can look up any bivariate correlation at the intersection of any given row or column. So the correlation between `height` and `mass` is .134, which you can find in row 1, column 2 or row 2, column 1; the values are the same. Note that there are only `choose(3, 2)` = `r choose(3, 2)` unique bivariate relationships, but each appears twice in the table. We might want to show only the unique pairs. We can do this by appending `corrr::shave()` to our pipeline.
+```
+## 
+## Correlation method: 'pearson'
+## Missing treated using: 'pairwise.complete.obs'
+```
 
-```{r corrr-shave}
+```
+## # A tibble: 3 x 4
+##   rowname    height   mass birth_year
+##   <chr>       <dbl>  <dbl>      <dbl>
+## 1 height     NA      0.134     -0.400
+## 2 mass        0.134 NA          0.478
+## 3 birth_year -0.400  0.478     NA
+```
+
+You can look up any bivariate correlation at the intersection of any given row or column. So the correlation between `height` and `mass` is .134, which you can find in row 1, column 2 or row 2, column 1; the values are the same. Note that there are only `choose(3, 2)` = 3 unique bivariate relationships, but each appears twice in the table. We might want to show only the unique pairs. We can do this by appending `corrr::shave()` to our pipeline.
+
+
+```r
 starwars %>%
   select(height, mass, birth_year) %>%
   correlate() %>%
   shave()
 ```
 
+```
+## 
+## Correlation method: 'pearson'
+## Missing treated using: 'pairwise.complete.obs'
+```
+
+```
+## # A tibble: 3 x 4
+##   rowname    height   mass birth_year
+##   <chr>       <dbl>  <dbl>      <dbl>
+## 1 height     NA     NA             NA
+## 2 mass        0.134 NA             NA
+## 3 birth_year -0.400  0.478         NA
+```
+
 Now we've only got the lower triangle of the correlation matrix, but the `NA` values are ugly and so are the leading zeroes. The **`corrr`** package also provides the `fashion()` function that cleans things up (see `?corrr::fashion` for more options).
 
-```{r shave-and-fashion}
+
+```r
 starwars %>%
   select(height, mass, birth_year) %>%
   correlate() %>%
@@ -94,49 +115,109 @@ starwars %>%
   fashion()
 ```
 
+```
+## 
+## Correlation method: 'pearson'
+## Missing treated using: 'pairwise.complete.obs'
+```
+
+```
+##      rowname height mass birth_year
+## 1     height                       
+## 2       mass    .13                
+## 3 birth_year   -.40  .48
+```
+
 Correlations only provide a good description of the relationship if the relationship is (roughly) linear and there aren't severe outliers that are wielding too strong of an influence on the results. So it is always a good idea to visualize the correlations as well as to quantify them.  The `base::pairs()` function does this. The first argument to `pairs()` is simply of the form `~ v1 + v2 + v3 + ... + vn` where `v1`, `v2`, etc. are the names of the variables you want to correlate.
 
-```{r pairs, fig.height=6, fig.width=6, fig.asp=1, fig.cap="Pairwise correlations for the starwars dataset"}
+
+```r
 pairs(~ height + mass + birth_year, starwars)
 ```
 
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{02-bivariate-simulation_files/figure-latex/pairs-1} 
+
+}
+
+\caption{Pairwise correlations for the starwars dataset}(\#fig:pairs)
+\end{figure}
+
 We can see that there is a big outlier influencing our data; in particular, there is a creature with a mass greater than 1200kg! Let's find out who this is and eliminate them from the dataset.
 
-```{r massive-creature-id}
+
+```r
 starwars %>%
   filter(mass > 1200) %>%
   select(name, mass, height, birth_year)
 ```
 
+```
+## # A tibble: 1 x 4
+##   name                   mass height birth_year
+##   <chr>                 <dbl>  <int>      <dbl>
+## 1 Jabba Desilijic Tiure  1358    175        600
+```
+
 OK, let's see how the data look without this massive creature.
 
-```{r massive-creature, fig.height=6, fig.asp=1, fig.cap="Pairwise correlations for the starwars dataset after removing outlying mass value."}
+
+```r
 starwars2 <- starwars %>%
   filter(name != "Jabba Desilijic Tiure")
 
 pairs(~height + mass + birth_year, starwars2)
 ```
 
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{02-bivariate-simulation_files/figure-latex/massive-creature-1} 
+
+}
+
+\caption{Pairwise correlations for the starwars dataset after removing outlying mass value.}(\#fig:massive-creature)
+\end{figure}
+
 Better, but there's a creature with an outlying birth year that we might want to get rid of.
 
-```{r year-outlier}
+
+```r
 starwars2 %>%
   filter(birth_year > 800) %>%
   select(name, height, mass, birth_year)
 ```
 
+```
+## # A tibble: 1 x 4
+##   name  height  mass birth_year
+##   <chr>  <int> <dbl>      <dbl>
+## 1 Yoda      66    17        896
+```
+
 It's Yoda. He's as old as the universe. Let's drop him and see how the plots look.
 
-```{r bye-yoda, fig.width=6, fig.asp=1, fig.cap="Pairwise correlations for the starwars dataset after removing outlying mass and birth\\_year values."}
+
+```r
 starwars3 <- starwars2 %>%
   filter(name != "Yoda")
 
 pairs(~height + mass + birth_year, starwars3)
 ```
 
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{02-bivariate-simulation_files/figure-latex/bye-yoda-1} 
+
+}
+
+\caption{Pairwise correlations for the starwars dataset after removing outlying mass and birth\_year values.}(\#fig:bye-yoda)
+\end{figure}
+
 That looks much better. Let's see how that changes our correlation matrix.
 
-```{r no-yoda}
+
+```r
 starwars3 %>%
   select(height, mass, birth_year) %>%
   correlate() %>%
@@ -144,11 +225,25 @@ starwars3 %>%
   fashion()
 ```
 
+```
+## 
+## Correlation method: 'pearson'
+## Missing treated using: 'pairwise.complete.obs'
+```
+
+```
+##      rowname height mass birth_year
+## 1     height                       
+## 2       mass    .74                
+## 3 birth_year    .45  .24
+```
+
 Note that these values are quite different from the ones we started with.
 
 Sometimes it's not a great idea to remove outliers. Another approach to dealing with outliers is to use a robust method. The default correlation coefficient that is computed by `corrr::correlate()` is the Pearson product-moment correlation coefficient. You can also compute the Spearman correlation coefficient by changing the `method()` argument to `correlate()`. This replaces the values with ranks before computing the correlation, so that outliers will still be included, but will have dramatically less influence.
 
-```{r starwars-spearman}
+
+```r
 starwars %>%
   select(height, mass, birth_year) %>%
   correlate(method = "spearman") %>%
@@ -156,9 +251,23 @@ starwars %>%
   fashion()
 ```
 
+```
+## 
+## Correlation method: 'spearman'
+## Missing treated using: 'pairwise.complete.obs'
+```
+
+```
+##      rowname height mass birth_year
+## 1     height                       
+## 2       mass    .75                
+## 3 birth_year    .16  .15
+```
+
 Incidentally, if you are generating a report from R Markdown and want your tables to be nicely formatted you can use `knitr::kable()`.
 
-```{r knitr-format, message = FALSE}
+
+```r
 starwars %>%
   select(height, mass, birth_year) %>%
   correlate(method = "spearman") %>%
@@ -166,6 +275,19 @@ starwars %>%
   fashion() %>%
   knitr::kable()
 ```
+
+
+\begin{tabular}{l|l|l|l}
+\hline
+rowname & height & mass & birth\_year\\
+\hline
+height &  &  & \\
+\hline
+mass & .75 &  & \\
+\hline
+birth\_year & .16 & .15 & \\
+\hline
+\end{tabular}
 
 ## Simulating bivariate data
 
@@ -175,9 +297,22 @@ It should be clear that you can't just run `rnorm()` twice and combine the varia
 
 The package **`MASS`** provides a function `mvrnorm()` which is the 'multivariate' version of rnorm (hence the function name, `mv` + `rnorm`, which makes it easy to remember.
 
-```{block, type="watchout"}
-The **`MASS`** package comes pre-installed with R. But the only function you'll probably ever want to use from **`MASS`** is `mvrnorm()`, so rather than load in the package using `library("MASS")`, it is preferable to use `MASS::mvrnorm()`, especially as **`MASS`** and the **`dplyr`** package from **`tidyverse`** [don't play well together](https://twitter.com/dalejbarr/status/516986671129452544?s=20), due to both packages having the function `select()`. So if you load in **`MASS`** after you load in **`tidyverse`**, you'll end up getting the **`MASS`** version of `select()` instead of the **`dplyr`** version. It will do your head in trying to figure out what is wrong with your code, so always `MASS::mvrnorm` and never `library("MASS")`.
-```
+\begin{watchout}
+The \textbf{\texttt{MASS}} package comes pre-installed with R. But the
+only function you'll probably ever want to use from
+\textbf{\texttt{MASS}} is \texttt{mvrnorm()}, so rather than load in the
+package using \texttt{library("MASS")}, it is preferable to use
+\texttt{MASS::mvrnorm()}, especially as \textbf{\texttt{MASS}} and the
+\textbf{\texttt{dplyr}} package from \textbf{\texttt{tidyverse}}
+\href{https://twitter.com/dalejbarr/status/516986671129452544?s=20}{don't
+play well together}, due to both packages having the function
+\texttt{select()}. So if you load in \textbf{\texttt{MASS}} after you
+load in \textbf{\texttt{tidyverse}}, you'll end up getting the
+\textbf{\texttt{MASS}} version of \texttt{select()} instead of the
+\textbf{\texttt{dplyr}} version. It will do your head in trying to
+figure out what is wrong with your code, so always
+\texttt{MASS::mvrnorm} and never \texttt{library("MASS")}.
+\end{watchout}
 
 Have a look at the documentation for the `mvrnorm()` function (type `?MASS::mvrnorm` in the console).
 
@@ -195,35 +330,49 @@ When you have multivariate data, the **covariance matrix** (also known as the **
 
 You can think of a covariance matrix as something like the correlation matrix that you saw above; indeed, with a few calculations you can turn a covariance matrix into a correlation matrix.
 
-```{block, type="info"}
-What's all this talk about the Matrix? Wasn't that a sci-fi film series from the 1990s?
+\begin{info}
+What's all this talk about the Matrix? Wasn't that a sci-fi film series
+from the 1990s?
 
-In mathematics, matrices are just generalizations of the concept of a vector: a vector can be thought of as having one dimension, whereas a matrix can have any number of dimensions.
+In mathematics, matrices are just generalizations of the concept of a
+vector: a vector can be thought of as having one dimension, whereas a
+matrix can have any number of dimensions.
 
 So the matrix
 
-$$
+\[
 \begin{pmatrix}
 1 & 4 & 7 \\
 2 & 5 & 8 \\
 3 & 6 & 9 \\
 \end{pmatrix}
-$$
+\]
 
-is a 3 (row) by 3 (column) matrix containing the column vectors $\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}$, $\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}$, and $\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}$. Conventionally, we refer to matrices in $i$ by $j$ format, with $i$ being the number of rows and $j$ being the number of columns.  So a 3x2 matrix has 3 rows and 2 columns, like so.
+is a 3 (row) by 3 (column) matrix containing the column vectors
+\(\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}\),
+\(\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}\), and
+\(\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}\). Conventionally, we
+refer to matrices in \(i\) by \(j\) format, with \(i\) being the number
+of rows and \(j\) being the number of columns. So a 3x2 matrix has 3
+rows and 2 columns, like so.
 
-$$
+\[
 \begin{pmatrix}
 a & d \\
 b & e \\
 c & f \\
 \end{pmatrix}
-$$
+\]
 
-A **square matrix** is a matrix where the number of rows is equal to the number of columns.
+A \textbf{square matrix} is a matrix where the number of rows is equal
+to the number of columns.
 
-You can create the above matrix in R using the `matrix()` function (see below) or by binding together vectors column-wise, using the base R `cbind()` function. Try `cbind(1:3, 4:6, 7:9)` in your console. You can also bind vectors together row-wise using `rbind()`.
-```
+You can create the above matrix in R using the \texttt{matrix()}
+function (see below) or by binding together vectors column-wise, using
+the base R \texttt{cbind()} function. Try
+\texttt{cbind(1:3,\ 4:6,\ 7:9)} in your console. You can also bind
+vectors together row-wise using \texttt{rbind()}.
+\end{info}
 
 Now what is all this about the matrix being "positive-definite" and "symmetric"? These are mathematical requirements about the kinds of matrices that can represent possible multivariate normal distributions. In other words, the covariance matrix you supply must be represent a legal multivariate normal distribution. At this point, you don't really need to know much more about this than that.
 
@@ -231,7 +380,8 @@ Let's start by simulating data representing hypothetical humans and their height
 
 I found some data [here](https://www.geogebra.org/m/RRprACv4) which I converted into a CSV file. If you want to follow along, download the file [heights_and_weights.csv](data/heights_and_weights.csv){download="heights_and_weights.csv"}. Here's how the scatterplot looks:
 
-```{r heights-and-weights, fig.cap="Heights and weights of 475 humans (including infants)"}
+
+```r
 handw <- read_csv("data/heights_and_weights.csv", col_types = "dd")
 
 ggplot(handw, aes(height_in, weight_lbs)) + 
@@ -239,34 +389,39 @@ ggplot(handw, aes(height_in, weight_lbs)) +
   labs(x = "height (inches)", y = "weight (pounds)") 
 ```
 
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{02-bivariate-simulation_files/figure-latex/heights-and-weights-1} 
+
+}
+
+\caption{Heights and weights of 475 humans (including infants)}(\#fig:heights-and-weights)
+\end{figure}
+
 Now, that's not quite a linear relationship. We can make it into one by log transforming each of the variables first.
 
-```{r log-them}
+
+```r
 handw_log <- handw %>%
   mutate(hlog = log(height_in),
          wlog = log(weight_lbs))
 ```
 
 
-```{r handw-log, echo = FALSE, fig.cap="Log transformed heights and weights."}
-sumstats <- 
-  handw_log %>% summarize(mh = mean(hlog),
-                        mw = mean(wlog),
-                        sh = sd(hlog),
-                        sw = sd(wlog))
+\begin{figure}
 
-hwcor <- cor(handw_log %>% pull(hlog), handw_log %>% pull(wlog))
+{\centering \includegraphics[width=1\linewidth]{02-bivariate-simulation_files/figure-latex/handw-log-1} 
 
-ggplot(handw_log, aes(hlog, wlog)) +
-  geom_point(alpha = .2) +
-  labs(x = "log(height)", y = "log(weight)")
-```
+}
+
+\caption{Log transformed heights and weights.}(\#fig:handw-log)
+\end{figure}
 
 The fact that there is a big cluster of points in the top right tail of the cloud probably indicates that there were more adults than kids in this sample, since adults are taller and heavier.
 
-The mean log height is `r .mh <- sumstats %>% pull(mh) %>% round(2); .mh` (SD = `r .sh <- sumstats %>% pull(sh) %>% round(2); .sh`), while the mean log weight is `r .mw <- sumstats %>% pull(mw) %>% round(2); .mw` (SD = `r .sw <- sumstats %>% pull(sw) %>% round(2); .sw`).  The correlation between log height and log weight, which we can get using the `cor()` function, is very high, `r .rho <- round(hwcor, 2); .rho`.
+The mean log height is 4.11 (SD = 0.26), while the mean log weight is 4.74 (SD = 0.65).  The correlation between log height and log weight, which we can get using the `cor()` function, is very high, 0.96.
 
-We now have all the information we need to simulate the heights and weights of, let's say, 500 humans. But how do we get this information into `MASS::mvrnorm()`? We know the first part of the function call will be `MASS::mvrnorm(500, c(`r .mh`, `r .mw`), ...)`, but what about `Sigma`, the covariance matrix?  We know from above that $\hat{\sigma}_x = `r .sh`$ and $\hat{\sigma}_y = `r .sw`$,  and $\hat{\rho}_{xy} = `r .rho`$.
+We now have all the information we need to simulate the heights and weights of, let's say, 500 humans. But how do we get this information into `MASS::mvrnorm()`? We know the first part of the function call will be `MASS::mvrnorm(500, c(4.11, 4.74), ...)`, but what about `Sigma`, the covariance matrix?  We know from above that $\hat{\sigma}_x = 0.26$ and $\hat{\sigma}_y = 0.65$,  and $\hat{\rho}_{xy} = 0.96$.
 
 A covariance matrix representating `Sigma` ($\mathbf{\Sigma}$) for bivariate data has the following format:
 
@@ -297,34 +452,50 @@ OK, how do we form `Sigma` in R so that we can pass it to the `mvrnorm()` functi
 
 First let's define our covariance and store it in the variable `my_cov`.
 
-```{r define-covariance}
+
+```r
 my_cov <- .96 * .26 * .65
 ```
 
 Now we'll use `matrix()` to define our `Sigma`, `my_Sigma`.
 
-```{r form-matrix}
+
+```r
 my_Sigma <- matrix(c(.26^2, my_cov, my_cov, .65^2), ncol = 2)
 my_Sigma
 ```
 
-```{block, type = "info"}
-Confused about the `matrix()` function?
-
-The first argument is a vector of values, which we created above using `c()`. The `ncol` argument specifies how many columns the matrix should have. There is also an `nrow` argument that you could use, but if you give it one of the dimensions, it can infer the size of the other using the length of the vector supplied as the first argument.
-
-You can see that `matrix()` fills in the elements of the matrix column by column, rather than row by row by running the following code:
-
-`matrix(c("a", "b", "c", "d"), ncol = 2)`
-
-If you want to change this behavior, set the `byrow` argument to `TRUE`.
-
-`matrix(c("a", "b", "c", "d"), ncol = 2, byrow = TRUE)`
 ```
+##         [,1]    [,2]
+## [1,] 0.06760 0.16224
+## [2,] 0.16224 0.42250
+```
+
+\begin{info}
+Confused about the \texttt{matrix()} function?
+
+The first argument is a vector of values, which we created above using
+\texttt{c()}. The \texttt{ncol} argument specifies how many columns the
+matrix should have. There is also an \texttt{nrow} argument that you
+could use, but if you give it one of the dimensions, it can infer the
+size of the other using the length of the vector supplied as the first
+argument.
+
+You can see that \texttt{matrix()} fills in the elements of the matrix
+column by column, rather than row by row by running the following code:
+
+\texttt{matrix(c("a",\ "b",\ "c",\ "d"),\ ncol\ =\ 2)}
+
+If you want to change this behavior, set the \texttt{byrow} argument to
+\texttt{TRUE}.
+
+\texttt{matrix(c("a",\ "b",\ "c",\ "d"),\ ncol\ =\ 2,\ byrow\ =\ TRUE)}
+\end{info}
 
 Great. Now that we've got `my_Sigma`, we're ready to use `MASS::mvrnorm()`. Let's test it out by creating 6 synthetic humans.
 
-```{r synth-peeps}
+
+```r
 set.seed(62) # for reproducibility
 
 # passing the *named* vector c(height = 4.11, weight = 4.74)
@@ -336,17 +507,39 @@ log_ht_wt <- MASS::mvrnorm(6,
 log_ht_wt
 ```
 
+```
+##        height   weight
+## [1,] 4.254209 5.282913
+## [2,] 4.257828 4.895222
+## [3,] 3.722376 3.759767
+## [4,] 4.191287 4.764229
+## [5,] 4.739967 6.185191
+## [6,] 4.058105 4.806485
+```
+
 So `MASS::mvrnorm()` returns a matrix with a row for each simulated human, with the first column representing the log height and the second column representing the log weight.  But log heights and log weights are not very useful to us, so let's transform them back by using `exp()`, which is the inverse of the `log()` transform.
 
-```{r back-transform}
+
+```r
 exp(log_ht_wt)
 ```
 
-So our first simulated human is `r .sim_h <- exp(log_ht_wt)[1, 1] %>% round(2); .sim_h` inches tall (about `r .ft <- floor(.sim_h / 12); .in <- round((.sim_h - floor(.sim_h)) * 12); paste0(.ft, "'", .in, "\"")` or X) and weighs `r .sim_w <- exp(log_ht_wt)[1, 2] %>% round(2); .sim_w` pounds (`r round(.sim_w / 2.205, 2)` kg). Sounds about right! (Note also that it will generate observations outside of our original data; we'll get super tall humans, like observation 5, but at least the weight/height relationship will be preserved.)
+```
+##         height    weight
+## [1,]  70.40108 196.94276
+## [2,]  70.65632 133.64963
+## [3,]  41.36254  42.93844
+## [4,]  66.10779 117.24065
+## [5,] 114.43045 485.50576
+## [6,]  57.86453 122.30092
+```
+
+So our first simulated human is 70.4 inches tall (about 5'5" or X) and weighs 196.94 pounds (89.32 kg). Sounds about right! (Note also that it will generate observations outside of our original data; we'll get super tall humans, like observation 5, but at least the weight/height relationship will be preserved.)
 
 OK, let's randomly generate a bunch of humans, transform them from log to inches and pounds, and plot them against our original data to see how we're doing.
 
-```{r plot-together, fig.cap="Real and simulated humans."}
+
+```r
 ## simulate new humans
 new_humans <- MASS::mvrnorm(500, 
                             c(height_in = 4.11, weight_lbs = 4.74),
@@ -364,17 +557,22 @@ ggplot(alldata, aes(height_in, weight_lbs)) +
   geom_point(aes(colour = type), alpha = .1)
 ```
 
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{02-bivariate-simulation_files/figure-latex/plot-together-1} 
+
+}
+
+\caption{Real and simulated humans.}(\#fig:plot-together)
+\end{figure}
+
 You can see that our simulated humans are much like the normal ones, except that we are creating humans outside the normal range of heights and weights.
 
 ### Bivariate app
 
 Here is a web app that you should play around with to better understand the relationship between covariance matrices, bivariate normal distributions, and correlation coefficients.
 
-```{r bivariate_app, echo=FALSE, fig.cap="*Shiny web app at [https://shiny.psy.gla.ac.uk/Dale/bivariate](https://shiny.psy.gla.ac.uk/Dale/bivariate){target=\"blank\"}*"}
-if (knitr::is_html_output())
-  knitr::include_app("https://shiny.psy.gla.ac.uk/Dale/bivariate",
-                     height="410px")
-```
+
 
 ## Relationship between correlation and regression
 
@@ -396,9 +594,14 @@ Given the estimates above for log height and weight, can you solve for $\beta_1$
 
 <!-- TODO make this use webex -->
 
-```{r solve-for-slope}
+
+```r
 b1 <- .96 * (.65 / .26)
 b1
+```
+
+```
+## [1] 2.4
 ```
 
 The next thing to note is that for mathematical reasons, the regression line is guaranteed to go through the point corresponding to the mean of $X$ and the mean of $Y$, i.e., the point $(\mu_x, \mu_y)$. (You can think of the regression line "pivoting" around that point depending on the slope). You also know that $\beta_0$ is the y-intercept, the point where the line crosses the vertical axis at $X = 0$. From this information, and the estimates above, can you figure out the value of $\beta_0$?
@@ -407,33 +610,65 @@ The next thing to note is that for mathematical reasons, the regression line is 
 
 Here is the reasoning by which you can solve for $\beta_0$.
 
-The $\beta_1$ value tells you that for each change in $X$ you have a corresponding change of `r b1` for $Y$, and you know that the line goes through the points $(\mu_x, \mu_y)$ as well as the y-intercept $(0, \beta_0)$. 
+The $\beta_1$ value tells you that for each change in $X$ you have a corresponding change of 2.4 for $Y$, and you know that the line goes through the points $(\mu_x, \mu_y)$ as well as the y-intercept $(0, \beta_0)$. 
 
 Think about stepping back unit-by-unit from $X = \mu_x$ to $X = 0$. 
-At $X = \mu_x$, $Y = `r .mw`$. Each unit step you take backward in the X dimension, $Y$ will drop by $\beta_1 = `r b1`$ units.  When you get to zero, $Y$ will have dropped from $\mu_y$ to $\mu_y - \mu_x\beta_1$.
+At $X = \mu_x$, $Y = 4.74$. Each unit step you take backward in the X dimension, $Y$ will drop by $\beta_1 = 2.4$ units.  When you get to zero, $Y$ will have dropped from $\mu_y$ to $\mu_y - \mu_x\beta_1$.
 
 So the general solution is: $\beta_0 = \mu_y - \mu_x\beta_1$.
 
-Since $\beta_1 = `r b1`$, $\mu_x = `r .mh`$, and $\mu_y = `r .mw`$, $\beta_0 = `r b0 <- .mw - .mh * b1; b0`$. Thus, our regression equation is:
+Since $\beta_1 = 2.4$, $\mu_x = 4.11$, and $\mu_y = 4.74$, $\beta_0 = -5.124$. Thus, our regression equation is:
 
-$$Y_i =  `r b0` + `r b1`X_i + e_i.$$
+$$Y_i =  -5.124 + 2.4X_i + e_i.$$
 
 To check our results, let's first run a regression on the log-transformed data using `lm()`, which estimates parameters using ordinary least squares regression.
 
-```{r my-regression}
+
+```r
 summary(lm(wlog ~ hlog, handw_log))
+```
+
+```
+## 
+## Call:
+## lm(formula = wlog ~ hlog, data = handw_log)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.63296 -0.09915 -0.01366  0.09285  0.65635 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -5.26977    0.13169  -40.02   <2e-16 ***
+## hlog         2.43304    0.03194   76.17   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.1774 on 473 degrees of freedom
+## Multiple R-squared:  0.9246,	Adjusted R-squared:  0.9245 
+## F-statistic:  5802 on 1 and 473 DF,  p-value: < 2.2e-16
 ```
 
 Looks pretty close. The reason that it doesn't match exactly is only because we've rounded off our estimates to two decimal places for convenience. 
 
 As another check, let's superimpose the regression line we computed by hand on the scatterplot of the log-transformed data.
 
-```{r scatter-with-line, fig.cap = "Log transformed values with superimposed regression line."}
+
+```r
 ggplot(handw_log, aes(hlog, wlog)) +
   geom_point(alpha = .2) +
   labs(x = "log(height)", y = "log(weight)") +
   geom_abline(intercept = -5.124, slope = 2.4, colour = 'blue')
 ```
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{02-bivariate-simulation_files/figure-latex/scatter-with-line-1} 
+
+}
+
+\caption{Log transformed values with superimposed regression line.}(\#fig:scatter-with-line)
+\end{figure}
 
 Looks right.
 
@@ -444,11 +679,4 @@ To close, here are a few implications from the relationship between correlation 
 * $\beta_1 < 0$ implies $\rho < 0$, for the same reason.
 * Rejecting the null hypothesis that $\beta_1 = 0$ is the same as rejecting the null hypothesis that $\rho = 0$. The p-values that you get for $\beta_1$ in `lm()` will be the same as the one you get for $\rho$ from `cor.test()`.
 
-```{r glossary, include = FALSE}
-## things to add to the glossary
-# glossary("square matrix")
-# glossary("correlation matrix")
-# glossary("covariance")
-# glossary("standard deviation")
-# glossary("covariance matrix")
-```
+

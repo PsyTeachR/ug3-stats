@@ -23,11 +23,11 @@ Reaction times in a sleep deprivation study
 
 Description:
 
-     The average reaction time per day (in milliseconds) for subjects
-     in a sleep deprivation study.
-
-     Days 0-1 were adaptation and training (T1/T2), day 2 was baseline
-     (B); sleep deprivation started after day 2.
+     The average reaction time per day for subjects in a sleep
+     deprivation study. On day 0 the subjects had their normal amount
+     of sleep.  Starting that night they were restricted to 3 hours of
+     sleep per night.  The observations represent the average reaction
+     time on a series of tests given each day to each subject.
 
 Format:
 
@@ -42,10 +42,8 @@ Format:
 Details:
 
      These data are from the study described in Belenky et al.  (2003),
-     for the most sleep-deprived group (3 hours time-in-bed) and for
-     the first 10 days of the study, up to the recovery period.  The
-     original study analyzed speed (1/(reaction time)) and treated day
-     as a categorical rather than a continuous predictor.
+     for the sleep-deprived group and for the first 10 days of the
+     study, up to the recovery period.
 
 References:
 
@@ -56,9 +54,9 @@ References:
      sleep dose-response study. _Journal of Sleep Research_ *12*, 1-12.
 ```
 
-Note that these data meet our definition of multilevel data due to multistage sampling: Participants are sampled from a population, and then their mean reaction times are measured on each of the 10 days in the study. Even though we don't have the trial-by-trial information used to calculate the means, this is still multilevel data, because of the multiple observations on the response variable (reaction time) across days for each subject.
+Note that these data meet our definition of multilevel data due to multistage sampling: Participants are sampled from a population, and then their mean reaction times are measured on each of the 10 days in the study. Even though we don't have the trial-by-trial information used to calculate the means, this is still multilevel data, because of the multiple observations on the response variable (reaction time) for each subject.
 
-Multi-level data of this type is extremely common in psychology. However, if you open up most introductory statistics textbooks and read through to the end, you'll learn about t-tests, repeated-measures and mixed-model ANOVA, and multiple regression, but none of the techniques that you learn would be applicable to this type of data. It suggests a serious gap in training. Because most data is multi-level, multi-level modeling should be taught as the **default** approach, not as an advanced approach that is far beyond the reach of undergraduates. All of the other techniques---t-test, ANOVA, multiple regression---can be seen as special cases of the more general multi-level approach. 
+Multi-level data of this type is extremely common in psychology. However, if you open up most introductory statistics textbooks and read through to the end, you'll learn about t-tests, repeated-measures and mixed-model ANOVA, and multiple regression, but none of the techniques that you learn would be applicable to multi-level data of this sort. It suggests a serious gap in training, one which should be filled by teaching multi-level modeling. All of the other techniques---t-test, ANOVA, multiple regression---can be seen as special cases of the more general multi-level modeling approach. My view is that multi-level modeling should be taught as the **default**, not as an advanced approach that is too far beyond the reach of undergraduates.
 
 Let's consider the `sleepstudy` data. The dataset contains eighteen participants from the three-hour sleep condition. Each day, over 10 days, participants performed a ten-minute "psychomotor vigilance test" where they had to monitor a display and press a button as quickly as possible each time a stimulus appeared. The dependent measure in the dataset is the participant's average response time (RT) on the task for that day.
 
@@ -77,10 +75,16 @@ ggplot(just_308, aes(x = Days, y = Reaction)) +
   scale_x_continuous(breaks = 0:9)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="05-linear-mixed-effects-intro_files/figure-html/one-subject-1.png" alt="*Data from a single subject in Belenky et al. (2003)*" width="50%" />
-<p class="caption">(\#fig:one-subject)*Data from a single subject in Belenky et al. (2003)*</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth]{05-linear-mixed-effects-intro_files/figure-latex/one-subject-1} 
+
+}
+
+\caption{*Data from a single subject in Belenky et al. (2003)*}(\#fig:one-subject)
+\end{figure}
+
+It looks like RT is increasing with each additional day of sleep deprivation, at least from day 2 to day 10.
 
 <div class="try">
 
@@ -88,12 +92,14 @@ ggplot(just_308, aes(x = Days, y = Reaction)) +
 
 Use ggplot to recreate the plot below, which shows data for all 18 subjects.
 
-<div class="figure" style="text-align: center">
-<img src="05-linear-mixed-effects-intro_files/figure-html/plot-solution0-1.png" alt="*Data from Belenky et al. (2003)*" width="100%" />
-<p class="caption">(\#fig:plot-solution0)*Data from Belenky et al. (2003)*</p>
-</div>
+\begin{figure}
 
-It looks like RT is increasing with each additional day of sleep deprivation, starting from day 2 and increasing until day 10.
+{\centering \includegraphics[width=1\linewidth]{05-linear-mixed-effects-intro_files/figure-latex/plot-solution0-1} 
+
+}
+
+\caption{*Data from Belenky et al. (2003)*}(\#fig:plot-solution0)
+\end{figure}
 
 
 <div class='solution'><button>Hint, please</button>
@@ -125,13 +131,17 @@ ggplot(sleepstudy, aes(x = Days, y = Reaction)) +
 
 </div>
 
-## How to model these data?
+## How to model this data?
 
-This is how @Belenky_et_al_2003 describe their study (p. 2 of the PDF):
+Before proceeding, there is one important thing to note. Unfortunately, the description of the `sleepstudy` data in the `lme4` package is inaccurate. The documentation states:
+
+> On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night.
+
+However, this is what @Belenky_et_al_2003 actually say (p. 2 of the PDF):
 
 > The first 3 days (T1, T2 and B) were adaptation and training (T1 and T2) and baseline (B) and subjects were required to be in bed from 23:00 to 07:00 h [8 h required time in bed (TIB)]. On the third day (B), baseline measures were taken. Beginning on the fourth day and continuing for a total of 7 days (E1–E7) subjects were in one of four sleep conditions [9 h required TIB (22:00–07:00 h), 7 h required TIB (24:00–07:00 h), 5 h required TIB (02:00–07:00 h), or 3 h required TIB (04:00–07:00 h)], effectively one sleep augmentation condition, and three sleep restriction conditions.
 
-There were seven nights of sleep restriction, with the first night of restriction occurring after the third day. The first two days, coded as `0`, `1`, were adaptation and training. The day coded as `2`, where the baseline measurement was taken, should be the place where we start our analysis. If we include the days `0` and `1` in our analysis, this might bias our results, since any changes in performance during the first two days have to do with training, not sleep restriction.
+One thing to note is that the dataset includes data from only one of the three conditions (the 3h TIB condition). But the more important thing is that the documentation of `sleepstudy` is wrong: there were seven nights of sleep restriction, not nine, with the first night of restriction occurring after the third day. The first two days, coded as `0`, `1`, were adaptation and training. The day coded as `2`, where the baseline measurement was taken should be the place where we start our analysis. If we include the days `0` and `1` in our analysis, this might bias our results, since any changes in performance during the first two days have to do with training, not sleep restriction.
 
 <div class="try">
 
@@ -206,10 +216,14 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
   labs(y = "Reaction Time", x = "Days deprived of sleep (0 = baseline)")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="05-linear-mixed-effects-intro_files/figure-html/plot-solution2-1.png" alt="*Data from Belenky et al. (2003), showing reaction time at baseline (0) and after each day of sleep deprivation.*" width="100%" />
-<p class="caption">(\#fig:plot-solution2)*Data from Belenky et al. (2003), showing reaction time at baseline (0) and after each day of sleep deprivation.*</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{05-linear-mixed-effects-intro_files/figure-latex/plot-solution2-1} 
+
+}
+
+\caption{*Data from Belenky et al. (2003), showing reaction time at baseline (0) and after each day of sleep deprivation.*}(\#fig:plot-solution2)
+\end{figure}
 
 Take a moment to think about how me might model the relationship between `days_deprived` and `Reaction`. Does reaction time increase or decrease with increasing sleep deprivation? Is the relationship roughly stable or does it change with time?
 
@@ -291,10 +305,14 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
   labs(y = "Reaction Time", x = "Days deprived of sleep (0 = baseline)")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="05-linear-mixed-effects-intro_files/figure-html/cp-model-plot-1.png" alt="Data plotted against predictions from the complete pooling model." width="100%" />
-<p class="caption">(\#fig:cp-model-plot)Data plotted against predictions from the complete pooling model.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{05-linear-mixed-effects-intro_files/figure-latex/cp-model-plot-1} 
+
+}
+
+\caption{Data plotted against predictions from the complete pooling model.}(\#fig:cp-model-plot)
+\end{figure}
 
 The model fits the data badly. We need a different approach.
 
@@ -500,10 +518,14 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
   labs(y = "Reaction Time", x = "Days deprived of sleep (0 = baseline)")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="05-linear-mixed-effects-intro_files/figure-html/np-model-fits-1.png" alt="Data plotted against fits from the no-pooling approach." width="100%" />
-<p class="caption">(\#fig:np-model-fits)Data plotted against fits from the no-pooling approach.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{05-linear-mixed-effects-intro_files/figure-latex/np-model-fits-1} 
+
+}
+
+\caption{Data plotted against fits from the no-pooling approach.}(\#fig:np-model-fits)
+\end{figure}
 
 This is much better than the complete pooling model. If we want to test the null hypothesis that the fixed slope is zero, we could do using a one-sample test.
 
@@ -782,7 +804,7 @@ newdata
 ##  8 308                 7
 ##  9 309                 0
 ## 10 309                 1
-## # … with 134 more rows
+## # ... with 134 more rows
 ```
 
 Then, run this through `predict()`. Typically we will add the prediction in as a new variable in the data frame of new data, giving it the same name as our DV (`Reaction`).
@@ -806,10 +828,14 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
   labs(y = "Reaction Time", x = "Days deprived of sleep (0 = baseline)")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="05-linear-mixed-effects-intro_files/figure-html/pp-plot-1.png" alt="Data plotted against predictions from a partial pooling approach." width="100%" />
-<p class="caption">(\#fig:pp-plot)Data plotted against predictions from a partial pooling approach.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{05-linear-mixed-effects-intro_files/figure-latex/pp-plot-1} 
+
+}
+
+\caption{Data plotted against predictions from a partial pooling approach.}(\#fig:pp-plot)
+\end{figure}
 
 ## Interpreting `lmer()` output and extracting estimates
 
@@ -1101,10 +1127,14 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
   labs(y = "Reaction Time", x = "Days deprived of sleep (0 = baseline)")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="05-linear-mixed-effects-intro_files/figure-html/extrap-plot-1.png" alt="Data against model with extrapolation." width="100%" />
-<p class="caption">(\#fig:extrap-plot)Data against model with extrapolation.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{05-linear-mixed-effects-intro_files/figure-latex/extrap-plot-1} 
+
+}
+
+\caption{Data against model with extrapolation.}(\#fig:extrap-plot)
+\end{figure}
 
 ## Multi-level app
 
