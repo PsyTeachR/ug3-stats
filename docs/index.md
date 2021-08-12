@@ -31,7 +31,11 @@ Unlike other textbooks you may have encountered, this is an **interactive textbo
 
 ## How to cite this book {-}
 
-Barr, Dale J. (2020). *Learning statistical models through simulation in R: An interactive textbook*. Version 0.9-3. Retrieved from https://psyteachr.github.io/book/ug3-stats.
+Barr, Dale J. (2021). *Learning statistical models through simulation in R: An interactive textbook*. Version 0.9.4. Retrieved from <https://psyteachr.github.io/book/ug3-stats>.
+
+## Found an issue? {-}
+
+If you find errors or typos, have questions or suggestions, please file an issue at <https://github.com/psyteachr/ug3-stats/issues>. Thanks!
 
 ## Information for educators {-}
 
