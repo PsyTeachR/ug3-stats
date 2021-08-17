@@ -1,5 +1,10 @@
 # Generalized linear mixed-effects models
 
+::: {.warning}
+<h2>You are reading an old version of this textbook.</h2>
+<a href="https://psyteachr.github.io/stat-models">Go to the latest version</a>
+:::
+
 
 
 ## Learning objectives
@@ -71,7 +76,7 @@ rainy_days %>%
 ## # A tibble: 2 x 2
 ##   city         sd
 ##   <chr>     <dbl>
-## 1 Barcelona  6.99
+## 1 Barcelona  6.88
 ## 2 Glasgow    9.56
 ```
 

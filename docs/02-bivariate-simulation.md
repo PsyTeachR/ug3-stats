@@ -1,5 +1,10 @@
 # Understanding correlation and regression through bivariate simulation
 
+::: {.warning}
+<h2>You are reading an old version of this textbook.</h2>
+<a href="https://psyteachr.github.io/stat-models">Go to the latest version</a>
+:::
+
 * Packages used: 
     + **`tidyverse`**
     + **`corrr`**
@@ -63,7 +68,7 @@ starwars %>%
 
 ```
 ## # A tibble: 3 x 4
-##   rowname    height   mass birth_year
+##   term       height   mass birth_year
 ##   <chr>       <dbl>  <dbl>      <dbl>
 ## 1 height     NA      0.134     -0.400
 ## 2 mass        0.134 NA          0.478
@@ -88,7 +93,7 @@ starwars %>%
 
 ```
 ## # A tibble: 3 x 4
-##   rowname    height   mass birth_year
+##   term       height   mass birth_year
 ##   <chr>       <dbl>  <dbl>      <dbl>
 ## 1 height     NA     NA             NA
 ## 2 mass        0.134 NA             NA
@@ -113,7 +118,7 @@ starwars %>%
 ```
 
 ```
-##      rowname height mass birth_year
+##         term height mass birth_year
 ## 1     height                       
 ## 2       mass    .13                
 ## 3 birth_year   -.40  .48
@@ -211,7 +216,7 @@ starwars3 %>%
 ```
 
 ```
-##      rowname height mass birth_year
+##         term height mass birth_year
 ## 1     height                       
 ## 2       mass    .74                
 ## 3 birth_year    .45  .24
@@ -237,7 +242,7 @@ starwars %>%
 ```
 
 ```
-##      rowname height mass birth_year
+##         term height mass birth_year
 ## 1     height                       
 ## 2       mass    .75                
 ## 3 birth_year    .16  .15
@@ -257,7 +262,7 @@ starwars %>%
 
 
 
-|rowname    |height |mass |birth_year |
+|term       |height |mass |birth_year |
 |:----------|:------|:----|:----------|
 |height     |       |     |           |
 |mass       |.75    |     |           |

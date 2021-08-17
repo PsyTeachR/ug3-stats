@@ -1,5 +1,10 @@
 # Interactions
 
+::: {.warning}
+<h2>You are reading an old version of this textbook.</h2>
+<a href="https://psyteachr.github.io/stat-models">Go to the latest version</a>
+:::
+
 ```{r setup, include=FALSE}
 library("kableExtra")
 library("tidyverse")

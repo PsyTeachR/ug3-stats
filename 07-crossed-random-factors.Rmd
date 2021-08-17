@@ -1,5 +1,10 @@
 # Linear mixed-effects models with crossed random factors
 
+::: {.warning}
+<h2>You are reading an old version of this textbook.</h2>
+<a href="https://psyteachr.github.io/stat-models">Go to the latest version</a>
+:::
+
 ## Learning objectives
 
 * analyze data from a design with crossed random factors of subjects and stimuli

@@ -1,5 +1,10 @@
 # Multiple regression
 
+::: {.warning}
+<h2>You are reading an old version of this textbook.</h2>
+<a href="https://psyteachr.github.io/stat-models">Go to the latest version</a>
+:::
+
 General model for single-level data with $m$ predictors:
 
 $$
