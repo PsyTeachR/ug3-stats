@@ -1,7 +1,7 @@
 --- 
 title: "Learning Statistical Models Through Simulation in R"
 author: "Dale J. Barr"
-date: "2021-05-17"
+date: "2021-08-17"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -13,6 +13,11 @@ description: "Textbook on statistical models for social scientists."
 
 
 # Overview {-}
+
+::: {.warning}
+<h2>You are reading an old version of this textbook.</h2>
+<a href="https://psyteachr.github.io/stat-models">Go to the latest version</a>
+:::
 
 This textbook approaches statistical analysis through the General Linear Model, taking a simulation-based approach in the R software environment. The overarching goal is to teach students how to translate a description of the design of a study into a linear model to analyze data from that study. The focus is on the skills needed to analyze data from psychology experiments.
 
@@ -31,7 +36,11 @@ Unlike other textbooks you may have encountered, this is an **interactive textbo
 
 ## How to cite this book {-}
 
-Barr, Dale J. (2020). *Learning statistical models through simulation in R: An interactive textbook*. Version 0.9-3. Retrieved from https://psyteachr.github.io/book/ug3-stats.
+Barr, Dale J. (2021). *Learning statistical models through simulation in R: An interactive textbook*. Version 0.9.4. Retrieved from <https://psyteachr.github.io/book/ug3-stats>.
+
+## Found an issue? {-}
+
+If you find errors or typos, have questions or suggestions, please file an issue at <https://github.com/psyteachr/ug3-stats/issues>. Thanks!
 
 ## Information for educators {-}
 

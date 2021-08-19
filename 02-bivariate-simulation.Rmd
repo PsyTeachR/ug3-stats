@@ -1,5 +1,10 @@
 # Understanding correlation and regression through bivariate simulation
 
+::: {.warning}
+<h2>You are reading an old version of this textbook.</h2>
+<a href="https://psyteachr.github.io/stat-models">Go to the latest version</a>
+:::
+
 * Packages used: 
     + **`tidyverse`**
     + **`corrr`**
@@ -7,7 +12,7 @@
 * Functions used: 
     + `base::choose()` 
     + `corrr::correlate()`
-    + `base::matrix()`
+    + `base::rbind()`
     + `base::cor()`
     + `base::log()` and `base::exp()` for log transformation (and back)
 
@@ -20,7 +25,7 @@ You may be familiar with the concept of a **correlation matrix** from reading pa
 
 Let's say you've measured psychological well-being using multiple scales. One question is the extent to which these scales are measuring the same thing. Often you will look at a correlation matrix to explore all the pairwise relationships between measures.
 
-Recall that a correlation coefficient quantifies the **strength** and **direction** of a relationship between two variables. It is usually represented by the symbol $r$ (for a **statistic**) and $\rho$ (Greek letter "rho") (as a **parameter**).  The coefficient ranges between -1 and 1, with 0 corresponding to no relationship, positive values reflecting a positive relationship (as one variable increases, so does the other), and negative values reflecting a negative relationship (as one variable increases, the other decreases).
+Recall that a correlation coefficient quantifies the **strength** and **direction** of a relationship between two variables. It is usually represented by the symbol $r$ or $\rho$ (Greek letter "rho").  The correlation coefficient ranges between -1 and 1, with 0 corresponding to no relationship, positive values reflecting a positive relationship (as one variable increases, so does the other), and negative values reflecting a negative relationship (as one variable increases, the other decreases).
 
 ```{r correlation-relationships, fig.width=6, fig.height=3, echo=FALSE, message=FALSE, fig.cap = "Different types of bivariate relationships."}
 library("tidyverse")
@@ -47,7 +52,6 @@ ggplot(.mytib, aes(x, y)) +
   coord_equal()
 ```
 
-
 If you have $n$ measures, how many pairwise correlations can you compute? You can figure this out either by the formula in the info box below, or more easily you can computed it directly through the `choose(n, 2)` function in R. For instance, to get the number of possible pairwise correlations between 6 measures, you'd type `choose(6, 2)`, which tells you that you have `r choose(6, 2)` combinations.
 
 ```{block, type="info"}
@@ -58,7 +62,7 @@ $$
 $$
 ```
 
-You can create a correlation matrix in R using `base::cor()` or `corrr::correlate()`. We prefer the latter function because `cor()` requires that your data is stored in a matrix, whereas most of the data we will be working with is stored in a data frame. The `corrr::correlate()` function also takes a data frame as the first argument, so it works better with pipes (`%>%`).
+You can create a correlation matrix in R using `base::cor()` or `corrr::correlate()`. We prefer the latter function because `cor()` requires that your data is stored in a matrix, whereas most of the data we will be working with is tabular data stored in a data frame. The `corrr::correlate()` function takes a data frame as the first argument, and provides "tidy" output, so it integrates better with tidyverse functions and pipes (`%>%`).
 
 Let's create a correlation matrix to see how it works. Start by loading in the packages we will need.
 
@@ -176,7 +180,9 @@ It should be clear that you can't just run `rnorm()` twice and combine the varia
 The package **`MASS`** provides a function `mvrnorm()` which is the 'multivariate' version of rnorm (hence the function name, `mv` + `rnorm`, which makes it easy to remember.
 
 ```{block, type="watchout"}
-The **`MASS`** package comes pre-installed with R. But the only function you'll probably ever want to use from **`MASS`** is `mvrnorm()`, so rather than load in the package using `library("MASS")`, it is preferable to use `MASS::mvrnorm()`, especially as **`MASS`** and the **`dplyr`** package from **`tidyverse`** [don't play well together](https://twitter.com/dalejbarr/status/516986671129452544?s=20), due to both packages having the function `select()`. So if you load in **`MASS`** after you load in **`tidyverse`**, you'll end up getting the **`MASS`** version of `select()` instead of the **`dplyr`** version. It will do your head in trying to figure out what is wrong with your code, so always `MASS::mvrnorm` and never `library("MASS")`.
+The **`MASS`** package comes pre-installed with R. But the only function you'll probably ever want to use from **`MASS`** is `mvrnorm()`, so rather than load in the package using `library("MASS")`, it is preferable to use `MASS::mvrnorm()`, especially as **`MASS`** and the **`dplyr`** package from **`tidyverse`** don't play well together, due to both packages having the function `select()`. So if you load in **`MASS`** after you load in **`tidyverse`**, you'll end up getting the **`MASS`** version of `select()` instead of the **`dplyr`** version. It will do your head in trying to figure out what is wrong with your code, so always use `MASS::mvrnorm()` without loading `library("MASS")`.
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">MASS before dplyr, clashes not dire;<br>dplyr before MASS, pain in the ass. <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="http://t.co/vHIbGwSKd8">pic.twitter.com/vHIbGwSKd8</a></p>&mdash; Dale Barr (@dalejbarr) <a href="https://twitter.com/dalejbarr/status/516986671129452544?ref_src=twsrc%5Etfw">September 30, 2014</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
 ```
 
 Have a look at the documentation for the `mvrnorm()` function (type `?MASS::mvrnorm` in the console).
@@ -195,7 +201,8 @@ When you have multivariate data, the **covariance matrix** (also known as the **
 
 You can think of a covariance matrix as something like the correlation matrix that you saw above; indeed, with a few calculations you can turn a covariance matrix into a correlation matrix.
 
-```{block, type="info"}
+<div class="info">
+
 What's all this talk about the Matrix? Wasn't that a sci-fi film series from the 1990s?
 
 In mathematics, matrices are just generalizations of the concept of a vector: a vector can be thought of as having one dimension, whereas a matrix can have any number of dimensions.
@@ -222,10 +229,13 @@ $$
 
 A **square matrix** is a matrix where the number of rows is equal to the number of columns.
 
-You can create the above matrix in R using the `matrix()` function (see below) or by binding together vectors column-wise, using the base R `cbind()` function. Try `cbind(1:3, 4:6, 7:9)` in your console. You can also bind vectors together row-wise using `rbind()`.
-```
+You can create the above matrix in R using the `matrix()` function (see below) or by binding together vectors using the base R `cbind()` and `rbind()`, which bind vectors together column-wise and row-wise, respectively. Try `cbind(1:3, 4:6, 7:9)` in your console.
+
+</div>
 
 Now what is all this about the matrix being "positive-definite" and "symmetric"? These are mathematical requirements about the kinds of matrices that can represent possible multivariate normal distributions. In other words, the covariance matrix you supply must be represent a legal multivariate normal distribution. At this point, you don't really need to know much more about this than that.
+
+<iframe src="https://dalejbarr.github.io/bivariate/index.html" width="420" height="620" style="border: none;"></iframe>
 
 Let's start by simulating data representing hypothetical humans and their heights and weights. We know these things are correlated. What we need to be able to simulate data are means and standard deviations for these two variables and their correlation.
 
@@ -365,16 +375,6 @@ ggplot(alldata, aes(height_in, weight_lbs)) +
 ```
 
 You can see that our simulated humans are much like the normal ones, except that we are creating humans outside the normal range of heights and weights.
-
-### Bivariate app
-
-Here is a web app that you should play around with to better understand the relationship between covariance matrices, bivariate normal distributions, and correlation coefficients.
-
-```{r bivariate_app, echo=FALSE, fig.cap="*Shiny web app at [https://shiny.psy.gla.ac.uk/Dale/bivariate](https://shiny.psy.gla.ac.uk/Dale/bivariate){target=\"blank\"}*"}
-if (knitr::is_html_output())
-  knitr::include_app("https://shiny.psy.gla.ac.uk/Dale/bivariate",
-                     height="410px")
-```
 
 ## Relationship between correlation and regression
 

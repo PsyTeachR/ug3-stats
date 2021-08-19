@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Understanding correlation and regression through bivariate simulation | Learning Statistical Models Through Simulation in R</title>
   <meta name="description" content="Textbook on statistical models for social scientists." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Understanding correlation and regression through bivariate simulation | Learning Statistical Models Through Simulation in R" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Dale J. Barr" />
 
 
-<meta name="date" content="2021-05-17" />
+<meta name="date" content="2021-08-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,8 @@
 
 
 
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
@@ -117,8 +119,11 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+
 <link rel="stylesheet" href="include/psyteachr.css" type="text/css" />
+<link rel="stylesheet" href="include/webex.css" type="text/css" />
 <link rel="stylesheet" href="include/style.css" type="text/css" />
+<link rel="stylesheet" href="include/archive.css" type="text/css" />
 </head>
 
 <body>
@@ -131,11 +136,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">Statistical Models</a></li>
-
+<h2 style="color:red;">WARNING: You are reading an old version of this textbook.</h2><p><a href="https://psyteachr.github.io/stat-models">Go to the latest version</a></p>
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a><ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-book"><i class="fa fa-check"></i>How to cite this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#found-an-issue"><i class="fa fa-check"></i>Found an issue?</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#information-for-educators"><i class="fa fa-check"></i>Information for educators</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
@@ -149,9 +154,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html"><i class="fa fa-check"></i><b>2</b> Understanding correlation and regression through bivariate simulation</a><ul>
 <li class="chapter" data-level="2.1" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#correlation-matrices"><i class="fa fa-check"></i><b>2.1</b> Correlation matrices</a></li>
-<li class="chapter" data-level="2.2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#simulating-bivariate-data"><i class="fa fa-check"></i><b>2.2</b> Simulating bivariate data</a><ul>
-<li class="chapter" data-level="2.2.1" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#bivariate-app"><i class="fa fa-check"></i><b>2.2.1</b> Bivariate app</a></li>
-</ul></li>
+<li class="chapter" data-level="2.2" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#simulating-bivariate-data"><i class="fa fa-check"></i><b>2.2</b> Simulating bivariate data</a></li>
 <li class="chapter" data-level="2.3" data-path="understanding-correlation-and-regression-through-bivariate-simulation.html"><a href="understanding-correlation-and-regression-through-bivariate-simulation.html#relationship-between-correlation-and-regression"><i class="fa fa-check"></i><b>2.3</b> Relationship between correlation and regression</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>3</b> Multiple regression</a><ul>
@@ -194,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>5</b> Introducing Linear Mixed-Effects Models</a><ul>
-<li class="chapter" data-level="5.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.1" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#learning-objectives-1"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
 <li class="chapter" data-level="5.2" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#modeling-multi-level-data"><i class="fa fa-check"></i><b>5.2</b> Modeling multi-level data</a></li>
 <li class="chapter" data-level="5.3" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#how-to-model-these-data"><i class="fa fa-check"></i><b>5.3</b> How to model these data?</a><ul>
 <li class="chapter" data-level="5.3.1" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#complete-pooling-one-size-fits-all"><i class="fa fa-check"></i><b>5.3.1</b> Complete pooling: One size fits all</a></li>
@@ -210,7 +213,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.6" data-path="introducing-linear-mixed-effects-models.html"><a href="introducing-linear-mixed-effects-models.html#multi-level-app"><i class="fa fa-check"></i><b>5.6</b> Multi-level app</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html"><i class="fa fa-check"></i><b>6</b> Linear mixed-effects models with one random factor</a><ul>
-<li class="chapter" data-level="6.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="6.1" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html#learning-objectives-2"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
 <li class="chapter" data-level="6.2" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html#when-and-why-would-you-want-to-replace-conventional-analyses-with-linear-mixed-effects-modeling"><i class="fa fa-check"></i><b>6.2</b> When, and why, would you want to replace conventional analyses with linear mixed-effects modeling?</a></li>
 <li class="chapter" data-level="6.3" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html#example-independent-samples-t-test-on-multi-level-data"><i class="fa fa-check"></i><b>6.3</b> Example: Independent-samples <span class="math inline">\(t\)</span>-test on multi-level data</a><ul>
 <li class="chapter" data-level="6.3.1" data-path="linear-mixed-effects-models-with-one-random-factor.html"><a href="linear-mixed-effects-models-with-one-random-factor.html#when-is-a-random-intercepts-model-appropriate"><i class="fa fa-check"></i><b>6.3.1</b> When is a random-intercepts model appropriate?</a></li>
@@ -221,7 +224,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html"><i class="fa fa-check"></i><b>7</b> Linear mixed-effects models with crossed random factors</a><ul>
-<li class="chapter" data-level="7.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.1" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#learning-objectives-3"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
 <li class="chapter" data-level="7.2" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#web-app"><i class="fa fa-check"></i><b>7.2</b> Web app</a></li>
 <li class="chapter" data-level="7.3" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#generalizing-over-encounters-between-subjects-and-stimuli"><i class="fa fa-check"></i><b>7.3</b> Generalizing over encounters between subjects and stimuli</a></li>
 <li class="chapter" data-level="7.4" data-path="linear-mixed-effects-models-with-crossed-random-factors.html"><a href="linear-mixed-effects-models-with-crossed-random-factors.html#lme4-syntax-for-crossed-random-factors"><i class="fa fa-check"></i><b>7.4</b> lme4 syntax for crossed random factors</a></li>
@@ -239,7 +242,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed-effects models</a><ul>
-<li class="chapter" data-level="8.1" data-path="interactions.html"><a href="interactions.html#learning-objectives"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#learning-objectives-4"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
 <li class="chapter" data-level="8.2" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#discrete-versus-continuous-data"><i class="fa fa-check"></i><b>8.2</b> Discrete versus continuous data</a><ul>
 <li class="chapter" data-level="8.2.1" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#why-not-model-discrete-data-as-continuous"><i class="fa fa-check"></i><b>8.2.1</b> Why not model discrete data as continuous?</a></li>
 </ul></li>
@@ -251,7 +254,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4.4" data-path="generalized-linear-mixed-effects-models.html"><a href="generalized-linear-mixed-effects-models.html#estimating-logistic-regression-models-in-r"><i class="fa fa-check"></i><b>8.4.4</b> Estimating logistic regression models in R</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="modeling-ordinal-data.html"><a href="modeling-ordinal-data.html"><i class="fa fa-check"></i><b>9</b> Modeling Ordinal Data</a></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="symbols.html"><a href="symbols.html"><i class="fa fa-check"></i><b>A</b> Symbols</a><ul>
 <li class="chapter" data-level="A.1" data-path="symbols.html"><a href="symbols.html#general-notes"><i class="fa fa-check"></i><b>A.1</b> General notes</a></li>
@@ -284,6 +286,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="understanding-correlation-and-regression-through-bivariate-simulation" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Understanding correlation and regression through bivariate simulation</h1>
+<div class="warning">
+<h2>
+You are reading an old version of this textbook.
+</h2>
+<p><a href="https://psyteachr.github.io/stat-models">Go to the latest version</a></p>
+</div>
 <ul>
 <li>Packages used:
 <ul>
@@ -295,7 +303,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><code>base::choose()</code></li>
 <li><code>corrr::correlate()</code></li>
-<li><code>base::matrix()</code></li>
+<li><code>base::rbind()</code></li>
 <li><code>base::cor()</code></li>
 <li><code>base::log()</code> and <code>base::exp()</code> for log transformation (and back)</li>
 </ul></li>
@@ -308,7 +316,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">2.1</span> Correlation matrices</h2>
 <p>You may be familiar with the concept of a <strong>correlation matrix</strong> from reading papers in psychology. Correlation matrices are a common way of summarizing relationships between multiple measurements taken from the same individual.</p>
 <p>Let’s say you’ve measured psychological well-being using multiple scales. One question is the extent to which these scales are measuring the same thing. Often you will look at a correlation matrix to explore all the pairwise relationships between measures.</p>
-<p>Recall that a correlation coefficient quantifies the <strong>strength</strong> and <strong>direction</strong> of a relationship between two variables. It is usually represented by the symbol <span class="math inline">\(r\)</span> (for a <strong>statistic</strong>) and <span class="math inline">\(\rho\)</span> (Greek letter “rho”) (as a <strong>parameter</strong>). The coefficient ranges between -1 and 1, with 0 corresponding to no relationship, positive values reflecting a positive relationship (as one variable increases, so does the other), and negative values reflecting a negative relationship (as one variable increases, the other decreases).</p>
+<p>Recall that a correlation coefficient quantifies the <strong>strength</strong> and <strong>direction</strong> of a relationship between two variables. It is usually represented by the symbol <span class="math inline">\(r\)</span> or <span class="math inline">\(\rho\)</span> (Greek letter “rho”). The correlation coefficient ranges between -1 and 1, with 0 corresponding to no relationship, positive values reflecting a positive relationship (as one variable increases, so does the other), and negative values reflecting a negative relationship (as one variable increases, the other decreases).</p>
 <div class="figure" style="text-align: center"><span id="fig:correlation-relationships"></span>
 <img src="02-bivariate-simulation_files/figure-html/correlation-relationships-1.png" alt="Different types of bivariate relationships." width="100%" />
 <p class="caption">
@@ -326,7 +334,7 @@ For any <span class="math inline"><span class="math inline">\(n\)</span></span> 
 \]</span></span>
 </p>
 </div>
-<p>You can create a correlation matrix in R using <code>base::cor()</code> or <code>corrr::correlate()</code>. We prefer the latter function because <code>cor()</code> requires that your data is stored in a matrix, whereas most of the data we will be working with is stored in a data frame. The <code>corrr::correlate()</code> function also takes a data frame as the first argument, so it works better with pipes (<code>%&gt;%</code>).</p>
+<p>You can create a correlation matrix in R using <code>base::cor()</code> or <code>corrr::correlate()</code>. We prefer the latter function because <code>cor()</code> requires that your data is stored in a matrix, whereas most of the data we will be working with is tabular data stored in a data frame. The <code>corrr::correlate()</code> function takes a data frame as the first argument, and provides “tidy” output, so it integrates better with tidyverse functions and pipes (<code>%&gt;%</code>).</p>
 <p>Let’s create a correlation matrix to see how it works. Start by loading in the packages we will need.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="kw">library</span>(<span class="st">&quot;corrr&quot;</span>)  <span class="co"># install.packages(&quot;corrr&quot;) in console if missing</span></a></code></pre></div>
@@ -338,7 +346,7 @@ For any <span class="math inline"><span class="math inline">\(n\)</span></span> 
 ## Correlation method: &#39;pearson&#39;
 ## Missing treated using: &#39;pairwise.complete.obs&#39;</code></pre>
 <pre><code>## # A tibble: 3 x 4
-##   rowname    height   mass birth_year
+##   term       height   mass birth_year
 ##   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
 ## 1 height     NA      0.134     -0.400
 ## 2 mass        0.134 NA          0.478
@@ -352,7 +360,7 @@ For any <span class="math inline"><span class="math inline">\(n\)</span></span> 
 ## Correlation method: &#39;pearson&#39;
 ## Missing treated using: &#39;pairwise.complete.obs&#39;</code></pre>
 <pre><code>## # A tibble: 3 x 4
-##   rowname    height   mass birth_year
+##   term       height   mass birth_year
 ##   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
 ## 1 height     NA     NA             NA
 ## 2 mass        0.134 NA             NA
@@ -366,7 +374,7 @@ For any <span class="math inline"><span class="math inline">\(n\)</span></span> 
 <pre><code>## 
 ## Correlation method: &#39;pearson&#39;
 ## Missing treated using: &#39;pairwise.complete.obs&#39;</code></pre>
-<pre><code>##      rowname height mass birth_year
+<pre><code>##         term height mass birth_year
 ## 1     height                       
 ## 2       mass    .13                
 ## 3 birth_year   -.40  .48</code></pre>
@@ -425,7 +433,7 @@ Figure 2.4: Pairwise correlations for the starwars dataset after removing outlyi
 <pre><code>## 
 ## Correlation method: &#39;pearson&#39;
 ## Missing treated using: &#39;pairwise.complete.obs&#39;</code></pre>
-<pre><code>##      rowname height mass birth_year
+<pre><code>##         term height mass birth_year
 ## 1     height                       
 ## 2       mass    .74                
 ## 3 birth_year    .45  .24</code></pre>
@@ -439,7 +447,7 @@ Figure 2.4: Pairwise correlations for the starwars dataset after removing outlyi
 <pre><code>## 
 ## Correlation method: &#39;spearman&#39;
 ## Missing treated using: &#39;pairwise.complete.obs&#39;</code></pre>
-<pre><code>##      rowname height mass birth_year
+<pre><code>##         term height mass birth_year
 ## 1     height                       
 ## 2       mass    .75                
 ## 3 birth_year    .16  .15</code></pre>
@@ -453,7 +461,7 @@ Figure 2.4: Pairwise correlations for the starwars dataset after removing outlyi
 <table>
 <thead>
 <tr class="header">
-<th align="left">rowname</th>
+<th align="left">term</th>
 <th align="left">height</th>
 <th align="left">mass</th>
 <th align="left">birth_year</th>
@@ -488,8 +496,15 @@ Figure 2.4: Pairwise correlations for the starwars dataset after removing outlyi
 <p>The package <strong><code>MASS</code></strong> provides a function <code>mvrnorm()</code> which is the ‘multivariate’ version of rnorm (hence the function name, <code>mv</code> + <code>rnorm</code>, which makes it easy to remember.</p>
 <div class="watchout">
 <p>
-The <strong><code>MASS</code></strong> package comes pre-installed with R. But the only function you’ll probably ever want to use from <strong><code>MASS</code></strong> is <code>mvrnorm()</code>, so rather than load in the package using <code>library(“MASS”)</code>, it is preferable to use <code>MASS::mvrnorm()</code>, especially as <strong><code>MASS</code></strong> and the <strong><code>dplyr</code></strong> package from <strong><code>tidyverse</code></strong> <a href="https://twitter.com/dalejbarr/status/516986671129452544?s=20">don’t play well together</a>, due to both packages having the function <code>select()</code>. So if you load in <strong><code>MASS</code></strong> after you load in <strong><code>tidyverse</code></strong>, you’ll end up getting the <strong><code>MASS</code></strong> version of <code>select()</code> instead of the <strong><code>dplyr</code></strong> version. It will do your head in trying to figure out what is wrong with your code, so always <code>MASS::mvrnorm</code> and never <code>library(“MASS”)</code>.
+The <strong><code>MASS</code></strong> package comes pre-installed with R. But the only function you’ll probably ever want to use from <strong><code>MASS</code></strong> is <code>mvrnorm()</code>, so rather than load in the package using <code>library(“MASS”)</code>, it is preferable to use <code>MASS::mvrnorm()</code>, especially as <strong><code>MASS</code></strong> and the <strong><code>dplyr</code></strong> package from <strong><code>tidyverse</code></strong> don’t play well together, due to both packages having the function <code>select()</code>. So if you load in <strong><code>MASS</code></strong> after you load in <strong><code>tidyverse</code></strong>, you’ll end up getting the <strong><code>MASS</code></strong> version of <code>select()</code> instead of the <strong><code>dplyr</code></strong> version. It will do your head in trying to figure out what is wrong with your code, so always use <code>MASS::mvrnorm()</code> without loading <code>library(“MASS”)</code>.
 </p>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+MASS before dplyr, clashes not dire;<br>dplyr before MASS, pain in the ass. <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="http://t.co/vHIbGwSKd8">pic.twitter.com/vHIbGwSKd8</a>
+</p>
+— Dale Barr (<span class="citation"><span class="citation">(<span class="citeproc-not-found" data-reference-id="dalejbarr"><strong>???</strong></span>)</span></span>) <a href="https://twitter.com/dalejbarr/status/516986671129452544?ref_src=twsrc%5Etfw">September 30, 2014</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>
 <p>Have a look at the documentation for the <code>mvrnorm()</code> function (type <code>?MASS::mvrnorm</code> in the console).</p>
 <p>There are three arguments to take note of:</p>
@@ -523,44 +538,30 @@ The <strong><code>MASS</code></strong> package comes pre-installed with R. But t
 <p>When you have multivariate data, the <strong>covariance matrix</strong> (also known as the <strong>variance-covariance</strong> matrix) specifies the variances of the individual variables and their interrelationships. It is like a multidimensional version of the <strong>standard deviation</strong>. To fully describe a univariate normal distribution, you need to know only the mean and standard deviation; to describe a bivariate normal distribution, you need the means of each of the two variables, their standard deviations, and their correlation; for a multivariate distribution with more the two variables you need the means for all of the variables, their standard deviations, and all of the possible pairwise correlations. <strong>These concepts become very important once we start talking about mixed-effects modelling.</strong></p>
 <p>You can think of a covariance matrix as something like the correlation matrix that you saw above; indeed, with a few calculations you can turn a covariance matrix into a correlation matrix.</p>
 <div class="info">
-<p>
-What’s all this talk about the Matrix? Wasn’t that a sci-fi film series from the 1990s?
-</p>
-<p>
-In mathematics, matrices are just generalizations of the concept of a vector: a vector can be thought of as having one dimension, whereas a matrix can have any number of dimensions.
-</p>
-<p>
-So the matrix
-</p>
-<p>
-<span class="math display"><span class="math display">\[
+<p>What’s all this talk about the Matrix? Wasn’t that a sci-fi film series from the 1990s?</p>
+<p>In mathematics, matrices are just generalizations of the concept of a vector: a vector can be thought of as having one dimension, whereas a matrix can have any number of dimensions.</p>
+<p>So the matrix</p>
+<p><span class="math display">\[
 \begin{pmatrix}
-1 &amp;amp; 4 &amp;amp; 7 \\
-2 &amp;amp; 5 &amp;amp; 8 \\
-3 &amp;amp; 6 &amp;amp; 9 \\
+1 &amp; 4 &amp; 7 \\
+2 &amp; 5 &amp; 8 \\
+3 &amp; 6 &amp; 9 \\
 \end{pmatrix}
-\]</span></span>
-</p>
-<p>
-is a 3 (row) by 3 (column) matrix containing the column vectors <span class="math inline"><span class="math inline">\(\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}\)</span></span>, <span class="math inline"><span class="math inline">\(\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}\)</span></span>, and <span class="math inline"><span class="math inline">\(\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}\)</span></span>. Conventionally, we refer to matrices in <span class="math inline"><span class="math inline">\(i\)</span></span> by <span class="math inline"><span class="math inline">\(j\)</span></span> format, with <span class="math inline"><span class="math inline">\(i\)</span></span> being the number of rows and <span class="math inline"><span class="math inline">\(j\)</span></span> being the number of columns. So a 3x2 matrix has 3 rows and 2 columns, like so.
-</p>
-<p>
-<span class="math display"><span class="math display">\[
+\]</span></p>
+<p>is a 3 (row) by 3 (column) matrix containing the column vectors <span class="math inline">\(\begin{pmatrix} 1 \\ 2 \\ 3 \\ \end{pmatrix}\)</span>, <span class="math inline">\(\begin{pmatrix} 4 \\ 5 \\ 6 \\ \end{pmatrix}\)</span>, and <span class="math inline">\(\begin{pmatrix} 7 \\ 8 \\ 9 \\ \end{pmatrix}\)</span>. Conventionally, we refer to matrices in <span class="math inline">\(i\)</span> by <span class="math inline">\(j\)</span> format, with <span class="math inline">\(i\)</span> being the number of rows and <span class="math inline">\(j\)</span> being the number of columns. So a 3x2 matrix has 3 rows and 2 columns, like so.</p>
+<p><span class="math display">\[
 \begin{pmatrix}
-a &amp;amp; d \\
-b &amp;amp; e \\
-c &amp;amp; f \\
+a &amp; d \\
+b &amp; e \\
+c &amp; f \\
 \end{pmatrix}
-\]</span></span>
-</p>
-<p>
-A <strong>square matrix</strong> is a matrix where the number of rows is equal to the number of columns.
-</p>
-<p>
-You can create the above matrix in R using the <code>matrix()</code> function (see below) or by binding together vectors column-wise, using the base R <code>cbind()</code> function. Try <code>cbind(1:3, 4:6, 7:9)</code> in your console. You can also bind vectors together row-wise using <code>rbind()</code>.
-</p>
+\]</span></p>
+<p>A <strong>square matrix</strong> is a matrix where the number of rows is equal to the number of columns.</p>
+<p>You can create the above matrix in R using the <code>matrix()</code> function (see below) or by binding together vectors using the base R <code>cbind()</code> and <code>rbind()</code>, which bind vectors together column-wise and row-wise, respectively. Try <code>cbind(1:3, 4:6, 7:9)</code> in your console.</p>
 </div>
 <p>Now what is all this about the matrix being “positive-definite” and “symmetric”? These are mathematical requirements about the kinds of matrices that can represent possible multivariate normal distributions. In other words, the covariance matrix you supply must be represent a legal multivariate normal distribution. At this point, you don’t really need to know much more about this than that.</p>
+<iframe src="https://dalejbarr.github.io/bivariate/index.html" width="420" height="620" style="border: none;">
+</iframe>
 <p>Let’s start by simulating data representing hypothetical humans and their heights and weights. We know these things are correlated. What we need to be able to simulate data are means and standard deviations for these two variables and their correlation.</p>
 <p>I found some data <a href="https://www.geogebra.org/m/RRprACv4">here</a> which I converted into a CSV file. If you want to follow along, download the file <a href="data/heights_and_weights.csv" download="heights_and_weights.csv">heights_and_weights.csv</a>. Here’s how the scatterplot looks:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">handw &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/heights_and_weights.csv&quot;</span>, <span class="dt">col_types =</span> <span class="st">&quot;dd&quot;</span>)</a>
@@ -686,17 +687,6 @@ Figure 2.7: Real and simulated humans.
 </p>
 </div>
 <p>You can see that our simulated humans are much like the normal ones, except that we are creating humans outside the normal range of heights and weights.</p>
-<div id="bivariate-app" class="section level3">
-<h3><span class="header-section-number">2.2.1</span> Bivariate app</h3>
-<p>Here is a web app that you should play around with to better understand the relationship between covariance matrices, bivariate normal distributions, and correlation coefficients.</p>
-<div class="figure" style="text-align: center">
-<iframe src="https://shiny.psy.gla.ac.uk/Dale/bivariate?showcase=0" width="100%" height="410px">
-</iframe>
-<p class="caption">
-(#fig:bivariate_app)<em>Shiny web app at <a href="https://shiny.psy.gla.ac.uk/Dale/bivariate" target="blank">https://shiny.psy.gla.ac.uk/Dale/bivariate</a></em>
-</p>
-</div>
-</div>
 </div>
 <div id="relationship-between-correlation-and-regression" class="section level2">
 <h2><span class="header-section-number">2.3</span> Relationship between correlation and regression</h2>
@@ -739,7 +729,7 @@ At <span class="math inline">\(X = \mu_x\)</span>, <span class="math inline">\(Y
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 0.1774 on 473 degrees of freedom
-## Multiple R-squared:  0.9246,	Adjusted R-squared:  0.9245 
+## Multiple R-squared:  0.9246, Adjusted R-squared:  0.9245 
 ## F-statistic:  5802 on 1 and 473 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Looks pretty close. The reason that it doesn’t match exactly is only because we’ve rounded off our estimates to two decimal places for convenience.</p>
 <p>As another check, let’s superimpose the regression line we computed by hand on the scatterplot of the log-transformed data.</p>
@@ -898,6 +888,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"],
 "google": false
 },
